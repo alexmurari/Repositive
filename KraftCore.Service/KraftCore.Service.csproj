@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>KraftSistemas</Authors>
+    <Company>KraftSistemas</Company>
+    <Product>KraftCore</Product>
+    <Description>Service implementations based on KraftCore.Domain contracts.</Description>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <Version>1.0.1</Version>
+    <FileVersion>1.0.1</FileVersion>
+    <AssemblyVersion>1.0.1</AssemblyVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\KraftCore.Domain\KraftCore.Domain.csproj" />
+  </ItemGroup>
+
+</Project>
