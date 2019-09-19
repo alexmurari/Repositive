@@ -8,7 +8,7 @@
     <Description>Utility classes and methods to be used throughout the projects.</Description>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <Version>1.0.0-rc-02</Version>
+    <Version>1.0.0-rc-03</Version>
     <FileVersion>1.0.0</FileVersion>
     <AssemblyVersion>1.0.0</AssemblyVersion>
   </PropertyGroup>
