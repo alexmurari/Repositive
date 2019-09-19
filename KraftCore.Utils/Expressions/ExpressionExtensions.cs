@@ -53,7 +53,7 @@
 
         /// <summary>
         /// Converts the property accessor lambda expression to a textual representation of it's path. <br/>
-        /// The textual representation consists of the properties that the expression access flattened and separated by a comma (".").
+        /// The textual representation consists of the properties that the expression access flattened and separated by a dot character (".").
         /// </summary>
         /// <param name="expression">The property selector expression.</param>
         /// <returns>The extracted textual representation of the expression's path.</returns>
@@ -69,7 +69,7 @@
 
         /// <summary>
         /// Recursively parses an expression tree representing a property accessor to extract a textual representation of it's path. <br/>
-        /// The textual representation consists of the properties accessed by the expression tree flattened and separated by a comma (".").
+        /// The textual representation consists of the properties accessed by the expression tree flattened and separated by a dot character (".").
         /// </summary>
         /// <param name="expression">The expression tree to parse.</param>
         /// <param name="path">The extracted textual representation of the expression's path.</param>
