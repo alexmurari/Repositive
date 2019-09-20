@@ -16,6 +16,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		readme.md = readme.md
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{AB5C83B1-D8CE-421E-A1DF-7C253D034188}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KraftCore.Tests", "KraftCore.Tests\KraftCore.Tests.csproj", "{15B218C7-5F69-4653-8C9D-8BAE87057773}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -38,20 +42,18 @@ Global
 		{536A8811-963C-46AD-994A-E7B82ABE9BF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{536A8811-963C-46AD-994A-E7B82ABE9BF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{536A8811-963C-46AD-994A-E7B82ABE9BF5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{15B218C7-5F69-4653-8C9D-8BAE87057773}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15B218C7-5F69-4653-8C9D-8BAE87057773}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15B218C7-5F69-4653-8C9D-8BAE87057773}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15B218C7-5F69-4653-8C9D-8BAE87057773}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{15B218C7-5F69-4653-8C9D-8BAE87057773} = {AB5C83B1-D8CE-421E-A1DF-7C253D034188}
+	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {ABDCFEBC-DFDE-413C-AB46-0482D7057BE6}
-	EndGlobalSection
-	GlobalSection(AutomaticVersions) = postSolution
-		UpdateAssemblyVersion.Release|Any CPU = False
-		UpdateAssemblyFileVersion.Release|Any CPU = False
-		UpdateAssemblyInfoVersion.Release|Any CPU = True
-		UpdatePackageVersion.Release|Any CPU = False
-		AssemblyInfoVersionSemVerSettings.Release|Any CPU = AssemblyVersion.None.ReleaseCandidate
-		AssemblyInfoVersionType.Release|Any CPU = SemVer1
-		InheritWinAppVersionFrom.Release|Any CPU = None
 	EndGlobalSection
 EndGlobal
