@@ -33,6 +33,21 @@
         /// <summary>
         /// The "greater than or equal" numeric comparison.
         /// </summary>
-        GreaterThanOrEqual
+        GreaterThanOrEqual,
+
+        /// <summary>
+        /// The "contains" comparison.
+        /// </summary>
+        Contains,
+
+        /// <summary>
+        /// The "starts with" comparison.
+        /// </summary>
+        StartsWith,
+
+        /// <summary>
+        /// The "ends with" comparison.
+        /// </summary>
+        EndsWith
     }
 }
