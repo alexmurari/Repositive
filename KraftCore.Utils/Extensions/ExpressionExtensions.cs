@@ -1,4 +1,4 @@
-﻿namespace KraftCore.Utils.Expressions
+﻿namespace KraftCore.Utils.Extensions
 {
     using System;
     using System.Linq;

@@ -6,6 +6,7 @@
     using System.Linq.Expressions;
     using KraftCore.Domain.Contracts;
     using KraftCore.Utils.Expressions;
+    using KraftCore.Utils.Extensions;
     using Microsoft.EntityFrameworkCore;
 
     /// <summary>
