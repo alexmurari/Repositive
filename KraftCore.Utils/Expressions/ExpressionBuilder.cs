@@ -1,6 +1,7 @@
 ﻿namespace KraftCore.Utils.Expressions
 {
     using System;
+    using System.Linq;
     using System.Linq.Expressions;
     using System.Reflection;
     using KraftCore.Utils.Extensions;
@@ -11,11 +12,10 @@
     public static class ExpressionBuilder
     {
         /// <summary>
-        /// Creates a lambda expression that represents an accessor to a property
-        /// or field from an object of type <typeparamref name="T"/>.
+        /// Creates a lambda expression that represents an accessor to a property or field from an object of type <typeparamref name="T"/>.
         /// </summary>
-        /// <param name="propertyName">
-        /// The name of the property or field to be accessed.
+        /// <param name="propertyNameOrPath">
+        /// The name or the path to the property to be accessed composed of simple dot-separated property access expressions.
         /// </param>
         /// <typeparam name="T">
         /// The type that contains the property or field to be accessed.
@@ -26,13 +26,12 @@
         /// <returns>
         /// The built <see cref="Expression{TDelegate}"/> instance representing the property accessor.
         /// </returns>
-        public static Expression<Func<T, TResult>> CreateAccessorExpression<T, TResult>(string propertyName)
+        public static Expression<Func<T, TResult>> CreateAccessorExpression<T, TResult>(string propertyNameOrPath)
         {
-            var param = Expression.Parameter(typeof(T));
-            var accessor = Expression.PropertyOrField(param, propertyName);
+            var (parameter, accessor) = BuildAccessor<T>(propertyNameOrPath);
             var conversion = Expression.Convert(accessor, typeof(TResult));
 
-            return Expression.Lambda<Func<T, TResult>>(conversion, param);
+            return Expression.Lambda<Func<T, TResult>>(conversion, parameter);
         }
 
         /// <summary>
@@ -42,8 +41,8 @@
         /// <typeparam name="T">
         /// The type that contains the property to be compared.
         /// </typeparam>
-        /// <param name="propertyName">
-        /// The name of the property to be compared.
+        /// <param name="propertyNameOrPath">
+        /// The name or the path to access the property to be compared composed of simple dot-separated property access expressions.
         /// </param>
         /// <param name="value">
         /// The value to compare the property.
@@ -52,9 +51,9 @@
         /// The comparison operator.
         /// </param>
         /// <returns>The built <see cref="Expression{TDelegate}"/> instance representing the binary operation.</returns>
-        public static Expression<Func<T, bool>> CreateBinaryExpression<T>(string propertyName, object value, ExpressionOperator @operator)
+        public static Expression<Func<T, bool>> CreateBinaryExpression<T>(string propertyNameOrPath, object value, ExpressionOperator @operator)
         {
-            return BuildBinaryExpression<T>(propertyName, value, @operator);
+            return BuildBinaryExpression<T>(propertyNameOrPath, value, @operator);
         }
 
         /// <summary>
@@ -80,14 +79,36 @@
         }
 
         /// <summary>
+        /// Creates the <see cref="MemberExpression"/> that represents accessing a field or property.
+        /// </summary>
+        /// <param name="propertyNameOrPath">
+        /// The name or the path to the property to be accessed composed of simple dot-separated property access expressions.
+        /// </param>
+        /// <typeparam name="T">
+        /// The type that contains the property or field to be accessed.
+        /// </typeparam>
+        /// <returns>
+        /// The parameter.
+        /// </returns>
+        private static (ParameterExpression Parameter, MemberExpression Accessor) BuildAccessor<T>(string propertyNameOrPath)
+        {
+            var param = Expression.Parameter(typeof(T));
+            var accessor = propertyNameOrPath.Split('.').Aggregate<string, MemberExpression>(
+                null,
+                (current, property) => Expression.PropertyOrField((Expression)current ?? param, property.Trim()));
+
+            return (param, accessor);
+        }
+
+        /// <summary>
         /// Builds a binary lambda expression that compares the value of an property of
         /// type <typeparamref name="T"/> with the provided value using the specified comparison operator.
         /// </summary>
         /// <typeparam name="T">
         /// The type with the property to be compared.
         /// </typeparam>
-        /// <param name="propertyName">
-        /// The name of the property to be compared.
+        /// <param name="propertyNameOrPath">
+        /// The name or the path to access the property to be compared composed of simple dot-separated property access expressions.
         /// </param>
         /// <param name="value">
         /// The value to compare the property.
@@ -96,11 +117,9 @@
         /// The comparison operator.
         /// </param>
         /// <returns>The built <see cref="Expression{TDelegate}"/> instance representing the binary operation.</returns>
-        private static Expression<Func<T, bool>> BuildBinaryExpression<T>(string propertyName, object value, ExpressionOperator @operator)
+        private static Expression<Func<T, bool>> BuildBinaryExpression<T>(string propertyNameOrPath, object value, ExpressionOperator @operator)
         {
-            var parameter = Expression.Parameter(typeof(T));
-            var property = Expression.Property(parameter, propertyName);
-
+            var (parameter, property) = BuildAccessor<T>(propertyNameOrPath);
             var (leftExpression, rightExpression) = BuildBinaryExpressionParameters(property, value, @operator);
 
             Expression body;
@@ -211,7 +230,7 @@
                         case ExpressionOperator.StartsWith:
                         case ExpressionOperator.EndsWith:
                             leftExpression = Expression.Call(property, typeof(string).GetMethod(nameof(string.ToLower), Type.EmptyTypes) ?? throw new InvalidOperationException());
-                            rightExpression = Expression.Constant(value.ToString().ToLower());
+                            rightExpression = Expression.Constant(value?.ToString().ToLower());
                             break;
                         case ExpressionOperator.LessThan:
                         case ExpressionOperator.LessThanOrEqual:
@@ -258,8 +277,7 @@
                         if (parseSuccess.GetValueOrDefault())
                             rightExpression = Expression.Constant(parameters[1], propertyType);
                         else
-                            throw new ArgumentException($"Value '{value}' of type '{value.GetType().Name}' isn't valid for comparing with values of type '{propertyType.Name}'.",
-                                nameof(value));
+                            throw new ArgumentException($"Value '{value}' of type '{value.GetType().Name}' isn't valid for comparing with values of type '{propertyType.Name}'.", nameof(value));
                     }
                 }
             }

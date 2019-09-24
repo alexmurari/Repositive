@@ -71,7 +71,8 @@
         }
 
         /// <summary>
-        /// Builds an method call expression that represents a call to the '<see cref="Enumerable.Contains{T}(IEnumerable{T}, T)"/>' method.
+        /// Builds an method call expression that represents a call to the '<see cref="Enumerable.Contains{T}(IEnumerable{T}, T, IEqualityComparer{T})"/>' method. <br/>
+        /// An <see cref="IEqualityComparer{T}"/> that performs an case-insensitive ordinal string comparison is passed as argument to the method.
         /// </summary>
         /// <param name="property">The expression representing the instance for the instance method call.</param>
         /// <param name="value">The expression representing the value to be passed as the method argument.</param>

@@ -19,8 +19,9 @@
         /// <returns>
         /// True if the type is a numeric type; otherwise, false.
         /// </returns>
-        public static bool IsNumeric(this Type type) => type == typeof(byte) || type == typeof(sbyte) || type == typeof(ushort) || type == typeof(uint) || type == typeof(ulong)
-            || type == typeof(short) || type == typeof(int) || type == typeof(long) || type == typeof(float) || type == typeof(double) || type == typeof(decimal);
+        public static bool IsNumeric(this Type type) =>
+            type == typeof(byte) || type == typeof(sbyte) || type == typeof(ushort) || type == typeof(uint) || type == typeof(ulong) ||
+            type == typeof(short) || type == typeof(int) || type == typeof(long) || type == typeof(float) || type == typeof(double) || type == typeof(decimal);
 
         /// <summary>
         /// Returns whether the provided type is a <see cref="string"/> type.
