@@ -12,16 +12,16 @@
     public static class ExpressionBuilder
     {
         /// <summary>
-        /// Creates a lambda expression that represents an accessor to a property or field from an object of type <typeparamref name="T"/>.
+        /// Creates a lambda expression that represents an accessor to a property from an object of type <typeparamref name="T"/>.
         /// </summary>
         /// <param name="propertyNameOrPath">
         /// The name or the path to the property to be accessed composed of simple dot-separated property access expressions.
         /// </param>
         /// <typeparam name="T">
-        /// The type that contains the property or field to be accessed.
+        /// The type that contains the property to be accessed.
         /// </typeparam>
         /// <typeparam name="TResult">
-        /// The type of the accessed property or field used as the delegate return type.
+        /// The type of the accessed property used as the delegate return type.
         /// </typeparam>
         /// <returns>
         /// The built <see cref="Expression{TDelegate}"/> instance representing the property accessor.
@@ -79,29 +79,30 @@
         }
 
         /// <summary>
-        /// Creates the <see cref="MemberExpression"/> that represents accessing a field or property.
+        /// Creates a <see cref="MemberExpression"/> that represents accessing a property from an object of type <typeparamref name="T"/>.
         /// </summary>
         /// <param name="propertyNameOrPath">
         /// The name or the path to the property to be accessed composed of simple dot-separated property access expressions.
         /// </param>
         /// <typeparam name="T">
-        /// The type that contains the property or field to be accessed.
+        /// The type that contains the property to be accessed.
         /// </typeparam>
         /// <returns>
-        /// The parameter.
+        /// The <see cref="ParameterExpression"/> representing the the type that contains the accessed property
+        /// and the <see cref="MemberExpression"/> representing the accessor to property.
         /// </returns>
         private static (ParameterExpression Parameter, MemberExpression Accessor) BuildAccessor<T>(string propertyNameOrPath)
         {
             var param = Expression.Parameter(typeof(T));
             var accessor = propertyNameOrPath.Split('.').Aggregate<string, MemberExpression>(
                 null,
-                (current, property) => Expression.PropertyOrField((Expression)current ?? param, property.Trim()));
+                (current, property) => Expression.Property((Expression)current ?? param, property.Trim()));
 
             return (param, accessor);
         }
 
         /// <summary>
-        /// Builds a binary lambda expression that compares the value of an property of
+        /// Creates a binary lambda expression that compares the value of an property of
         /// type <typeparamref name="T"/> with the provided value using the specified comparison operator.
         /// </summary>
         /// <typeparam name="T">

@@ -11,7 +11,7 @@
     public static class TypeExtensions
     {
         /// <summary>
-        /// Returns whether the provided type is a numeric type.
+        /// Returns a value indicating whether the provided type is a numeric type.
         /// </summary>
         /// <param name="type">
         /// The type to be checked.
@@ -24,7 +24,7 @@
             type == typeof(short) || type == typeof(int) || type == typeof(long) || type == typeof(float) || type == typeof(double) || type == typeof(decimal);
 
         /// <summary>
-        /// Returns whether the provided type is a <see cref="string"/> type.
+        /// Returns a value indicating whether the provided type is a <see cref="string"/> type.
         /// </summary>
         /// <param name="type">
         /// The type to be checked.
@@ -35,7 +35,7 @@
         public static bool IsString(this Type type) => type == typeof(string);
 
         /// <summary>
-        /// Returns whether the provided type is a collection type.
+        /// Returns a value indicating whether the provided type is a collection type.
         /// </summary>
         /// <param name="type">The type to be checked.</param>
         /// <returns>True if it is a collection type; otherwise, false.</returns>
@@ -44,15 +44,15 @@
         /// </remarks>
         public static bool IsCollection(this Type type)
         {
-            if (type == typeof(string))
+            if (type.IsString())
                 return false;
 
-            return type == typeof(IEnumerable) || (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IEnumerable<>)) || type.GetInterfaces()
-                .Any(t => t == typeof(IEnumerable) || (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(IEnumerable<>)));
+            return type == typeof(IEnumerable) || (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IEnumerable<>)) ||
+                type.GetInterfaces().Any(t => t == typeof(IEnumerable) || (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(IEnumerable<>)));
         }
 
         /// <summary>
-        /// Returns whether the provided type is a generic collection type.
+        /// Returns a value indicating whether the provided type is a generic collection type.
         /// </summary>
         /// <param name="type">
         /// The type to be checked.
@@ -65,7 +65,7 @@
         /// </remarks>
         public static bool IsGenericCollection(this Type type)
         {
-            if (type == typeof(string))
+            if (type.IsString())
                 return false;
 
             return (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IEnumerable<>))
@@ -73,7 +73,7 @@
         }
 
         /// <summary>
-        /// Returns whether the provided type is a generic collection and the generic type parameter is the same as the provided type.
+        /// Returns a value indicating whether the provided type is a generic collection and the generic type parameter is the same as the provided type.
         /// </summary>
         /// <param name="type">
         /// The type to be checked.
@@ -89,7 +89,7 @@
         /// </remarks>
         public static bool IsGenericCollection(this Type type, Type genericTypeArgument)
         {
-            if (type == typeof(string))
+            if (type.IsString())
                 return false;
 
             return (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IEnumerable<>) && type.GetGenericArguments()[0] == genericTypeArgument)
@@ -97,7 +97,7 @@
         }
 
         /// <summary>
-        /// Returns whether the provided type is a non-generic <see cref="IList"/> implementation.
+        /// Returns a value indicating whether the provided type is a non-generic <see cref="IList"/> implementation.
         /// </summary>
         /// <param name="type">
         /// The type to be checked.
