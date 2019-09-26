@@ -1,6 +1,7 @@
 ﻿namespace KraftCore.Utils.Expressions
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
     using System.Reflection;
@@ -88,8 +89,8 @@
         /// The type that contains the property to be accessed.
         /// </typeparam>
         /// <returns>
-        /// The <see cref="ParameterExpression"/> representing the the type that contains the accessed property
-        /// and the <see cref="MemberExpression"/> representing the accessor to property.
+        /// The <see cref="ParameterExpression"/> representing a parameter of the type that contains 
+        /// the accessed property and the <see cref="MemberExpression"/> representing the accessor to the property.
         /// </returns>
         private static (ParameterExpression Parameter, MemberExpression Accessor) BuildAccessor<T>(string propertyNameOrPath)
         {
@@ -102,7 +103,7 @@
         }
 
         /// <summary>
-        /// Creates a binary lambda expression that compares the value of an property of
+        /// Creates a binary lambda expression that compares the value of an property from an object of
         /// type <typeparamref name="T"/> with the provided value using the specified comparison operator.
         /// </summary>
         /// <typeparam name="T">
@@ -149,12 +150,15 @@
                     body = ExpressionMethodCallBuilder.BuildStringContainsMethodCall(leftExpression, rightExpression);
                     break;
                 case ExpressionOperator.Contains when property.Type.IsGenericCollection(typeof(string)):
+                case ExpressionOperator.ContainsOnValue when leftExpression.Type.IsGenericCollection(typeof(string)):
                     body = ExpressionMethodCallBuilder.BuildGenericStringCollectionContainsMethodCall(leftExpression, rightExpression);
                     break;
                 case ExpressionOperator.Contains when property.Type.IsGenericCollection():
+                case ExpressionOperator.ContainsOnValue when leftExpression.Type.IsGenericCollection():
                     body = ExpressionMethodCallBuilder.BuildGenericCollectionContainsMethodCall(leftExpression, rightExpression);
                     break;
                 case ExpressionOperator.Contains when property.Type.IsNonGenericIList():
+                case ExpressionOperator.ContainsOnValue when leftExpression.Type.IsNonGenericIList():
                     body = ExpressionMethodCallBuilder.BuildIListContainsMethodCall(leftExpression, rightExpression);
                     break;
                 case ExpressionOperator.StartsWith:
@@ -183,27 +187,35 @@
         /// The comparison operator.
         /// </param>
         /// <returns>
-        /// The expression parameters to be used to build <see cref="BinaryExpression"/> instances.
+        /// The expression parameters to build <see cref="BinaryExpression"/> objects.
         /// </returns>
         private static (Expression leftExpression, Expression rightExpression) BuildBinaryExpressionParameters(Expression property, object value, ExpressionOperator @operator)
         {
             Expression leftExpression = null;
             Expression rightExpression = null;
 
-            var propertyType = property.Type;
-            var isCollection = property.Type.IsCollection();
+            var propertyType = @operator != ExpressionOperator.ContainsOnValue ? property.Type : value.GetType();
+            var isCollection = propertyType.IsCollection();
 
             if (isCollection)
             {
-                var isGenericCollection = property.Type.IsGenericCollection();
+                var isGenericCollection = propertyType.IsGenericCollection();
 
                 switch (@operator)
                 {
                     case ExpressionOperator.Contains when isGenericCollection:
-                        rightExpression = Expression.Constant(value, propertyType.GetGenericArguments()[0]);
+                        rightExpression = Expression.Constant(value);
                         break;
                     case ExpressionOperator.Contains:
                         rightExpression = Expression.Constant(value, typeof(object));
+                        break;
+                    case ExpressionOperator.ContainsOnValue when isGenericCollection:
+                        leftExpression = Expression.Constant(value.ToList());
+                        rightExpression = property;
+                        break;
+                    case ExpressionOperator.ContainsOnValue:
+                        leftExpression = Expression.Constant(value);
+                        rightExpression = property;
                         break;
                     case ExpressionOperator.Equal:
                     case ExpressionOperator.NotEqual:
@@ -237,6 +249,7 @@
                         case ExpressionOperator.LessThanOrEqual:
                         case ExpressionOperator.GreaterThan:
                         case ExpressionOperator.GreaterThanOrEqual:
+                        case ExpressionOperator.ContainsOnValue:
                             throw new ArgumentException($"Operator {@operator} isn't valid for the type {propertyType.Name}.", nameof(@operator));
                         default:
                             throw new ArgumentOutOfRangeException(nameof(@operator), @operator, null);
@@ -254,6 +267,7 @@
                         case ExpressionOperator.GreaterThanOrEqual:
                             break;
                         case ExpressionOperator.Contains:
+                        case ExpressionOperator.ContainsOnValue:
                         case ExpressionOperator.StartsWith:
                         case ExpressionOperator.EndsWith:
                             throw new ArgumentException($"Operator {@operator} isn't valid for the type {propertyType.Name}.", nameof(@operator));
@@ -284,6 +298,40 @@
             }
 
             return (leftExpression ?? property, rightExpression ?? Expression.Constant(value));
+        }
+
+        /// <summary>
+        /// Returns an <see cref="List{T}"/> from an generic collection of objects by enumerating it.
+        /// </summary>
+        /// <param name="collection">
+        /// The collection to be enumerated.
+        /// </param>
+        /// <returns>
+        /// The <see cref="object"/> representing the generic list.
+        /// </returns>
+        private static object ToList(this object collection)
+        {
+            var colType = collection.GetType();
+
+            if (!colType.IsGenericCollection())
+                throw new ArgumentException("Parameter must be a generic collection to be enumerated.", nameof(collection));
+
+            var valueGenericArgs = colType.GetGenericArguments();
+
+            if (colType.IsArray || colType.IsAssignableFrom(typeof(List<>).MakeGenericType(valueGenericArgs[0])))
+                return collection;
+
+            var containsMethod = typeof(Enumerable).GetMethods()
+                .Where(x => x.Name == nameof(Enumerable.ToList))
+                .Single(x => x.GetParameters().Length == 1)
+                .MakeGenericMethod(valueGenericArgs[valueGenericArgs.Length - 1]);
+
+            var parameters = new[]
+            {
+                collection
+            };
+
+            return containsMethod.Invoke(null, parameters);
         }
     }
 }

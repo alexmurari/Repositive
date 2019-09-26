@@ -41,6 +41,11 @@
         Contains,
 
         /// <summary>
+        /// The "contains" comparison applied on the value of an expression.
+        /// </summary>
+        ContainsOnValue,
+
+        /// <summary>
         /// The "starts with" comparison.
         /// </summary>
         StartsWith,

@@ -115,14 +115,16 @@
         /// </returns>
         internal static MethodCallExpression BuildGenericCollectionContainsMethodCall(Expression property, Expression value, IEqualityComparer equalityComparer)
         {
+            var genericType = property.Type.IsArray ? property.Type.GetElementType() : property.Type.GetGenericArguments()[0];
+
             var argumentTypes = equalityComparer == null
                 ? new[]
                 {
-                    property.Type, property.Type.GetGenericArguments()[0]
+                    property.Type, genericType
                 }
                 : new[]
                 {
-                    property.Type, property.Type.GetGenericArguments()[0], typeof(IEqualityComparer<>).MakeGenericType(property.Type.GetGenericArguments()[0])
+                    property.Type, genericType, typeof(IEqualityComparer<>).MakeGenericType(genericType)
                 };
 
             var containsMethod = typeof(Enumerable).GetMethods()
