@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KraftCore.Domain", "KraftCo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KraftCore.Service", "KraftCore.Service\KraftCore.Service.csproj", "{A0C7E95F-3B09-489B-BC4E-D18607DADF45}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KraftCore.Shared", "KraftCore.Utils\KraftCore.Shared.csproj", "{536A8811-963C-46AD-994A-E7B82ABE9BF5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KraftCore.Shared", "KraftCore.Shared\KraftCore.Shared.csproj", "{536A8811-963C-46AD-994A-E7B82ABE9BF5}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{57A865E5-2CC3-4939-9786-31EE1FCCCF03}"
 	ProjectSection(SolutionItems) = preProject
