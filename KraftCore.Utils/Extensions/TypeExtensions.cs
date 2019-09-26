@@ -1,4 +1,4 @@
-﻿namespace KraftCore.Utils.Extensions
+﻿namespace KraftCore.Shared.Extensions
 {
     using System;
     using System.Collections;

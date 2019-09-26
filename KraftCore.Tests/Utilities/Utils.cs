@@ -1,4 +1,4 @@
-﻿namespace KraftCore.Tests
+﻿namespace KraftCore.Tests.Utilities
 {
     using System;
     using System.Collections;
@@ -12,7 +12,7 @@
     internal static class TestUtilities
     {
         /// <summary>
-        /// The faker used to create objects with dummy data.
+        /// The faker used to create dummy objects with fake data.
         /// </summary>
         private static readonly Faker Faker;
 
@@ -52,6 +52,7 @@
                 .RuleFor(t => t.DateOfBirth, f => f.Date.Past(100, DateTime.Now.AddYears(-25)))
                 .RuleFor(t => t.Age, (f, p) => DateTime.Now.Year - p.DateOfBirth.Year)
                 .RuleFor(t => t.FavoriteNumbers, f => f.Random.ListItems(Enumerable.Range(1, 5000).ToList(), 5))
+                .RuleFor(t => t.FavoriteWords, f => f.Random.WordsArray(10))
                 .RuleFor(t => t.FavoriteColors, f => f.Random.ArrayElements(Colors, 3))
                 .RuleFor(t => t.FavoriteFruits, f => new ArrayList(f.Random.ArrayElements(Fruits, 2)));
 
@@ -99,51 +100,5 @@
         /// The random collection of <typeparamref name="T"/>.
         /// </returns>
         internal static T[] GetRandomItems<T>(IEnumerable<T> collection, int count = 5) => Faker.Random.ArrayElements(collection.ToArray(), count);
-
-        /// <summary>
-        /// Represents an person.
-        /// </summary>
-        internal class Person
-        {
-            /// <summary>
-            /// Gets or sets the first name.
-            /// </summary>
-            public string FirstName { get; set; }
-
-            /// <summary>
-            /// Gets or sets the last name.
-            /// </summary>
-            public string LastName { get; set; }
-
-            /// <summary>
-            /// Gets or sets the full name.
-            /// </summary>
-            public string FullName { get; set; }
-
-            /// <summary>
-            /// Gets or sets the age.
-            /// </summary>
-            public int Age { get; set; }
-
-            /// <summary>
-            /// Gets or sets the date of birth.
-            /// </summary>
-            public DateTime DateOfBirth { get; set; }
-
-            /// <summary>
-            /// Gets or sets the favorite numbers.
-            /// </summary>
-            public ICollection<int> FavoriteNumbers { get; set; }
-
-            /// <summary>
-            /// Gets or sets the favorite colors.
-            /// </summary>
-            public string[] FavoriteColors { get; set; }
-
-            /// <summary>
-            /// Gets or sets the favorite fruits.
-            /// </summary>
-            public ArrayList FavoriteFruits { get; set; }
-        }
     }
 }

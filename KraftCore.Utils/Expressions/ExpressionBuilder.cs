@@ -1,11 +1,11 @@
-﻿namespace KraftCore.Utils.Expressions
+﻿namespace KraftCore.Shared.Expressions
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
     using System.Reflection;
-    using KraftCore.Utils.Extensions;
+    using KraftCore.Shared.Extensions;
 
     /// <summary>
     /// Provides static methods to create <see cref="Expression"/> instances.
@@ -277,27 +277,50 @@
 
                     if (!value.GetType().IsNumeric())
                     {
-                        var parameters = new[]
-                        {
-                            value, null
-                        };
-
-                        var argumentTypes = new[]
-                        {
-                            value.GetType(), propertyType.MakeByRefType()
-                        };
-
-                        var parseSuccess = (bool?)propertyType.GetMethod(nameof(int.TryParse), argumentTypes)?.Invoke(property, parameters);
-
-                        if (parseSuccess.GetValueOrDefault())
-                            rightExpression = Expression.Constant(parameters[1], propertyType);
-                        else
-                            throw new ArgumentException($"Value '{value}' of type '{value.GetType().Name}' isn't valid for comparing with values of type '{propertyType.Name}'.", nameof(value));
+                        rightExpression = ParseStringToNumber(value, property);
                     }
                 }
             }
 
             return (leftExpression ?? property, rightExpression ?? Expression.Constant(value));
+        }
+
+        /// <summary>
+        /// Converts the string representation of a number to it's numeric equivalent.
+        /// </summary>
+        /// <param name="value">
+        /// The value to be converted.
+        /// </param>
+        /// <param name="property">
+        /// The object on which to invoke the parse method.
+        /// </param>
+        /// <returns>
+        /// The <see cref="ConstantExpression"/>.
+        /// The expression constant representing the converted value.
+        /// </returns>
+        /// <exception cref="ArgumentException">
+        /// The exception thrown when the value cannot be converted.
+        /// </exception>
+        private static ConstantExpression ParseStringToNumber(object value, Expression property)
+        {
+            var propertyType = property.Type;
+
+            var parameters = new[]
+            {
+                value, null
+            };
+
+            var argumentTypes = new[]
+            {
+                value.GetType(), propertyType.MakeByRefType()
+            };
+
+            var parseSuccess = (bool?)propertyType.GetMethod(nameof(int.TryParse), argumentTypes)?.Invoke(property, parameters);
+
+            if (parseSuccess.GetValueOrDefault())
+                return Expression.Constant(parameters[1], propertyType);
+
+            throw new ArgumentException($"Value '{value}' of type '{value.GetType().Name}' isn't valid for comparing with values of type '{propertyType.Name}'.", nameof(value));
         }
 
         /// <summary>

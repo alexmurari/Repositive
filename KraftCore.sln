@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KraftCore.Domain", "KraftCo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KraftCore.Service", "KraftCore.Service\KraftCore.Service.csproj", "{A0C7E95F-3B09-489B-BC4E-D18607DADF45}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KraftCore.Utils", "KraftCore.Utils\KraftCore.Utils.csproj", "{536A8811-963C-46AD-994A-E7B82ABE9BF5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KraftCore.Shared", "KraftCore.Utils\KraftCore.Shared.csproj", "{536A8811-963C-46AD-994A-E7B82ABE9BF5}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{57A865E5-2CC3-4939-9786-31EE1FCCCF03}"
 	ProjectSection(SolutionItems) = preProject
@@ -18,7 +18,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{AB5C83B1-D8CE-421E-A1DF-7C253D034188}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KraftCore.Tests", "KraftCore.Tests\KraftCore.Tests.csproj", "{15B218C7-5F69-4653-8C9D-8BAE87057773}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KraftCore.Tests", "KraftCore.Tests\KraftCore.Tests.csproj", "{15B218C7-5F69-4653-8C9D-8BAE87057773}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

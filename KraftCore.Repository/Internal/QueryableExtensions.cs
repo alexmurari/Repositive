@@ -5,8 +5,8 @@
     using System.Linq;
     using System.Linq.Expressions;
     using KraftCore.Domain.Contracts;
-    using KraftCore.Utils.Expressions;
-    using KraftCore.Utils.Extensions;
+    using KraftCore.Shared.Expressions;
+    using KraftCore.Shared.Extensions;
     using Microsoft.EntityFrameworkCore;
 
     /// <summary>

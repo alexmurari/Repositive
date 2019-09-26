@@ -35,7 +35,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\KraftCore.Domain\KraftCore.Domain.csproj" />
-    <ProjectReference Include="..\KraftCore.Utils\KraftCore.Utils.csproj" />
+    <ProjectReference Include="..\KraftCore.Utils\KraftCore.Shared.csproj" />
   </ItemGroup>
 
 </Project>

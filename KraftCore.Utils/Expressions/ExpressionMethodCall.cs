@@ -1,4 +1,4 @@
-﻿namespace KraftCore.Utils.Expressions
+﻿namespace KraftCore.Shared.Expressions
 {
     using System;
     using System.Collections;
