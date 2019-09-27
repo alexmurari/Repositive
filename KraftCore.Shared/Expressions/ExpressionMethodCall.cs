@@ -117,20 +117,9 @@
         {
             var genericType = property.Type.IsArray ? property.Type.GetElementType() : property.Type.GetGenericArguments()[0];
 
-            var argumentTypes = equalityComparer == null
-                ? new[]
-                {
-                    property.Type, genericType
-                }
-                : new[]
-                {
-                    property.Type, genericType, typeof(IEqualityComparer<>).MakeGenericType(genericType)
-                };
-
             var containsMethod = typeof(Enumerable).GetMethods()
-                .Where(x => x.Name == nameof(Enumerable.Contains))
-                .Single(x => x.GetParameters().Length == (equalityComparer == null ? 2 : 3))
-                .MakeGenericMethod(argumentTypes[1]);
+                .Single(x => x.Name == nameof(Enumerable.Contains) && x.GetParameters().Length == (equalityComparer == null ? 2 : 3))
+                .MakeGenericMethod(genericType);
 
             return equalityComparer == null
                 ? Expression.Call(containsMethod, property, value)

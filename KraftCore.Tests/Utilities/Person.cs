@@ -35,9 +35,14 @@
         public DateTime DateOfBirth { get; set; }
 
         /// <summary>
+        /// Gets or sets the best friend.
+        /// </summary>
+        public Person BestFriend { get; set; }
+
+        /// <summary>
         /// Gets or sets the favorite numbers.
         /// </summary>
-        public ICollection<int> FavoriteNumbers { get; set; }
+        public IEnumerable<int> FavoriteNumbers { get; set; }
 
         /// <summary>
         /// Gets or sets the favorite words.

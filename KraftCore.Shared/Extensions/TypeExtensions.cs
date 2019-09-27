@@ -35,6 +35,17 @@
         public static bool IsString(this Type type) => type == typeof(string);
 
         /// <summary>
+        /// Returns a value indicating whether the provided type is a <see cref="DateTime"/> type.
+        /// </summary>
+        /// <param name="type">
+        /// The type to be checked.
+        /// </param>
+        /// <returns>
+        /// True if the type is a <see cref="DateTime"/> type; otherwise, false.
+        /// </returns>
+        public static bool IsDateTime(this Type type) => type == typeof(DateTime);
+
+        /// <summary>
         /// Returns a value indicating whether the provided type is a collection type.
         /// </summary>
         /// <param name="type">The type to be checked.</param>
