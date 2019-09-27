@@ -67,7 +67,7 @@
         /// <returns>
         /// The collection <see cref="Person"/> objects.
         /// </returns>
-        internal static List<Person> GetFakePersonCollection(int count = 50) => PersonFaker.Generate(count);
+        internal static List<Person> GetFakePersonCollection(int count = 150) => PersonFaker.Generate(count);
 
         /// <summary>
         /// Gets an random item from the provided collection of type <typeparamref name="T"/>.
