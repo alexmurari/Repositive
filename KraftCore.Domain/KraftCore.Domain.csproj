@@ -7,7 +7,7 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <Authors>KraftSistemas</Authors>
     <Product>KraftCore</Product>
-    <Description>Generic domain contracts for repository/service layers, etc.</Description>
+    <Description>Generic domain contracts for service/repository patterns.</Description>
     <FileVersion>1.0.0</FileVersion>
     <AssemblyVersion>1.0.0</AssemblyVersion>
   </PropertyGroup>

@@ -5,7 +5,7 @@
     <Authors>KraftSsitemas</Authors>
     <Company>KraftSsitemas</Company>
     <Product>KraftCore</Product>
-    <Description>Utility classes and methods to be used throughout the projects.</Description>
+    <Description>Shared classes, methods and extensions that provides a sort of utilities for project development.</Description>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <Version>1.0.0-rc-03</Version>

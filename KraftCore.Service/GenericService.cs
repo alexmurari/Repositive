@@ -1,6 +1,7 @@
 ﻿namespace KraftCore.Service
 {
     using KraftCore.Domain.Contracts.Repository;
+    using KraftCore.Domain.Contracts.Service;
 
     /// <summary>
     /// Base class for generic service implementations that operates on values of type <typeparamref name="TEntity"/>.
@@ -9,7 +10,7 @@
     /// <typeparam name="TEntity">
     /// The underlying type that this service operates on.
     /// </typeparam>
-    public abstract class GenericService<TEntity> where TEntity : class
+    public abstract class GenericService<TEntity> : IGenericService<TEntity> where TEntity : class
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="GenericService{TEntity}"/> class.
@@ -25,6 +26,6 @@
         /// <summary>
         /// Gets the repository.
         /// </summary>
-        protected IGenericRepository<TEntity> Repository { get; }
+        public IGenericRepository<TEntity> Repository { get; }
     }
 }

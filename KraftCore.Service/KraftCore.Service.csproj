@@ -5,7 +5,7 @@
     <Authors>KraftSistemas</Authors>
     <Company>KraftSistemas</Company>
     <Product>KraftCore</Product>
-    <Description>Service implementations based on KraftCore.Domain contracts.</Description>
+    <Description>Generic service implementation based on KraftCore.Domain contract.</Description>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <Version>1.0.0-rc-03</Version>
