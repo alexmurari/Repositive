@@ -6,7 +6,7 @@
     /// <summary>
     /// Extensions for generic types.
     /// </summary>
-    internal static class GenericExtensions
+    public static class GenericExtensions
     {
         /// <summary>
         /// Checks if the provided value is null.

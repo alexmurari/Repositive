@@ -3,9 +3,9 @@
     using System;
 
     /// <summary>
-    /// Extends the <see cref="string"/> class.
+    /// Extensions for <see cref="string"/> class.
     /// </summary>
-    internal static class StringExtensions
+    public static class StringExtensions
     {
         /// <summary>
         /// Throws an exception if the provided <see cref="string"/> is null or empty, otherwise returns the value.
@@ -25,7 +25,7 @@
         /// <returns>
         /// The value of the argument.
         /// </returns>
-        internal static string ThrowIfNullOrEmpty(this string value, string argName)
+        public static string ThrowIfNullOrEmpty(this string value, string argName)
         {
             if (value == null)
                 throw new ArgumentNullException(argName);
@@ -54,7 +54,7 @@
         /// <returns>
         /// The value of the argument.
         /// </returns>
-        internal static string ThrowIfNullOrWhitespace(this string value, string argName)
+        public static string ThrowIfNullOrWhitespace(this string value, string argName)
         {
             if (value == null)
                 throw new ArgumentNullException(argName);
