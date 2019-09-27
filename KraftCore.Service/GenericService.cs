@@ -26,6 +26,6 @@
         /// <summary>
         /// Gets the repository.
         /// </summary>
-        public IGenericRepository<TEntity> Repository { get; }
+        protected IGenericRepository<TEntity> Repository { get; }
     }
 }
