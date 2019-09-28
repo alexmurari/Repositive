@@ -5,24 +5,25 @@
     using System.Linq.Expressions;
 
     /// <summary>
-    /// Provides extension methods to the <see cref="Expression"/> class.
+    ///     Provides extension methods to the <see cref="Expression" /> class.
     /// </summary>
     public static class ExpressionExtensions
     {
         /// <summary>
-        /// Joins two binary lambda expressions using the 'And' conditional operator.
+        ///     Joins two binary lambda expressions using the 'And' conditional operator.
         /// </summary>
         /// <typeparam name="T">
-        /// The type of the predicate.
+        ///     The type of the predicate.
         /// </typeparam>
         /// <param name="left">
-        /// The left <see cref="Expression{TDelegate}"/>.
+        ///     The left <see cref="Expression{TDelegate}" />.
         /// </param>
         /// <param name="right">
-        /// The right <see cref="Expression{TDelegate}"/>.
+        ///     The right <see cref="Expression{TDelegate}" />.
         /// </param>
         /// <returns>
-        /// The resulting <see cref="Expression{TDelegate}"/> object that contains the joined <see cref="Expression{TDelegate}"/> objects.
+        ///     The resulting <see cref="Expression{TDelegate}" /> object that contains the joined
+        ///     <see cref="Expression{TDelegate}" /> objects.
         /// </returns>
         public static Expression<Func<T, bool>> And<T>(this Expression<Func<T, bool>> left, Expression<Func<T, bool>> right)
         {
@@ -31,29 +32,9 @@
         }
 
         /// <summary>
-        /// Joins two binary lambda expressions using the 'Or' conditional operator.
-        /// </summary>
-        /// <typeparam name="T">
-        /// The type of the predicate.
-        /// </typeparam>
-        /// <param name="left">
-        /// The first <see cref="Expression{TDelegate}"/>.
-        /// </param>
-        /// <param name="right">
-        /// The second <see cref="Expression{TDelegate}"/>.
-        /// </param>
-        /// <returns>
-        /// The resulting <see cref="Expression{TDelegate}"/> object that contains the joined <see cref="Expression{TDelegate}"/> objects.
-        /// </returns>
-        public static Expression<Func<T, bool>> Or<T>(this Expression<Func<T, bool>> left, Expression<Func<T, bool>> right)
-        {
-            var leftExprBody = new RebindParameterVisitor(right.Parameters[0], left.Parameters[0]).Visit(right.Body);
-            return Expression.Lambda<Func<T, bool>>(Expression.OrElse(left.Body, leftExprBody ?? throw new InvalidOperationException()), left.Parameters);
-        }
-
-        /// <summary>
-        /// Converts the property accessor lambda expression to a textual representation of it's path. <br/>
-        /// The textual representation consists of the properties that the expression access flattened and separated by a dot character (".").
+        ///     Converts the property accessor lambda expression to a textual representation of it's path. <br />
+        ///     The textual representation consists of the properties that the expression access flattened and separated by a dot
+        ///     character (".").
         /// </summary>
         /// <param name="expression">The property selector expression.</param>
         /// <returns>The extracted textual representation of the expression's path.</returns>
@@ -68,8 +49,46 @@
         }
 
         /// <summary>
-        /// Recursively parses an expression tree representing a property accessor to extract a textual representation of it's path. <br/>
-        /// The textual representation consists of the properties accessed by the expression tree flattened and separated by a dot character (".").
+        ///     Joins two binary lambda expressions using the 'Or' conditional operator.
+        /// </summary>
+        /// <typeparam name="T">
+        ///     The type of the predicate.
+        /// </typeparam>
+        /// <param name="left">
+        ///     The first <see cref="Expression{TDelegate}" />.
+        /// </param>
+        /// <param name="right">
+        ///     The second <see cref="Expression{TDelegate}" />.
+        /// </param>
+        /// <returns>
+        ///     The resulting <see cref="Expression{TDelegate}" /> object that contains the joined
+        ///     <see cref="Expression{TDelegate}" /> objects.
+        /// </returns>
+        public static Expression<Func<T, bool>> Or<T>(this Expression<Func<T, bool>> left, Expression<Func<T, bool>> right)
+        {
+            var leftExprBody = new RebindParameterVisitor(right.Parameters[0], left.Parameters[0]).Visit(right.Body);
+            return Expression.Lambda<Func<T, bool>>(Expression.OrElse(left.Body, leftExprBody ?? throw new InvalidOperationException()), left.Parameters);
+        }
+
+        /// <summary>
+        ///     Removes all casts or conversion operations from the nodes of the provided <see cref="Expression" />.
+        ///     Used to prevent type boxing when manipulating expression trees.
+        /// </summary>
+        /// <param name="expression">The expression to remove the conversion operations.</param>
+        /// <returns>The expression without conversion or cast operations.</returns>
+        private static Expression RemoveConvertOperations(Expression expression)
+        {
+            while (expression.NodeType == ExpressionType.Convert || expression.NodeType == ExpressionType.ConvertChecked)
+                expression = ((UnaryExpression)expression).Operand;
+
+            return expression;
+        }
+
+        /// <summary>
+        ///     Recursively parses an expression tree representing a property accessor to extract a textual representation of it's
+        ///     path. <br />
+        ///     The textual representation consists of the properties accessed by the expression tree flattened and separated by a
+        ///     dot character (".").
         /// </summary>
         /// <param name="expression">The expression tree to parse.</param>
         /// <param name="path">The extracted textual representation of the expression's path.</param>
@@ -130,42 +149,28 @@
         }
 
         /// <summary>
-        /// Removes all casts or conversion operations from the nodes of the provided <see cref="Expression"/>.
-        /// Used to prevent type boxing when manipulating expression trees.
-        /// </summary>
-        /// <param name="expression">The expression to remove the conversion operations.</param>
-        /// <returns>The expression without conversion or cast operations.</returns>
-        private static Expression RemoveConvertOperations(Expression expression)
-        {
-            while (expression.NodeType == ExpressionType.Convert || expression.NodeType == ExpressionType.ConvertChecked)
-                expression = ((UnaryExpression)expression).Operand;
-
-            return expression;
-        }
-
-        /// <summary>
-        /// Visitor that rebinds the parameters of the visited <see cref="Expression"/>.
+        ///     Visitor that rebinds the parameters of the visited <see cref="Expression" />.
         /// </summary>
         private class RebindParameterVisitor : ExpressionVisitor
         {
             /// <summary>
-            /// The old <see cref="ParameterExpression"/>.
-            /// </summary>
-            private readonly ParameterExpression _oldParameter;
-
-            /// <summary>
-            /// The new <see cref="ParameterExpression"/>.
+            ///     The new <see cref="ParameterExpression" />.
             /// </summary>
             private readonly ParameterExpression _newParameter;
 
             /// <summary>
-            /// Initializes a new instance of the <see cref="RebindParameterVisitor"/> class.
+            ///     The old <see cref="ParameterExpression" />.
+            /// </summary>
+            private readonly ParameterExpression _oldParameter;
+
+            /// <summary>
+            ///     Initializes a new instance of the <see cref="RebindParameterVisitor" /> class.
             /// </summary>
             /// <param name="oldParameter">
-            /// The old expression parameter.
+            ///     The old expression parameter.
             /// </param>
             /// <param name="newParameter">
-            /// The new expression parameter.
+            ///     The new expression parameter.
             /// </param>
             public RebindParameterVisitor(ParameterExpression oldParameter, ParameterExpression newParameter)
             {
@@ -174,7 +179,7 @@
             }
 
             /// <summary>
-            /// Visits the <see cref="ParameterExpression"/>.
+            ///     Visits the <see cref="ParameterExpression" />.
             /// </summary>
             /// <param name="node">The expression to visit.</param>
             /// <returns>The modified expression, if it or any sub-expression was modified; otherwise, returns the original expression.</returns>
