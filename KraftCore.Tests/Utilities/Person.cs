@@ -10,6 +10,26 @@
     internal class Person
     {
         /// <summary>
+        ///     Gets or sets the first name.
+        /// </summary>
+        public string FirstName { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the last name.
+        /// </summary>
+        public string LastName { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the full name.
+        /// </summary>
+        public string FullName { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the date of birth.
+        /// </summary>
+        public DateTime DateOfBirth { get; set; }
+
+        /// <summary>
         ///     Gets or sets the age.
         /// </summary>
         public int Age { get; set; }
@@ -18,11 +38,6 @@
         ///     Gets or sets the best friend.
         /// </summary>
         public Person BestFriend { get; set; }
-
-        /// <summary>
-        ///     Gets or sets the date of birth.
-        /// </summary>
-        public DateTime DateOfBirth { get; set; }
 
         /// <summary>
         ///     Gets or sets the favorite colors.
@@ -43,20 +58,5 @@
         ///     Gets or sets the favorite words.
         /// </summary>
         public ICollection<string> FavoriteWords { get; set; }
-
-        /// <summary>
-        ///     Gets or sets the first name.
-        /// </summary>
-        public string FirstName { get; set; }
-
-        /// <summary>
-        ///     Gets or sets the full name.
-        /// </summary>
-        public string FullName { get; set; }
-
-        /// <summary>
-        ///     Gets or sets the last name.
-        /// </summary>
-        public string LastName { get; set; }
     }
 }

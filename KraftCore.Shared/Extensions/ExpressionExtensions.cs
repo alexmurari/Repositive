@@ -32,23 +32,6 @@
         }
 
         /// <summary>
-        ///     Converts the property accessor lambda expression to a textual representation of it's path. <br />
-        ///     The textual representation consists of the properties that the expression access flattened and separated by a dot
-        ///     character (".").
-        /// </summary>
-        /// <param name="expression">The property selector expression.</param>
-        /// <returns>The extracted textual representation of the expression's path.</returns>
-        public static string AsPath(this LambdaExpression expression)
-        {
-            if (expression == null)
-                return null;
-
-            TryParsePath(expression.Body, out var path);
-
-            return path;
-        }
-
-        /// <summary>
         ///     Joins two binary lambda expressions using the 'Or' conditional operator.
         /// </summary>
         /// <typeparam name="T">
@@ -71,24 +54,24 @@
         }
 
         /// <summary>
-        ///     Removes all casts or conversion operations from the nodes of the provided <see cref="Expression" />.
-        ///     Used to prevent type boxing when manipulating expression trees.
+        ///     Converts the property accessor lambda expression to a textual representation of it's path. <br />
+        ///     The textual representation consists of the properties that the expression access flattened and separated by a dot character (".").
         /// </summary>
-        /// <param name="expression">The expression to remove the conversion operations.</param>
-        /// <returns>The expression without conversion or cast operations.</returns>
-        private static Expression RemoveConvertOperations(Expression expression)
+        /// <param name="expression">The property selector expression.</param>
+        /// <returns>The extracted textual representation of the expression's path.</returns>
+        public static string AsPath(this LambdaExpression expression)
         {
-            while (expression.NodeType == ExpressionType.Convert || expression.NodeType == ExpressionType.ConvertChecked)
-                expression = ((UnaryExpression)expression).Operand;
+            if (expression == null)
+                return null;
 
-            return expression;
+            TryParsePath(expression.Body, out var path);
+
+            return path;
         }
 
         /// <summary>
-        ///     Recursively parses an expression tree representing a property accessor to extract a textual representation of it's
-        ///     path. <br />
-        ///     The textual representation consists of the properties accessed by the expression tree flattened and separated by a
-        ///     dot character (".").
+        ///     Recursively parses an expression tree representing a property accessor to extract a textual representation of it's path. <br />
+        ///     The textual representation consists of the properties accessed by the expression tree flattened and separated by a dot character (".").
         /// </summary>
         /// <param name="expression">The expression tree to parse.</param>
         /// <param name="path">The extracted textual representation of the expression's path.</param>
@@ -146,6 +129,20 @@
             }
 
             return true;
+        }
+
+        /// <summary>
+        ///     Removes all casts or conversion operations from the nodes of the provided <see cref="Expression" />.
+        ///     Used to prevent type boxing when manipulating expression trees.
+        /// </summary>
+        /// <param name="expression">The expression to remove the conversion operations.</param>
+        /// <returns>The expression without conversion or cast operations.</returns>
+        private static Expression RemoveConvertOperations(Expression expression)
+        {
+            while (expression.NodeType == ExpressionType.Convert || expression.NodeType == ExpressionType.ConvertChecked)
+                expression = ((UnaryExpression)expression).Operand;
+
+            return expression;
         }
 
         /// <summary>

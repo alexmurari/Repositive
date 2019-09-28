@@ -37,8 +37,7 @@
         }
 
         /// <summary>
-        ///     Throws an exception if the provided <see cref="string" /> is null, empty or only consists of whitespaces, otherwise
-        ///     returns the value.
+        ///     Throws an exception if the provided <see cref="string" /> is null, empty or only consists of whitespaces, otherwise returns the value.
         /// </summary>
         /// <param name="value">
         ///     The value to be checked.

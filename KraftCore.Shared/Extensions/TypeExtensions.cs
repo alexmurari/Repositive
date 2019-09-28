@@ -24,8 +24,8 @@
             if (type.IsString())
                 return false;
 
-            return type == typeof(IEnumerable) || type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IEnumerable<>) ||
-                type.GetInterfaces().Any(t => t == typeof(IEnumerable) || t.IsGenericType && t.GetGenericTypeDefinition() == typeof(IEnumerable<>));
+            return type == typeof(IEnumerable) || (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IEnumerable<>)) ||
+                type.GetInterfaces().Any(t => t == typeof(IEnumerable) || (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(IEnumerable<>)));
         }
 
         /// <summary>
@@ -60,7 +60,7 @@
             if (type.IsString())
                 return false;
 
-            return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IEnumerable<>)
+            return (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IEnumerable<>))
                 || type.GetInterfaces().Any(t => t.IsGenericType && t.GetGenericTypeDefinition() == typeof(IEnumerable<>));
         }
 
@@ -86,7 +86,7 @@
             if (type.IsString())
                 return false;
 
-            return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IEnumerable<>) && type.GetGenericArguments()[0] == genericTypeArgument
+            return (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IEnumerable<>) && type.GetGenericArguments()[0] == genericTypeArgument)
                 || type.GetInterfaces().Any(t => t.IsGenericType && t.GetGenericTypeDefinition() == typeof(IEnumerable<>) && t.GetGenericArguments()[0] == genericTypeArgument);
         }
 

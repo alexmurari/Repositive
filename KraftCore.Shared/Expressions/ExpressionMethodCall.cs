@@ -25,35 +25,6 @@
 
         /// <summary>
         ///     Builds an method call expression that represents a call to the '
-        ///     <see cref="Enumerable.Contains{T}(IEnumerable{T}, T, IEqualityComparer{T})" />' method.
-        /// </summary>
-        /// <param name="property">
-        ///     The expression representing the instance for the instance method call.
-        /// </param>
-        /// <param name="value">
-        ///     The expression representing the value to be passed as the method argument.
-        /// </param>
-        /// <param name="equalityComparer">
-        ///     The equality comparer to be used by the method.
-        /// </param>
-        /// <returns>
-        ///     The call to the method.
-        /// </returns>
-        internal static MethodCallExpression BuildGenericCollectionContainsMethodCall(Expression property, Expression value, IEqualityComparer equalityComparer)
-        {
-            var genericType = property.Type.IsArray ? property.Type.GetElementType() : property.Type.GetGenericArguments()[0];
-
-            var containsMethod = typeof(Enumerable).GetMethods()
-                .Single(x => x.Name == nameof(Enumerable.Contains) && x.GetParameters().Length == (equalityComparer == null ? 2 : 3))
-                .MakeGenericMethod(genericType);
-
-            return equalityComparer == null
-                ? Expression.Call(containsMethod, property, value)
-                : Expression.Call(containsMethod, property, value, Expression.Constant(equalityComparer));
-        }
-
-        /// <summary>
-        ///     Builds an method call expression that represents a call to the '
         ///     <see cref="Enumerable.Contains{T}(IEnumerable{T}, T, IEqualityComparer{T})" />' method. <br />
         ///     An <see cref="IEqualityComparer{T}" /> that performs an case-insensitive ordinal string comparison is passed as
         ///     argument to the method.
@@ -128,6 +99,35 @@
             };
 
             return Expression.Call(property, typeof(string).GetMethod(nameof(string.StartsWith), argumentTypes) ?? throw new InvalidOperationException(), value);
+        }
+
+        /// <summary>
+        ///     Builds an method call expression that represents a call to the '
+        ///     <see cref="Enumerable.Contains{T}(IEnumerable{T}, T, IEqualityComparer{T})" />' method.
+        /// </summary>
+        /// <param name="property">
+        ///     The expression representing the instance for the instance method call.
+        /// </param>
+        /// <param name="value">
+        ///     The expression representing the value to be passed as the method argument.
+        /// </param>
+        /// <param name="equalityComparer">
+        ///     The equality comparer to be used by the method.
+        /// </param>
+        /// <returns>
+        ///     The call to the method.
+        /// </returns>
+        private static MethodCallExpression BuildGenericCollectionContainsMethodCall(Expression property, Expression value, IEqualityComparer equalityComparer)
+        {
+            var genericType = property.Type.IsArray ? property.Type.GetElementType() : property.Type.GetGenericArguments()[0];
+
+            var containsMethod = typeof(Enumerable).GetMethods()
+                .Single(x => x.Name == nameof(Enumerable.Contains) && x.GetParameters().Length == (equalityComparer == null ? 2 : 3))
+                .MakeGenericMethod(genericType);
+
+            return equalityComparer == null
+                ? Expression.Call(containsMethod, property, value)
+                : Expression.Call(containsMethod, property, value, Expression.Constant(equalityComparer));
         }
     }
 }

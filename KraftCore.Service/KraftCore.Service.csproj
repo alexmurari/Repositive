@@ -27,6 +27,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\KraftCore.Domain\KraftCore.Domain.csproj" />
+    <ProjectReference Include="..\KraftCore.Shared\KraftCore.Shared.csproj" />
   </ItemGroup>
 
 </Project>

@@ -13,8 +13,7 @@
     public static class ExpressionBuilder
     {
         /// <summary>
-        ///     Creates a lambda expression that represents an accessor to a property from an object of type
-        ///     <typeparamref name="T" />.
+        ///     Creates a lambda expression that represents an accessor to a property from an object of type <typeparamref name="T" />.
         /// </summary>
         /// <param name="propertyNameOrPath">
         ///     The name or the path to the property to be accessed composed of simple dot-separated property access expressions.
@@ -84,8 +83,7 @@
         }
 
         /// <summary>
-        ///     Creates a <see cref="MemberExpression" /> that represents accessing a property from an object of type
-        ///     <typeparamref name="T" />.
+        ///     Creates a <see cref="MemberExpression" /> that represents accessing a property from an object of type <typeparamref name="T" />.
         /// </summary>
         /// <param name="propertyNameOrPath">
         ///     The name or the path to the property to be accessed composed of simple dot-separated property access expressions.
@@ -117,8 +115,7 @@
         ///     The type with the property to be compared.
         /// </typeparam>
         /// <param name="propertyNameOrPath">
-        ///     The name or the path to access the property to be compared composed of simple dot-separated property access
-        ///     expressions.
+        ///     The name or the path to access the property to be compared composed of simple dot-separated property access expressions.
         /// </param>
         /// <param name="value">
         ///     The value to compare the property.
@@ -223,8 +220,8 @@
         }
 
         /// <summary>
-        ///     Creates the <see cref="Expression" /> parameters that can be used to build <see cref="BinaryExpression" /> objects
-        ///     when the property to be compared is a collection type.
+        ///     Creates the <see cref="Expression" /> parameters that can be used to build
+        ///     <see cref="BinaryExpression" /> objects when the property to be compared is a collection type.
         /// </summary>
         /// <param name="leftExpression">
         ///     The left expression reference.
@@ -248,7 +245,7 @@
         ///     Exception thrown when the comparison operator value is not supported.
         /// </exception>
         /// <exception cref="ArgumentOutOfRangeException">
-        ///     Exception thrown when the comparison operator value is out out of range.
+        ///     Exception thrown when the comparison operator value is out of range.
         /// </exception>
         private static void BuildBinaryExpressionParametersForCollection(
             ref Expression leftExpression,
@@ -292,8 +289,8 @@
         }
 
         /// <summary>
-        ///     Creates the <see cref="Expression" /> parameters that can be used to build <see cref="BinaryExpression" /> objects
-        ///     when the property to be compared is a <see cref="DateTime" /> type.
+        ///     Creates the <see cref="Expression" /> parameters that can be used to build
+        ///     <see cref="BinaryExpression" /> objects when the property to be compared is a <see cref="DateTime" /> type.
         /// </summary>
         /// <param name="leftExpression">
         ///     The left expression reference.
@@ -317,7 +314,7 @@
         ///     Exception thrown when the comparison operator value is not supported.
         /// </exception>
         /// <exception cref="ArgumentOutOfRangeException">
-        ///     Exception thrown when the comparison operator value is out out of range.
+        ///     Exception thrown when the comparison operator value is out of range.
         /// </exception>
         private static void BuildBinaryExpressionParametersForDateTime(
             ref Expression leftExpression,
@@ -349,8 +346,8 @@
         }
 
         /// <summary>
-        ///     Creates the <see cref="Expression" /> parameters that can be used to build <see cref="BinaryExpression" /> objects
-        ///     when the property to be compared is a numeric type.
+        ///     Creates the <see cref="Expression" /> parameters that can be used to build
+        ///     <see cref="BinaryExpression" /> objects when the property to be compared is a numeric type.
         /// </summary>
         /// <param name="leftExpression">
         ///     The left expression reference.
@@ -374,7 +371,7 @@
         ///     Exception thrown when the comparison operator value is not supported.
         /// </exception>
         /// <exception cref="ArgumentOutOfRangeException">
-        ///     Exception thrown when the comparison operator value is out out of range.
+        ///     Exception thrown when the comparison operator value is out of range.
         /// </exception>
         private static void BuildBinaryExpressionParametersForNumeric(
             ref Expression leftExpression,
@@ -403,12 +400,12 @@
                     throw new ArgumentOutOfRangeException(nameof(@operator), @operator, null);
             }
 
-            rightExpression = !value.GetType().IsNumeric() ? ParseStringToNumber(value, property) : Expression.Constant(value);
+            rightExpression = value.GetType().IsNumeric() ? Expression.Constant(value) : ParseStringToNumber(value, property);
         }
 
         /// <summary>
-        ///     Creates the <see cref="Expression" /> parameters that can be used to build <see cref="BinaryExpression" /> objects
-        ///     when the property to be compared is a non-specific/complex <see cref="object" /> type.
+        ///     Creates the <see cref="Expression" /> parameters that can be used to build <see cref="BinaryExpression" />
+        ///     objects when the property to be compared is a non-specific/complex <see cref="object" /> type.
         /// </summary>
         /// <param name="leftExpression">
         ///     The left expression reference.
@@ -432,7 +429,7 @@
         ///     Exception thrown when the comparison operator value is not supported.
         /// </exception>
         /// <exception cref="ArgumentOutOfRangeException">
-        ///     Exception thrown when the comparison operator value is out out of range.
+        ///     Exception thrown when the comparison operator value is out of range.
         /// </exception>
         private static void BuildBinaryExpressionParametersForObject(
             ref Expression leftExpression,
@@ -464,8 +461,8 @@
         }
 
         /// <summary>
-        ///     Creates the <see cref="Expression" /> parameters that can be used to build <see cref="BinaryExpression" /> objects
-        ///     when the property to be compared is a <see cref="string" /> type.
+        ///     Creates the <see cref="Expression" /> parameters that can be used to build <see cref="BinaryExpression" />
+        ///     objects when the property to be compared is a <see cref="string" /> type.
         /// </summary>
         /// <param name="leftExpression">
         ///     The left expression reference.
@@ -489,7 +486,7 @@
         ///     Exception thrown when the comparison operator value is not supported.
         /// </exception>
         /// <exception cref="ArgumentOutOfRangeException">
-        ///     Exception thrown when the comparison operator value is out out of range.
+        ///     Exception thrown when the comparison operator value is out of range.
         /// </exception>
         private static void BuildBinaryExpressionParametersForString(
             ref Expression leftExpression,
@@ -530,8 +527,7 @@
         ///     The object on which to invoke the parse method.
         /// </param>
         /// <returns>
-        ///     The <see cref="ConstantExpression" />.
-        ///     The expression constant representing the converted value.
+        ///     The <see cref="ConstantExpression"/> representing the converted value.
         /// </returns>
         /// <exception cref="ArgumentException">
         ///     The exception thrown when the value cannot be converted.
