@@ -1,6 +1,7 @@
 ﻿namespace KraftCore.Tests.Projects.Shared
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using KraftCore.Shared.Expressions;
     using KraftCore.Tests.Utilities;
@@ -14,6 +15,19 @@
     public class ExpressionTests
     {
         /// <summary>
+        /// The collection of fake persons to be used by the tests.
+        /// </summary>
+        private readonly List<Person> _persons;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ExpressionTests"/> class.
+        /// </summary>
+        public ExpressionTests()
+        {
+            _persons = Utilities.GetFakePersonCollection();
+        }
+
+        /// <summary>
         ///     Asserts that an binary expression of <see cref="ExpressionOperator.Contains" /> comparison gives the correct result
         ///     when operating on array collections.
         /// </summary>
@@ -21,13 +35,12 @@
         public void Assert_Binary_Expression_Of_Contains_Comparison_Of_Array_Collection_Gives_Correct_Result()
         {
             // Arrange
-            var persons = Utilities.GetFakePersonCollection();
-            var randomPerson = Utilities.GetRandomItem(persons);
+            var randomPerson = Utilities.GetRandomItem(_persons);
             var randomFavColor = Utilities.GetRandomItem(randomPerson.FavoriteColors);
             var expression = ExpressionBuilder.CreateBinaryExpression<Person>(nameof(Person.FavoriteColors), randomFavColor, ExpressionOperator.Contains);
 
             // Act
-            var result = persons.Where(expression.Compile()).ToList();
+            var result = _persons.Where(expression.Compile()).ToList();
 
             // Assert
             Assert.NotEmpty(result);
@@ -43,13 +56,12 @@
         public void Assert_Binary_Expression_Of_Contains_Comparison_Of_Generic_Collection_Gives_Correct_Result()
         {
             // Arrange
-            var persons = Utilities.GetFakePersonCollection();
-            var randomPerson = Utilities.GetRandomItem(persons);
+            var randomPerson = Utilities.GetRandomItem(_persons);
             var randomFavNumber = Utilities.GetRandomItem(randomPerson.FavoriteNumbers);
             var expression = ExpressionBuilder.CreateBinaryExpression<Person>(nameof(Person.FavoriteNumbers), randomFavNumber, ExpressionOperator.Contains);
 
             // Act
-            var result = persons.Where(expression.Compile()).ToList();
+            var result = _persons.Where(expression.Compile()).ToList();
 
             // Assert
             Assert.NotEmpty(result);
@@ -65,13 +77,12 @@
         public void Assert_Binary_Expression_Of_Contains_Comparison_Of_Generic_String_Collection_Gives_Correct_Result()
         {
             // Arrange
-            var persons = Utilities.GetFakePersonCollection();
-            var randomPerson = Utilities.GetRandomItem(persons);
+            var randomPerson = Utilities.GetRandomItem(_persons);
             var randomFavWord = Utilities.GetRandomItem(randomPerson.FavoriteWords);
             var expression = ExpressionBuilder.CreateBinaryExpression<Person>(nameof(Person.FavoriteWords), randomFavWord, ExpressionOperator.Contains);
 
             // Act
-            var result = persons.Where(expression.Compile()).ToList();
+            var result = _persons.Where(expression.Compile()).ToList();
 
             // Assert
             Assert.NotEmpty(result);
@@ -87,13 +98,12 @@
         public void Assert_Binary_Expression_Of_Contains_Comparison_Of_Non_Generic_Collection_Gives_Correct_Result()
         {
             // Arrange
-            var persons = Utilities.GetFakePersonCollection();
-            var randomPerson = Utilities.GetRandomItem(persons);
+            var randomPerson = Utilities.GetRandomItem(_persons);
             var randomFavFruit = Utilities.GetRandomItem(randomPerson.FavoriteFruits.ToArray());
             var expression = ExpressionBuilder.CreateBinaryExpression<Person>(nameof(Person.FavoriteFruits), randomFavFruit, ExpressionOperator.Contains);
 
             // Act
-            var result = persons.Where(expression.Compile()).ToList();
+            var result = _persons.Where(expression.Compile()).ToList();
 
             // Assert
             Assert.NotEmpty(result);
@@ -109,12 +119,11 @@
         public void Assert_Binary_Expression_Of_Contains_Comparison_Of_String_Values_Gives_Correct_Result()
         {
             // Arrange
-            var persons = Utilities.GetFakePersonCollection();
-            var randomPerson = Utilities.GetRandomItem(persons);
+            var randomPerson = Utilities.GetRandomItem(_persons);
             var expression = ExpressionBuilder.CreateBinaryExpression<Person>(nameof(Person.FullName), randomPerson.FirstName, ExpressionOperator.Contains);
 
             // Act
-            var result = persons.Where(expression.Compile()).ToList();
+            var result = _persons.Where(expression.Compile()).ToList();
 
             // Assert
             Assert.NotEmpty(result);
@@ -130,12 +139,11 @@
         public void Assert_Binary_Expression_Of_Contains_On_Value_Comparison_Of_Array_Collection_Gives_Correct_Result()
         {
             // Arrange
-            var persons = Utilities.GetFakePersonCollection();
-            var randomFavColors = Utilities.GetRandomItems(persons.Select(t => t.FavoriteColors));
+            var randomFavColors = Utilities.GetRandomItems(_persons.Select(t => t.FavoriteColors));
             var expression = ExpressionBuilder.CreateBinaryExpression<Person>(nameof(Person.FavoriteColors), randomFavColors, ExpressionOperator.ContainsOnValue);
 
             // Act
-            var result = persons.Where(expression.Compile()).ToList();
+            var result = _persons.Where(expression.Compile()).ToList();
 
             // Assert
             Assert.NotEmpty(result);
@@ -151,12 +159,11 @@
         public void Assert_Binary_Expression_Of_Contains_On_Value_Comparison_Of_Generic_Collection_Gives_Correct_Result()
         {
             // Arrange
-            var persons = Utilities.GetFakePersonCollection();
-            var randomFavNumbers = Utilities.GetRandomItems(persons.Select(t => t.FavoriteNumbers));
+            var randomFavNumbers = Utilities.GetRandomItems(_persons.Select(t => t.FavoriteNumbers));
             var expression = ExpressionBuilder.CreateBinaryExpression<Person>(nameof(Person.FavoriteNumbers), randomFavNumbers, ExpressionOperator.ContainsOnValue);
 
             // Act
-            var result = persons.Where(expression.Compile()).ToList();
+            var result = _persons.Where(expression.Compile()).ToList();
 
             // Assert
             Assert.NotEmpty(result);
@@ -172,12 +179,11 @@
         public void Assert_Binary_Expression_Of_Contains_On_Value_Comparison_Of_Generic_String_Collection_Gives_Correct_Result()
         {
             // Arrange
-            var persons = Utilities.GetFakePersonCollection();
-            var randomNames = Utilities.GetRandomItems(persons.Select(t => t.FullName));
+            var randomNames = Utilities.GetRandomItems(_persons.Select(t => t.FullName));
             var expression = ExpressionBuilder.CreateBinaryExpression<Person>(nameof(Person.FullName), randomNames, ExpressionOperator.ContainsOnValue);
 
             // Act
-            var result = persons.Where(expression.Compile()).ToList();
+            var result = _persons.Where(expression.Compile()).ToList();
 
             // Assert
             Assert.NotEmpty(result);
@@ -193,12 +199,11 @@
         public void Assert_Binary_Expression_Of_Contains_On_Value_Comparison_Of_Non_Generic_Collection_Gives_Correct_Result()
         {
             // Arrange
-            var persons = Utilities.GetFakePersonCollection();
-            var randomFavFruits = Utilities.GetRandomItems(persons.Select(t => t.FavoriteFruits));
+            var randomFavFruits = Utilities.GetRandomItems(_persons.Select(t => t.FavoriteFruits));
             var expression = ExpressionBuilder.CreateBinaryExpression<Person>(nameof(Person.FavoriteFruits), randomFavFruits, ExpressionOperator.ContainsOnValue);
 
             // Act
-            var result = persons.Where(expression.Compile()).ToList();
+            var result = _persons.Where(expression.Compile()).ToList();
 
             // Assert
             Assert.NotEmpty(result);
@@ -214,12 +219,11 @@
         public void Assert_Binary_Expression_Of_Ends_With_Comparison_Of_String_Values_Gives_Correct_Result()
         {
             // Arrange
-            var persons = Utilities.GetFakePersonCollection();
-            var randomPerson = Utilities.GetRandomItem(persons);
+            var randomPerson = Utilities.GetRandomItem(_persons);
             var expression = ExpressionBuilder.CreateBinaryExpression<Person>(nameof(Person.FullName), randomPerson.LastName, ExpressionOperator.EndsWith);
 
             // Act
-            var result = persons.Where(expression.Compile()).ToList();
+            var result = _persons.Where(expression.Compile()).ToList();
 
             // Assert
             Assert.NotEmpty(result);
@@ -235,12 +239,11 @@
         public void Assert_Binary_Expression_Of_Equality_Comparison_Of_DateTime_Values_Gives_Correct_Result()
         {
             // Arrange
-            var persons = Utilities.GetFakePersonCollection();
-            var randomPerson = Utilities.GetRandomItem(persons);
+            var randomPerson = Utilities.GetRandomItem(_persons);
             var expression = ExpressionBuilder.CreateBinaryExpression<Person>(nameof(Person.DateOfBirth), randomPerson.DateOfBirth, ExpressionOperator.Equal);
 
             // Act
-            var result = persons.Where(expression.Compile()).ToList();
+            var result = _persons.Where(expression.Compile()).ToList();
 
             // Assert
             Assert.NotEmpty(result);
@@ -256,12 +259,11 @@
         public void Assert_Binary_Expression_Of_Equality_Comparison_Of_Numeric_Values_Gives_Correct_Result()
         {
             // Arrange
-            var persons = Utilities.GetFakePersonCollection();
-            var randomPerson = Utilities.GetRandomItem(persons);
+            var randomPerson = Utilities.GetRandomItem(_persons);
             var expression = ExpressionBuilder.CreateBinaryExpression<Person>(nameof(Person.Age), randomPerson.Age, ExpressionOperator.Equal);
 
             // Act
-            var result = persons.Where(expression.Compile()).ToList();
+            var result = _persons.Where(expression.Compile()).ToList();
 
             // Assert
             Assert.NotEmpty(result);
@@ -277,12 +279,11 @@
         public void Assert_Binary_Expression_Of_Equality_Comparison_Of_Object_Values_Gives_Correct_Result()
         {
             // Arrange
-            var persons = Utilities.GetFakePersonCollection();
-            var randomPerson = Utilities.GetRandomItem(persons);
+            var randomPerson = Utilities.GetRandomItem(_persons);
             var expression = ExpressionBuilder.CreateBinaryExpression<Person>(nameof(Person.BestFriend), randomPerson.BestFriend, ExpressionOperator.Equal);
 
             // Act
-            var result = persons.Where(expression.Compile()).ToList();
+            var result = _persons.Where(expression.Compile()).ToList();
 
             // Assert
             Assert.NotEmpty(result);
@@ -298,12 +299,11 @@
         public void Assert_Binary_Expression_Of_Equality_Comparison_Of_String_Values_Gives_Correct_Result()
         {
             // Arrange
-            var persons = Utilities.GetFakePersonCollection();
-            var randomPerson = Utilities.GetRandomItem(persons);
+            var randomPerson = Utilities.GetRandomItem(_persons);
             var expression = ExpressionBuilder.CreateBinaryExpression<Person>(nameof(Person.FirstName), randomPerson.FirstName, ExpressionOperator.Equal);
 
             // Act
-            var result = persons.Where(expression.Compile()).ToList();
+            var result = _persons.Where(expression.Compile()).ToList();
 
             // Assert
             Assert.NotEmpty(result);
@@ -319,12 +319,11 @@
         public void Assert_Binary_Expression_Of_Greater_Than_Comparison_Of_DateTime_Values_Gives_Correct_Result()
         {
             // Arrange
-            var persons = Utilities.GetFakePersonCollection();
-            var randomPerson = Utilities.GetRandomItem(persons);
+            var randomPerson = Utilities.GetRandomItem(_persons);
             var expression = ExpressionBuilder.CreateBinaryExpression<Person>(nameof(Person.DateOfBirth), randomPerson.DateOfBirth, ExpressionOperator.GreaterThan);
 
             // Act
-            var result = persons.Where(expression.Compile()).ToList();
+            var result = _persons.Where(expression.Compile()).ToList();
 
             // Assert
             Assert.NotEmpty(result);
@@ -340,12 +339,11 @@
         public void Assert_Binary_Expression_Of_Greater_Than_Comparison_Of_Numeric_Values_Gives_Correct_Result()
         {
             // Arrange
-            var persons = Utilities.GetFakePersonCollection();
-            var randomPerson = Utilities.GetRandomItem(persons);
+            var randomPerson = Utilities.GetRandomItem(_persons);
             var expression = ExpressionBuilder.CreateBinaryExpression<Person>(nameof(Person.Age), randomPerson.Age, ExpressionOperator.GreaterThan);
 
             // Act
-            var result = persons.Where(expression.Compile()).ToList();
+            var result = _persons.Where(expression.Compile()).ToList();
 
             // Assert
             Assert.NotEmpty(result);
@@ -361,12 +359,11 @@
         public void Assert_Binary_Expression_Of_Greater_Than_Or_Equal_Comparison_Of_DateTime_Values_Gives_Correct_Result()
         {
             // Arrange
-            var persons = Utilities.GetFakePersonCollection();
-            var randomPerson = Utilities.GetRandomItem(persons);
+            var randomPerson = Utilities.GetRandomItem(_persons);
             var expression = ExpressionBuilder.CreateBinaryExpression<Person>(nameof(Person.DateOfBirth), randomPerson.DateOfBirth, ExpressionOperator.GreaterThanOrEqual);
 
             // Act
-            var result = persons.Where(expression.Compile()).ToList();
+            var result = _persons.Where(expression.Compile()).ToList();
 
             // Assert
             Assert.NotEmpty(result);
@@ -382,12 +379,11 @@
         public void Assert_Binary_Expression_Of_Greater_Than_Or_Equal_Comparison_Of_Numeric_Values_Gives_Correct_Result()
         {
             // Arrange
-            var persons = Utilities.GetFakePersonCollection();
-            var randomPerson = Utilities.GetRandomItem(persons);
+            var randomPerson = Utilities.GetRandomItem(_persons);
             var expression = ExpressionBuilder.CreateBinaryExpression<Person>(nameof(Person.Age), randomPerson.Age, ExpressionOperator.GreaterThanOrEqual);
 
             // Act
-            var result = persons.Where(expression.Compile()).ToList();
+            var result = _persons.Where(expression.Compile()).ToList();
 
             // Assert
             Assert.NotEmpty(result);
@@ -403,12 +399,11 @@
         public void Assert_Binary_Expression_Of_Less_Than_Comparison_Of_DateTime_Values_Gives_Correct_Result()
         {
             // Arrange
-            var persons = Utilities.GetFakePersonCollection();
-            var randomPerson = Utilities.GetRandomItem(persons);
+            var randomPerson = Utilities.GetRandomItem(_persons);
             var expression = ExpressionBuilder.CreateBinaryExpression<Person>(nameof(Person.DateOfBirth), randomPerson.DateOfBirth, ExpressionOperator.LessThan);
 
             // Act
-            var result = persons.Where(expression.Compile()).ToList();
+            var result = _persons.Where(expression.Compile()).ToList();
 
             // Assert
             Assert.NotEmpty(result);
@@ -424,12 +419,11 @@
         public void Assert_Binary_Expression_Of_Less_Than_Comparison_Of_Numeric_Values_Gives_Correct_Result()
         {
             // Arrange
-            var persons = Utilities.GetFakePersonCollection();
-            var randomPerson = Utilities.GetRandomItem(persons);
+            var randomPerson = Utilities.GetRandomItem(_persons);
             var expression = ExpressionBuilder.CreateBinaryExpression<Person>(nameof(Person.Age), randomPerson.Age, ExpressionOperator.LessThan);
 
             // Act
-            var result = persons.Where(expression.Compile()).ToList();
+            var result = _persons.Where(expression.Compile()).ToList();
 
             // Assert
             Assert.NotEmpty(result);
@@ -445,12 +439,11 @@
         public void Assert_Binary_Expression_Of_Less_Than_Or_Equal_Comparison_Of_DateTime_Values_Gives_Correct_Result()
         {
             // Arrange
-            var persons = Utilities.GetFakePersonCollection();
-            var randomPerson = Utilities.GetRandomItem(persons);
+            var randomPerson = Utilities.GetRandomItem(_persons);
             var expression = ExpressionBuilder.CreateBinaryExpression<Person>(nameof(Person.DateOfBirth), randomPerson.DateOfBirth, ExpressionOperator.LessThanOrEqual);
 
             // Act
-            var result = persons.Where(expression.Compile()).ToList();
+            var result = _persons.Where(expression.Compile()).ToList();
 
             // Assert
             Assert.NotEmpty(result);
@@ -466,12 +459,11 @@
         public void Assert_Binary_Expression_Of_Less_Than_Or_Equal_Comparison_Of_Numeric_Values_Gives_Correct_Result()
         {
             // Arrange
-            var persons = Utilities.GetFakePersonCollection();
-            var randomPerson = Utilities.GetRandomItem(persons);
+            var randomPerson = Utilities.GetRandomItem(_persons);
             var expression = ExpressionBuilder.CreateBinaryExpression<Person>(nameof(Person.Age), randomPerson.Age, ExpressionOperator.LessThanOrEqual);
 
             // Act
-            var result = persons.Where(expression.Compile()).ToList();
+            var result = _persons.Where(expression.Compile()).ToList();
 
             // Assert
             Assert.NotEmpty(result);
@@ -487,12 +479,11 @@
         public void Assert_Binary_Expression_Of_Non_Equality_Comparison_Of_DateTime_Values_Gives_Correct_Result()
         {
             // Arrange
-            var persons = Utilities.GetFakePersonCollection();
-            var randomPerson = Utilities.GetRandomItem(persons);
+            var randomPerson = Utilities.GetRandomItem(_persons);
             var expression = ExpressionBuilder.CreateBinaryExpression<Person>(nameof(Person.DateOfBirth), randomPerson.DateOfBirth, ExpressionOperator.NotEqual);
 
             // Act
-            var result = persons.Where(expression.Compile()).ToList();
+            var result = _persons.Where(expression.Compile()).ToList();
 
             // Assert
             Assert.NotEmpty(result);
@@ -508,12 +499,11 @@
         public void Assert_Binary_Expression_Of_Non_Equality_Comparison_Of_Numeric_Values_Gives_Correct_Result()
         {
             // Arrange
-            var persons = Utilities.GetFakePersonCollection();
-            var randomPerson = Utilities.GetRandomItem(persons);
+            var randomPerson = Utilities.GetRandomItem(_persons);
             var expression = ExpressionBuilder.CreateBinaryExpression<Person>(nameof(Person.Age), randomPerson.Age, ExpressionOperator.NotEqual);
 
             // Act
-            var result = persons.Where(expression.Compile()).ToList();
+            var result = _persons.Where(expression.Compile()).ToList();
 
             // Assert
             Assert.NotEmpty(result);
@@ -529,12 +519,11 @@
         public void Assert_Binary_Expression_Of_Non_Equality_Comparison_Of_Object_Values_Gives_Correct_Result()
         {
             // Arrange
-            var persons = Utilities.GetFakePersonCollection();
-            var randomPerson = Utilities.GetRandomItem(persons);
+            var randomPerson = Utilities.GetRandomItem(_persons);
             var expression = ExpressionBuilder.CreateBinaryExpression<Person>(nameof(Person.BestFriend), randomPerson.BestFriend, ExpressionOperator.NotEqual);
 
             // Act
-            var result = persons.Where(expression.Compile()).ToList();
+            var result = _persons.Where(expression.Compile()).ToList();
 
             // Assert
             Assert.NotEmpty(result);
@@ -550,12 +539,11 @@
         public void Assert_Binary_Expression_Of_Non_Equality_Comparison_Of_String_Values_Gives_Correct_Result()
         {
             // Arrange
-            var persons = Utilities.GetFakePersonCollection();
-            var randomPerson = Utilities.GetRandomItem(persons);
+            var randomPerson = Utilities.GetRandomItem(_persons);
             var expression = ExpressionBuilder.CreateBinaryExpression<Person>(nameof(Person.FirstName), randomPerson.FirstName, ExpressionOperator.NotEqual);
 
             // Act
-            var result = persons.Where(expression.Compile()).ToList();
+            var result = _persons.Where(expression.Compile()).ToList();
 
             // Assert
             Assert.NotEmpty(result);
@@ -571,12 +559,11 @@
         public void Assert_Binary_Expression_Of_Starts_With_Comparison_Of_String_Values_Gives_Correct_Result()
         {
             // Arrange
-            var persons = Utilities.GetFakePersonCollection();
-            var randomPerson = Utilities.GetRandomItem(persons);
+            var randomPerson = Utilities.GetRandomItem(_persons);
             var expression = ExpressionBuilder.CreateBinaryExpression<Person>(nameof(Person.FullName), randomPerson.FirstName, ExpressionOperator.StartsWith);
 
             // Act
-            var result = persons.Where(expression.Compile()).ToList();
+            var result = _persons.Where(expression.Compile()).ToList();
 
             // Assert
             Assert.NotEmpty(result);
