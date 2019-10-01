@@ -1,6 +1,7 @@
 ﻿namespace KraftCore.Shared.Expressions
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
@@ -264,7 +265,12 @@
                     rightExpression = Expression.Constant(value);
                     break;
                 case ExpressionOperator.ContainsOnValue when isGenericCollection:
-                    leftExpression = Expression.Constant(value.ToList());
+                    value = value.ToList();
+
+                    if (property.Type.IsNumeric() && value.GetType().IsGenericCollection(typeof(string)))
+                        value = ParseStringCollectionToNumber(value, property);
+
+                    leftExpression = Expression.Constant(value);
                     rightExpression = property;
                     break;
                 case ExpressionOperator.ContainsOnValue:
@@ -400,7 +406,7 @@
                     throw new ArgumentOutOfRangeException(nameof(@operator), @operator, null);
             }
 
-            rightExpression = value.GetType().IsNumeric() ? Expression.Constant(value) : ParseStringToNumber(value, property);
+            rightExpression = value.GetType().IsNumeric() ? Expression.Constant(value) : Expression.Constant(ParseStringToNumber(value, property));
         }
 
         /// <summary>
@@ -532,7 +538,7 @@
         /// <exception cref="ArgumentException">
         ///     The exception thrown when the value cannot be converted.
         /// </exception>
-        private static ConstantExpression ParseStringToNumber(object value, Expression property)
+        private static object ParseStringToNumber(object value, Expression property)
         {
             var propertyType = property.Type;
 
@@ -549,9 +555,39 @@
             var parseSuccess = (bool?)propertyType.GetMethod(nameof(int.TryParse), argumentTypes)?.Invoke(property, parameters);
 
             if (parseSuccess.GetValueOrDefault())
-                return Expression.Constant(parameters[1], propertyType);
+                return parameters[1];
 
             throw new ArgumentException($"Value '{value}' of type '{value.GetType().Name}' isn't valid for comparing with values of type '{propertyType.Name}'.", nameof(value));
+        }
+
+        /// <summary>
+        ///     Converts an collection of strings representing a number to it's numeric equivalents.
+        /// </summary>
+        /// <param name="value">
+        ///     The collection to be converted.
+        /// </param>
+        /// <param name="property">
+        ///     The object on which to invoke the parse method.
+        /// </param>
+        /// <returns>
+        ///     The <see cref="ConstantExpression"/> representing the converted value.
+        /// </returns>
+        /// <exception cref="ArgumentException">
+        ///     The exception thrown when the value cannot be converted.
+        /// </exception>
+        private static object ParseStringCollectionToNumber(object value, Expression property)
+        {
+            if (!(value is List<string> collection))
+                return null;
+
+            var result = (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(property.Type));
+
+            foreach (var str in collection)
+            {
+                result.Add(ParseStringToNumber(str, property));
+            }
+
+            return result;
         }
 
         /// <summary>
