@@ -9,7 +9,7 @@
     using KraftCore.Shared.Extensions;
 
     /// <summary>
-    ///     Provides static methods for dynamically building <see cref="Expression{TDelegate}" /> objects for data querying.
+    ///     Provides static methods to dynamically build <see cref="Expression{TDelegate}" /> objects for data querying.
     /// </summary>
     public static class DynamicQueryBuilder
     {
@@ -62,7 +62,7 @@
         ///     The query.
         /// </param>
         /// <typeparam name="T">
-        ///     The string representing the query.
+        ///     The type being queried.
         /// </typeparam>
         /// <returns>
         ///     The <see cref="Expression{T}" /> object representing the query.
@@ -91,7 +91,7 @@
                 var aggregate = i > 0 ? GetExpressionAggregate(aggregates[i - 1]) : null;
 
                 var propertyName = QueryElementPropertyRegex.Match(operation).Value.Trim('\'');
-                var values = isArray ? QueryElementValueArrayRegex.Matches(operation).Cast<Match>().Select(t => t.Groups[1].Value.Trim('\'')) : (object)operationElements.Skip(1).FirstOrDefault();
+                var values = isArray ? operationElements.Skip(1).ToArray() : (object)operationElements.Skip(1).FirstOrDefault();
 
                 BuildExpression(propertyName, values, @operator.GetValueOrDefault(), aggregate.GetValueOrDefault());
             }

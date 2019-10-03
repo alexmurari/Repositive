@@ -74,13 +74,13 @@
     public enum ExpressionAggregate
     {
         /// <summary>
-        /// The "and" aggregate.
+        ///     The "and" aggregate.
         /// </summary>
         [Description("AND")]
         And,
 
         /// <summary>
-        /// The "OR" aggregate.
+        ///     The "or" aggregate.
         /// </summary>
         [Description("OR")]
         Or

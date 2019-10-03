@@ -7,7 +7,7 @@
     /// <summary>
     ///     Represents an person.
     /// </summary>
-    internal class Person
+    public class Person
     {
         /// <summary>
         ///     Gets or sets the first name.

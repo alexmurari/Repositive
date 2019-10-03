@@ -261,14 +261,27 @@
             switch (@operator)
             {
                 case ExpressionOperator.Contains:
+                    if (isGenericCollection && !propertyType.IsArray)
+                    {
+                        var genericType = propertyType.GetGenericArguments()[0];
+
+                        if (genericType.IsNumeric() && !value.GetType().IsNumeric())
+                            value = ParseStringToNumber(value, genericType);
+                        else if (genericType.IsDateTime() && !value.GetType().IsDateTime())
+                            value = ParseStringToDateTime(value);
+                    }
+
                     leftExpression = property;
                     rightExpression = Expression.Constant(value);
                     break;
                 case ExpressionOperator.ContainsOnValue when isGenericCollection:
+                    propertyType = property.Type;
                     value = value.ToList();
 
-                    if (property.Type.IsNumeric() && value.GetType().IsGenericCollection(typeof(string)))
-                        value = ParseStringCollectionToNumber(value, property);
+                    if (propertyType.IsNumeric() && value.GetType().IsGenericCollection(typeof(string)))
+                        value = ParseStringCollectionToNumber(value, propertyType);
+                    else if (propertyType.IsDateTime() && value.GetType().IsGenericCollection(typeof(string)))
+                        value = ParseStringCollectionToDateTime(value);
 
                     leftExpression = Expression.Constant(value);
                     rightExpression = property;
@@ -339,7 +352,6 @@
                 case ExpressionOperator.GreaterThan:
                 case ExpressionOperator.GreaterThanOrEqual:
                     leftExpression = property;
-                    rightExpression = Expression.Constant(value);
                     break;
                 case ExpressionOperator.Contains:
                 case ExpressionOperator.ContainsOnValue:
@@ -349,6 +361,8 @@
                 default:
                     throw new ArgumentOutOfRangeException(nameof(@operator), @operator, null);
             }
+
+            rightExpression = value.GetType().IsDateTime() ? Expression.Constant(value) : Expression.Constant(ParseStringToDateTime(value));
         }
 
         /// <summary>
@@ -406,7 +420,7 @@
                     throw new ArgumentOutOfRangeException(nameof(@operator), @operator, null);
             }
 
-            rightExpression = value.GetType().IsNumeric() ? Expression.Constant(value) : Expression.Constant(ParseStringToNumber(value, property));
+            rightExpression = value.GetType().IsNumeric() ? Expression.Constant(value) : Expression.Constant(ParseStringToNumber(value, property.Type));
         }
 
         /// <summary>
@@ -529,8 +543,8 @@
         /// <param name="value">
         ///     The value to be converted.
         /// </param>
-        /// <param name="property">
-        ///     The object on which to invoke the parse method.
+        /// <param name="propertyType">
+        ///     The numeric type that the value must be parsed to.
         /// </param>
         /// <returns>
         ///     The <see cref="ConstantExpression"/> representing the converted value.
@@ -538,10 +552,8 @@
         /// <exception cref="ArgumentException">
         ///     The exception thrown when the value cannot be converted.
         /// </exception>
-        private static object ParseStringToNumber(object value, Expression property)
+        private static object ParseStringToNumber(object value, Type propertyType)
         {
-            var propertyType = property.Type;
-
             var parameters = new[]
             {
                 value, null
@@ -552,7 +564,7 @@
                 value.GetType(), propertyType.MakeByRefType()
             };
 
-            var parseSuccess = (bool?)propertyType.GetMethod(nameof(int.TryParse), argumentTypes)?.Invoke(property, parameters);
+            var parseSuccess = (bool?)propertyType.GetMethod(nameof(int.TryParse), argumentTypes)?.Invoke(null, parameters);
 
             if (parseSuccess.GetValueOrDefault())
                 return parameters[1];
@@ -566,8 +578,8 @@
         /// <param name="value">
         ///     The collection to be converted.
         /// </param>
-        /// <param name="property">
-        ///     The object on which to invoke the parse method.
+        /// <param name="propertyType">
+        ///     The numeric type that the collection elements must be parsed to.
         /// </param>
         /// <returns>
         ///     The <see cref="ConstantExpression"/> representing the converted value.
@@ -575,16 +587,79 @@
         /// <exception cref="ArgumentException">
         ///     The exception thrown when the value cannot be converted.
         /// </exception>
-        private static object ParseStringCollectionToNumber(object value, Expression property)
+        private static object ParseStringCollectionToNumber(object value, Type propertyType)
         {
-            if (!(value is List<string> collection))
+            if (!(value is IEnumerable<string> collection))
                 return null;
 
-            var result = (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(property.Type));
+            var result = (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(propertyType));
 
             foreach (var str in collection)
             {
-                result.Add(ParseStringToNumber(str, property));
+                result.Add(ParseStringToNumber(str, propertyType));
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        ///     Converts the string representation of a date and time to it's <see cref="DateTime"/> equivalent.
+        /// </summary>
+        /// <param name="value">
+        ///     The value to be converted.
+        /// </param>
+        /// <returns>
+        ///     The <see cref="ConstantExpression"/> representing the converted value.
+        /// </returns>
+        /// <exception cref="ArgumentException">
+        ///     The exception thrown when the value cannot be converted.
+        /// </exception>
+        private static object ParseStringToDateTime(object value)
+        {
+            var propertyType = typeof(DateTime);
+
+            var parameters = new[]
+            {
+                value, null
+            };
+
+            var argumentTypes = new[]
+            {
+                value.GetType(), propertyType.MakeByRefType()
+            };
+
+            var parseSuccess = (bool?)propertyType.GetMethod(nameof(DateTime.TryParse), argumentTypes)?.Invoke(null, parameters);
+
+            if (parseSuccess.GetValueOrDefault())
+                return parameters[1];
+
+            throw new ArgumentException($"Value '{value}' of type '{value.GetType().Name}' isn't valid for comparing with values of type '{propertyType.Name}'.", nameof(value));
+        }
+
+        /// <summary>
+        ///     Converts an collection of strings representing a date and time to it's <see cref="DateTime"/> equivalents.
+        /// </summary>
+        /// <param name="value">
+        ///     The collection to be converted.
+        /// </param>
+        /// <returns>
+        ///     The object representing the converted collection.
+        /// </returns>
+        /// <exception cref="ArgumentException">
+        ///     The exception thrown when the value cannot be converted.
+        /// </exception>
+        private static object ParseStringCollectionToDateTime(object value)
+        {
+            var propertyType = typeof(DateTime);
+
+            if (!(value is IEnumerable<string> collection))
+                return null;
+
+            var result = (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(propertyType));
+
+            foreach (var str in collection)
+            {
+                result.Add(ParseStringToDateTime(str));
             }
 
             return result;

@@ -193,6 +193,46 @@
 
         /// <summary>
         ///     Asserts that an binary expression of <see cref="ExpressionOperator.ContainsOnValue" /> comparison gives the correct
+        ///     result when operating on generic string collections that represents <see cref="DateTime"/> objects.
+        /// </summary>
+        [Fact]
+        public void Assert_Binary_Expression_Of_Contains_On_Value_Comparison_Of_Generic_String_Collection_Of_Numeric_Values_Gives_Correct_Result()
+        {
+            // Arrange
+            var randomAges = Utilities.GetRandomItems(_persons.Select(t => t.Age));
+            var expression = ExpressionBuilder.CreateBinaryExpression<Person>(nameof(Person.Age), randomAges.Select(t => t.ToString()), ExpressionOperator.ContainsOnValue);
+
+            // Act
+            var result = _persons.Where(expression.Compile()).ToList();
+
+            // Assert
+            Assert.NotEmpty(result);
+            Assert.Contains(result, t => randomAges.Contains(t.Age));
+            Assert.DoesNotContain(result, t => randomAges.Contains(t.Age) == false);
+        }
+
+        /// <summary>
+        ///     Asserts that an binary expression of <see cref="ExpressionOperator.ContainsOnValue" /> comparison gives the correct
+        ///     result when operating on generic string collections that represents <see cref="DateTime"/> objects.
+        /// </summary>
+        [Fact]
+        public void Assert_Binary_Expression_Of_Contains_On_Value_Comparison_Of_Generic_String_Collection_Of_DateTime_Values_Gives_Correct_Result()
+        {
+            // Arrange
+            var randomDateOfBirths = Utilities.GetRandomItems(_persons.Select(t => t.DateOfBirth));
+            var expression = ExpressionBuilder.CreateBinaryExpression<Person>(nameof(Person.DateOfBirth), randomDateOfBirths.Select(t => t.ToString("O")), ExpressionOperator.ContainsOnValue);
+
+            // Act
+            var result = _persons.Where(expression.Compile()).ToList();
+
+            // Assert
+            Assert.NotEmpty(result);
+            Assert.Contains(result, t => randomDateOfBirths.Contains(t.DateOfBirth));
+            Assert.DoesNotContain(result, t => randomDateOfBirths.Contains(t.DateOfBirth) == false);
+        }
+
+        /// <summary>
+        ///     Asserts that an binary expression of <see cref="ExpressionOperator.ContainsOnValue" /> comparison gives the correct
         ///     result when operating on non-generic collections.
         /// </summary>
         [Fact]
