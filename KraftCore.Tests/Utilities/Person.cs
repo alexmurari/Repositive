@@ -73,5 +73,10 @@
         ///     Gets or sets the favorite numbers.
         /// </summary>
         public IEnumerable<int?> LeastFavoriteNumbers { get; set; }
+
+        /// <summary>
+        ///     Gets or sets a value indicating whether the person has a pet.
+        /// </summary>
+        public bool HasPet { get; set; }
     }
 }

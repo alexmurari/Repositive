@@ -452,6 +452,8 @@
                             value = ParseStringToNumber(value, genericType);
                         else if (genericType.IsDateTime() && !valueType.IsDateTime())
                             value = ParseStringToDateTime(value);
+                        else if (genericType.IsBoolean() && !valueType.IsBoolean())
+                            value = ParseStringToBoolean(value);
 
                         if (genericType.IsNullableType())
                         {
@@ -470,6 +472,8 @@
                             value = ParseStringToNumber(value, elementType);
                         else if (elementType.IsDateTime() && !valueType.IsDateTime())
                             value = ParseStringToDateTime(value);
+                        else if (elementType.IsBoolean() && !valueType.IsBoolean())
+                            value = ParseStringToBoolean(value);
 
                         if (elementType.IsNullableType())
                         {
@@ -527,7 +531,7 @@
         }
 
         /// <summary>
-        ///     Converts the string representation of a date and time to it's <see cref="bool"/> equivalent.
+        ///     Converts the string representation of a true or false value to it's <see cref="bool"/> equivalent.
         /// </summary>
         /// <param name="value">
         ///     The value to be converted.
@@ -541,6 +545,11 @@
         private static object ParseStringToBoolean(object value)
         {
             var invokeType = typeof(Convert);
+
+            if (int.TryParse(value as string, out var result))
+            {
+                value = result;
+            }
 
             var parameters = new[]
             {
@@ -556,13 +565,13 @@
         }
 
         /// <summary>
-        ///     Converts an collection of strings representing a date and time to it's <see cref="DateTime"/> equivalents.
+        ///     Converts an collection of strings representing a true or false value to it's <see cref="bool"/> equivalents.
         /// </summary>
         /// <param name="value">
         ///     The collection to be converted.
         /// </param>
         /// <param name="isNullable">
-        ///     Indicates whether the <see cref="DateTime"/> type can be null.
+        ///     Indicates whether the <see cref="bool"/> type can be null.
         /// </param>
         /// <returns>
         ///     The object representing the converted collection.
