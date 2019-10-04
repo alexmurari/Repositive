@@ -55,7 +55,10 @@
                 .RuleFor(t => t.FavoriteNumbers, f => f.Random.ListItems(Enumerable.Range(1, 5000).ToList(), 5))
                 .RuleFor(t => t.FavoriteWords, f => f.Random.WordsArray(10))
                 .RuleFor(t => t.FavoriteColors, f => f.Random.ArrayElements(Colors, 3))
-                .RuleFor(t => t.FavoriteFruits, f => new ArrayList(f.Random.ArrayElements(Fruits, 2)));
+                .RuleFor(t => t.FavoriteFruits, f => new ArrayList(f.Random.ArrayElements(Fruits, 2)))
+                .RuleFor(t => t.DateOfDriversLicense, f => f.Date.Past(100, DateTime.Now.AddYears(-25)))
+                .RuleFor(t => t.AccountBalance, f => f.Finance.Amount(0, 1000000, 3))
+                .RuleFor(t => t.LeastFavoriteNumbers, f => f.Random.ListItems(Enumerable.Range(5001, 10000).Select(t => (int?)t).ToList(), 5));
         }
 
         /// <summary>

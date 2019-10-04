@@ -200,44 +200,35 @@
         /// </returns>
         private static (Expression leftExpression, Expression rightExpression) BuildBinaryExpressionParameters(Expression property, object value, ExpressionOperator @operator)
         {
-            Expression leftExpression = null;
-            Expression rightExpression = null;
-
             var propertyType = @operator != ExpressionOperator.ContainsOnValue ? property.Type : value.GetType();
             var isCollection = propertyType.IsCollection();
 
-            if (isCollection)
-                BuildBinaryExpressionParametersForCollection(ref leftExpression, ref rightExpression, property, propertyType, value, @operator);
-            else if (propertyType.IsString())
-                BuildBinaryExpressionParametersForString(ref leftExpression, ref rightExpression, property, propertyType, value, @operator);
-            else if (propertyType.IsNumeric())
-                BuildBinaryExpressionParametersForNumeric(ref leftExpression, ref rightExpression, property, propertyType, value, @operator);
-            else if (propertyType.IsDateTime())
-                BuildBinaryExpressionParametersForDateTime(ref leftExpression, ref rightExpression, property, propertyType, value, @operator);
-            else
-                BuildBinaryExpressionParametersForObject(ref leftExpression, ref rightExpression, property, propertyType, value, @operator);
+            var (leftExpression, rightExpression) = BuildTypesForExpressionParameters(property, value, @operator);
 
-            return (leftExpression ?? property, rightExpression ?? Expression.Constant(value));
+            if (isCollection)
+                ValidateBinaryExpressionParametersForCollection(propertyType, @operator);
+            else if (propertyType.IsString())
+                ValidateBinaryExpressionParametersForString(propertyType, @operator);
+            else if (propertyType.IsNumeric())
+                ValidateBinaryExpressionParametersForNumeric(propertyType, @operator);
+            else if (propertyType.IsDateTime())
+                ValidateBinaryExpressionParametersForDateTime(propertyType, @operator);
+            else
+                ValidateBinaryExpressionParametersForObject(propertyType, @operator);
+
+            if (@operator == ExpressionOperator.ContainsOnValue)
+            {
+                return (rightExpression, leftExpression);
+            }
+
+            return (leftExpression, rightExpression);
         }
 
         /// <summary>
-        ///     Creates the <see cref="Expression" /> parameters that can be used to build
-        ///     <see cref="BinaryExpression" /> objects when the property to be compared is a collection type.
+        ///     Validates the provided parameters for building binary expressions for collection type comparisons.
         /// </summary>
-        /// <param name="leftExpression">
-        ///     The left expression reference.
-        /// </param>
-        /// <param name="rightExpression">
-        ///     The right expression reference.
-        /// </param>
-        /// <param name="property">
-        ///     The expression representing the property accessor.
-        /// </param>
         /// <param name="propertyType">
         ///     The property type.
-        /// </param>
-        /// <param name="value">
-        ///     The value to be compared.
         /// </param>
         /// <param name="operator">
         ///     The comparison operator.
@@ -248,293 +239,352 @@
         /// <exception cref="ArgumentOutOfRangeException">
         ///     Exception thrown when the comparison operator value is out of range.
         /// </exception>
-        private static void BuildBinaryExpressionParametersForCollection(
-            ref Expression leftExpression,
-            ref Expression rightExpression,
-            Expression property,
-            Type propertyType,
-            object value,
-            ExpressionOperator @operator)
+        private static void ValidateBinaryExpressionParametersForCollection(MemberInfo propertyType, ExpressionOperator @operator)
         {
-            var isGenericCollection = propertyType.IsGenericCollection();
-
             switch (@operator)
             {
                 case ExpressionOperator.Contains:
-                    if (isGenericCollection && !propertyType.IsArray)
+                case ExpressionOperator.ContainsOnValue:
+                case ExpressionOperator.Equal:
+                case ExpressionOperator.NotEqual:
+                    break;
+                case ExpressionOperator.LessThan:
+                case ExpressionOperator.LessThanOrEqual:
+                case ExpressionOperator.GreaterThan:
+                case ExpressionOperator.GreaterThanOrEqual:
+                case ExpressionOperator.StartsWith:
+                case ExpressionOperator.EndsWith:
+                    throw new ArgumentException($"Operator {@operator} isn't valid for the type {propertyType.Name}.", nameof(@operator));
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(@operator), @operator, null);
+            }
+        }
+
+        /// <summary>
+        ///     Validates the provided parameters for building binary expressions for <see cref="DateTime"/> type comparisons.
+        /// </summary>
+        /// <param name="propertyType">
+        ///     The property type.
+        /// </param>
+        /// <param name="operator">
+        ///     The comparison operator.
+        /// </param>
+        /// <exception cref="ArgumentException">
+        ///     Exception thrown when the comparison operator value is not supported.
+        /// </exception>
+        /// <exception cref="ArgumentOutOfRangeException">
+        ///     Exception thrown when the comparison operator value is out of range.
+        /// </exception>
+        private static void ValidateBinaryExpressionParametersForDateTime(MemberInfo propertyType, ExpressionOperator @operator)
+        {
+            switch (@operator)
+            {
+                case ExpressionOperator.Equal:
+                case ExpressionOperator.NotEqual:
+                case ExpressionOperator.LessThan:
+                case ExpressionOperator.LessThanOrEqual:
+                case ExpressionOperator.GreaterThan:
+                case ExpressionOperator.GreaterThanOrEqual:
+                    break;
+                case ExpressionOperator.Contains:
+                case ExpressionOperator.ContainsOnValue:
+                case ExpressionOperator.StartsWith:
+                case ExpressionOperator.EndsWith:
+                    throw new ArgumentException($"Operator {@operator} isn't valid for the type {propertyType.Name}.", nameof(@operator));
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(@operator), @operator, null);
+            }
+        }
+
+        /// <summary>
+        ///     Validates the provided parameters for building binary expressions for numeric type comparisons.
+        /// </summary>
+        /// <param name="propertyType">
+        ///     The property type.
+        /// </param>
+        /// <param name="operator">
+        ///     The comparison operator.
+        /// </param>
+        /// <exception cref="ArgumentException">
+        ///     Exception thrown when the comparison operator value is not supported.
+        /// </exception>
+        /// <exception cref="ArgumentOutOfRangeException">
+        ///     Exception thrown when the comparison operator value is out of range.
+        /// </exception>
+        private static void ValidateBinaryExpressionParametersForNumeric(MemberInfo propertyType, ExpressionOperator @operator)
+        {
+            switch (@operator)
+            {
+                case ExpressionOperator.Equal:
+                case ExpressionOperator.NotEqual:
+                case ExpressionOperator.LessThan:
+                case ExpressionOperator.LessThanOrEqual:
+                case ExpressionOperator.GreaterThan:
+                case ExpressionOperator.GreaterThanOrEqual:
+                    break;
+                case ExpressionOperator.Contains:
+                case ExpressionOperator.ContainsOnValue:
+                case ExpressionOperator.StartsWith:
+                case ExpressionOperator.EndsWith:
+                    throw new ArgumentException($"Operator {@operator} isn't valid for the type {propertyType.Name}.", nameof(@operator));
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(@operator), @operator, null);
+            }
+        }
+
+        /// <summary>
+        ///     Validates the provided parameters for building binary expressions for <see cref="object"/> type comparisons.
+        /// </summary>
+        /// <param name="propertyType">
+        ///     The property type.
+        /// </param>
+        /// <param name="operator">
+        ///     The comparison operator.
+        /// </param>
+        /// <exception cref="ArgumentException">
+        ///     Exception thrown when the comparison operator value is not supported.
+        /// </exception>
+        /// <exception cref="ArgumentOutOfRangeException">
+        ///     Exception thrown when the comparison operator value is out of range.
+        /// </exception>
+        private static void ValidateBinaryExpressionParametersForObject(MemberInfo propertyType, ExpressionOperator @operator)
+        {
+            switch (@operator)
+            {
+                case ExpressionOperator.Equal:
+                case ExpressionOperator.NotEqual:
+                    break;
+                case ExpressionOperator.LessThan:
+                case ExpressionOperator.LessThanOrEqual:
+                case ExpressionOperator.GreaterThan:
+                case ExpressionOperator.GreaterThanOrEqual:
+                case ExpressionOperator.Contains:
+                case ExpressionOperator.ContainsOnValue:
+                case ExpressionOperator.StartsWith:
+                case ExpressionOperator.EndsWith:
+                    throw new ArgumentException($"Operator {@operator} isn't valid for the type {propertyType.Name}.", nameof(@operator));
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(@operator), @operator, null);
+            }
+        }
+
+        /// <summary>
+        ///     Validates the provided parameters for building binary expressions for <see cref="string"/> type comparisons.
+        /// </summary>
+        /// <param name="propertyType">
+        ///     The property type.
+        /// </param>
+        /// <param name="operator">
+        ///     The comparison operator.
+        /// </param>
+        /// <exception cref="ArgumentException">
+        ///     Exception thrown when the comparison operator value is not supported.
+        /// </exception>
+        /// <exception cref="ArgumentOutOfRangeException">
+        ///     Exception thrown when the comparison operator value is out of range.
+        /// </exception>
+        private static void ValidateBinaryExpressionParametersForString(MemberInfo propertyType, ExpressionOperator @operator)
+        {
+            switch (@operator)
+            {
+                case ExpressionOperator.Equal:
+                case ExpressionOperator.NotEqual:
+                case ExpressionOperator.Contains:
+                case ExpressionOperator.StartsWith:
+                case ExpressionOperator.EndsWith:
+                    break;
+                case ExpressionOperator.LessThan:
+                case ExpressionOperator.LessThanOrEqual:
+                case ExpressionOperator.GreaterThan:
+                case ExpressionOperator.GreaterThanOrEqual:
+                case ExpressionOperator.ContainsOnValue:
+                    throw new ArgumentException($"Operator {@operator} isn't valid for the type {propertyType.Name}.", nameof(@operator));
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(@operator), @operator, null);
+            }
+        }
+
+        /// <summary>
+        ///     Builds the types for the expression parameters according to the specified property, value to compare and expression operator.
+        /// </summary>
+        /// <param name="property">
+        ///     The expression representing the property accessor.
+        /// </param>
+        /// <param name="value">
+        ///     The value to be compared.
+        /// </param>
+        /// <param name="operator">
+        ///     The comparison operator.
+        /// </param>
+        /// <returns>
+        ///     The property and value parameters with the appropriate types.
+        /// </returns>
+        private static (Expression property, Expression value) BuildTypesForExpressionParameters(Expression property, object value, ExpressionOperator @operator)
+        {
+            var resultProperty = property;
+            Expression resultValue;
+
+            var propertyType = property.Type;
+            var valueType = value.GetType();
+
+            if (@operator == ExpressionOperator.ContainsOnValue)
+            {
+                value = value.ToList();
+
+                if (propertyType.IsNumeric() && valueType.IsGenericCollection(typeof(string)))
+                    value = ParseStringCollectionToNumber(value, propertyType);
+                else if (propertyType.IsDateTime() && valueType.IsGenericCollection(typeof(string)))
+                    value = ParseStringCollectionToDateTime(value, propertyType.IsNullableType());
+                else if (propertyType.IsBoolean() && valueType.IsGenericCollection(typeof(string)))
+                    value = ParseStringCollectionToBoolean(value, propertyType.IsNullableType());
+
+                resultValue = Expression.Constant(value);
+            }
+            else
+            {
+                if (propertyType.IsCollection() && !propertyType.IsArray)
+                {
+                    if (propertyType.IsGenericCollection())
                     {
                         var genericType = propertyType.GetGenericArguments()[0];
 
-                        if (genericType.IsNumeric() && !value.GetType().IsNumeric())
+                        if (genericType.IsNumeric() && !valueType.IsNumeric())
                             value = ParseStringToNumber(value, genericType);
-                        else if (genericType.IsDateTime() && !value.GetType().IsDateTime())
+                        else if (genericType.IsDateTime() && !valueType.IsDateTime())
                             value = ParseStringToDateTime(value);
+
+                        if (genericType.IsNullableType())
+                        {
+                            resultValue = Expression.Convert(Expression.Constant(value), genericType);
+                        }
+                        else
+                        {
+                            resultValue = Expression.Constant(value);
+                        }
                     }
+                    else if (propertyType.IsArray)
+                    {
+                        var elementType = propertyType.GetElementType();
 
-                    leftExpression = property;
-                    rightExpression = Expression.Constant(value);
-                    break;
-                case ExpressionOperator.ContainsOnValue when isGenericCollection:
-                    propertyType = property.Type;
-                    value = value.ToList();
+                        if (elementType.IsNumeric() && !valueType.IsNumeric())
+                            value = ParseStringToNumber(value, elementType);
+                        else if (elementType.IsDateTime() && !valueType.IsDateTime())
+                            value = ParseStringToDateTime(value);
 
-                    if (propertyType.IsNumeric() && value.GetType().IsGenericCollection(typeof(string)))
-                        value = ParseStringCollectionToNumber(value, propertyType);
-                    else if (propertyType.IsDateTime() && value.GetType().IsGenericCollection(typeof(string)))
-                        value = ParseStringCollectionToDateTime(value);
+                        if (elementType.IsNullableType())
+                        {
+                            resultValue = Expression.Convert(Expression.Constant(value), elementType ?? throw new InvalidOperationException());
+                        }
+                        else
+                        {
+                            resultValue = Expression.Constant(value);
+                        }
+                    }
+                    else
+                    {
+                        resultValue = Expression.Constant(value);
+                    }
+                }
+                else if (propertyType.IsString())
+                {
+                    resultProperty = Expression.Call(property, typeof(string).GetMethod(nameof(string.ToLower), Type.EmptyTypes) ?? throw new InvalidOperationException());
+                    resultValue = Expression.Constant(value.ToString().ToLower());
+                }
+                else if (propertyType.IsNumeric())
+                {
+                    resultValue = valueType.IsNumeric() ? Expression.Constant(value) : Expression.Constant(ParseStringToNumber(value, propertyType));
 
-                    leftExpression = Expression.Constant(value);
-                    rightExpression = property;
-                    break;
-                case ExpressionOperator.ContainsOnValue:
-                    leftExpression = Expression.Constant(value);
-                    rightExpression = property;
-                    break;
-                case ExpressionOperator.Equal:
-                case ExpressionOperator.NotEqual:
-                    leftExpression = property;
-                    rightExpression = Expression.Constant(value);
-                    break;
-                case ExpressionOperator.LessThan:
-                case ExpressionOperator.LessThanOrEqual:
-                case ExpressionOperator.GreaterThan:
-                case ExpressionOperator.GreaterThanOrEqual:
-                case ExpressionOperator.StartsWith:
-                case ExpressionOperator.EndsWith:
-                    throw new ArgumentException($"Operator {@operator} isn't valid for the type {propertyType.Name}.", nameof(@operator));
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(@operator), @operator, null);
+                    if (propertyType.IsNullableType())
+                    {
+                        resultValue = Expression.Convert(resultValue, propertyType);
+                    }
+                }
+                else if (propertyType.IsBoolean())
+                {
+                    resultValue = valueType.IsBoolean() ? Expression.Constant(value) : Expression.Constant(ParseStringToBoolean(value));
+
+                    if (propertyType.IsNullableType())
+                    {
+                        resultValue = Expression.Convert(resultValue, propertyType);
+                    }
+                }
+                else if (propertyType.IsDateTime())
+                {
+                    resultValue = valueType.IsDateTime() ? Expression.Constant(value) : Expression.Constant(ParseStringToDateTime(value));
+
+                    if (propertyType.IsNullableType())
+                    {
+                        resultValue = Expression.Convert(resultValue, propertyType);
+                    }
+                }
+                else
+                {
+                    resultValue = Expression.Constant(value);
+                }
             }
+
+            return (resultProperty, resultValue);
         }
 
         /// <summary>
-        ///     Creates the <see cref="Expression" /> parameters that can be used to build
-        ///     <see cref="BinaryExpression" /> objects when the property to be compared is a <see cref="DateTime" /> type.
+        ///     Converts the string representation of a date and time to it's <see cref="bool"/> equivalent.
         /// </summary>
-        /// <param name="leftExpression">
-        ///     The left expression reference.
-        /// </param>
-        /// <param name="rightExpression">
-        ///     The right expression reference.
-        /// </param>
-        /// <param name="property">
-        ///     The expression representing the property accessor.
-        /// </param>
-        /// <param name="propertyType">
-        ///     The property type.
-        /// </param>
         /// <param name="value">
-        ///     The value to be compared.
+        ///     The value to be converted.
         /// </param>
-        /// <param name="operator">
-        ///     The comparison operator.
-        /// </param>
+        /// <returns>
+        ///     The <see cref="ConstantExpression"/> representing the converted value.
+        /// </returns>
         /// <exception cref="ArgumentException">
-        ///     Exception thrown when the comparison operator value is not supported.
+        ///     The exception thrown when the value cannot be converted.
         /// </exception>
-        /// <exception cref="ArgumentOutOfRangeException">
-        ///     Exception thrown when the comparison operator value is out of range.
-        /// </exception>
-        private static void BuildBinaryExpressionParametersForDateTime(
-            ref Expression leftExpression,
-            ref Expression rightExpression,
-            Expression property,
-            MemberInfo propertyType,
-            object value,
-            ExpressionOperator @operator)
+        private static object ParseStringToBoolean(object value)
         {
-            switch (@operator)
-            {
-                case ExpressionOperator.Equal:
-                case ExpressionOperator.NotEqual:
-                case ExpressionOperator.LessThan:
-                case ExpressionOperator.LessThanOrEqual:
-                case ExpressionOperator.GreaterThan:
-                case ExpressionOperator.GreaterThanOrEqual:
-                    leftExpression = property;
-                    break;
-                case ExpressionOperator.Contains:
-                case ExpressionOperator.ContainsOnValue:
-                case ExpressionOperator.StartsWith:
-                case ExpressionOperator.EndsWith:
-                    throw new ArgumentException($"Operator {@operator} isn't valid for the type {propertyType.Name}.", nameof(@operator));
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(@operator), @operator, null);
-            }
+            var invokeType = typeof(Convert);
 
-            rightExpression = value.GetType().IsDateTime() ? Expression.Constant(value) : Expression.Constant(ParseStringToDateTime(value));
+            var parameters = new[]
+            {
+                value
+            };
+
+            var argumentTypes = new[]
+            {
+                value.GetType()
+            };
+
+            return invokeType.GetMethod(nameof(Convert.ToBoolean), argumentTypes)?.Invoke(null, parameters);
         }
 
         /// <summary>
-        ///     Creates the <see cref="Expression" /> parameters that can be used to build
-        ///     <see cref="BinaryExpression" /> objects when the property to be compared is a numeric type.
+        ///     Converts an collection of strings representing a date and time to it's <see cref="DateTime"/> equivalents.
         /// </summary>
-        /// <param name="leftExpression">
-        ///     The left expression reference.
-        /// </param>
-        /// <param name="rightExpression">
-        ///     The right expression reference.
-        /// </param>
-        /// <param name="property">
-        ///     The expression representing the property accessor.
-        /// </param>
-        /// <param name="propertyType">
-        ///     The property type.
-        /// </param>
         /// <param name="value">
-        ///     The value to be compared.
+        ///     The collection to be converted.
         /// </param>
-        /// <param name="operator">
-        ///     The comparison operator.
+        /// <param name="isNullable">
+        ///     Indicates whether the <see cref="DateTime"/> type can be null.
         /// </param>
+        /// <returns>
+        ///     The object representing the converted collection.
+        /// </returns>
         /// <exception cref="ArgumentException">
-        ///     Exception thrown when the comparison operator value is not supported.
+        ///     The exception thrown when the value cannot be converted.
         /// </exception>
-        /// <exception cref="ArgumentOutOfRangeException">
-        ///     Exception thrown when the comparison operator value is out of range.
-        /// </exception>
-        private static void BuildBinaryExpressionParametersForNumeric(
-            ref Expression leftExpression,
-            ref Expression rightExpression,
-            Expression property,
-            MemberInfo propertyType,
-            object value,
-            ExpressionOperator @operator)
+        private static object ParseStringCollectionToBoolean(object value, bool isNullable = false)
         {
-            switch (@operator)
+            var propertyType = isNullable ? typeof(bool?) : typeof(bool);
+
+            if (!(value is IEnumerable<string> collection))
+                return null;
+
+            var result = (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(propertyType));
+
+            foreach (var str in collection)
             {
-                case ExpressionOperator.Equal:
-                case ExpressionOperator.NotEqual:
-                case ExpressionOperator.LessThan:
-                case ExpressionOperator.LessThanOrEqual:
-                case ExpressionOperator.GreaterThan:
-                case ExpressionOperator.GreaterThanOrEqual:
-                    leftExpression = property;
-                    break;
-                case ExpressionOperator.Contains:
-                case ExpressionOperator.ContainsOnValue:
-                case ExpressionOperator.StartsWith:
-                case ExpressionOperator.EndsWith:
-                    throw new ArgumentException($"Operator {@operator} isn't valid for the type {propertyType.Name}.", nameof(@operator));
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(@operator), @operator, null);
+                result.Add(ParseStringToBoolean(str));
             }
 
-            rightExpression = value.GetType().IsNumeric() ? Expression.Constant(value) : Expression.Constant(ParseStringToNumber(value, property.Type));
-        }
-
-        /// <summary>
-        ///     Creates the <see cref="Expression" /> parameters that can be used to build <see cref="BinaryExpression" />
-        ///     objects when the property to be compared is a non-specific/complex <see cref="object" /> type.
-        /// </summary>
-        /// <param name="leftExpression">
-        ///     The left expression reference.
-        /// </param>
-        /// <param name="rightExpression">
-        ///     The right expression reference.
-        /// </param>
-        /// <param name="property">
-        ///     The expression representing the property accessor.
-        /// </param>
-        /// <param name="propertyType">
-        ///     The property type.
-        /// </param>
-        /// <param name="value">
-        ///     The value to be compared.
-        /// </param>
-        /// <param name="operator">
-        ///     The comparison operator.
-        /// </param>
-        /// <exception cref="ArgumentException">
-        ///     Exception thrown when the comparison operator value is not supported.
-        /// </exception>
-        /// <exception cref="ArgumentOutOfRangeException">
-        ///     Exception thrown when the comparison operator value is out of range.
-        /// </exception>
-        private static void BuildBinaryExpressionParametersForObject(
-            ref Expression leftExpression,
-            ref Expression rightExpression,
-            Expression property,
-            MemberInfo propertyType,
-            object value,
-            ExpressionOperator @operator)
-        {
-            switch (@operator)
-            {
-                case ExpressionOperator.Equal:
-                case ExpressionOperator.NotEqual:
-                    leftExpression = property;
-                    rightExpression = Expression.Constant(value);
-                    break;
-                case ExpressionOperator.LessThan:
-                case ExpressionOperator.LessThanOrEqual:
-                case ExpressionOperator.GreaterThan:
-                case ExpressionOperator.GreaterThanOrEqual:
-                case ExpressionOperator.Contains:
-                case ExpressionOperator.ContainsOnValue:
-                case ExpressionOperator.StartsWith:
-                case ExpressionOperator.EndsWith:
-                    throw new ArgumentException($"Operator {@operator} isn't valid for the type {propertyType.Name}.", nameof(@operator));
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(@operator), @operator, null);
-            }
-        }
-
-        /// <summary>
-        ///     Creates the <see cref="Expression" /> parameters that can be used to build <see cref="BinaryExpression" />
-        ///     objects when the property to be compared is a <see cref="string" /> type.
-        /// </summary>
-        /// <param name="leftExpression">
-        ///     The left expression reference.
-        /// </param>
-        /// <param name="rightExpression">
-        ///     The right expression reference.
-        /// </param>
-        /// <param name="property">
-        ///     The expression representing the property accessor.
-        /// </param>
-        /// <param name="propertyType">
-        ///     The property type.
-        /// </param>
-        /// <param name="value">
-        ///     The value to be compared.
-        /// </param>
-        /// <param name="operator">
-        ///     The comparison operator.
-        /// </param>
-        /// <exception cref="ArgumentException">
-        ///     Exception thrown when the comparison operator value is not supported.
-        /// </exception>
-        /// <exception cref="ArgumentOutOfRangeException">
-        ///     Exception thrown when the comparison operator value is out of range.
-        /// </exception>
-        private static void BuildBinaryExpressionParametersForString(
-            ref Expression leftExpression,
-            ref Expression rightExpression,
-            Expression property,
-            MemberInfo propertyType,
-            object value,
-            ExpressionOperator @operator)
-        {
-            switch (@operator)
-            {
-                case ExpressionOperator.Equal:
-                case ExpressionOperator.NotEqual:
-                case ExpressionOperator.Contains:
-                case ExpressionOperator.StartsWith:
-                case ExpressionOperator.EndsWith:
-                    leftExpression = Expression.Call(property, typeof(string).GetMethod(nameof(string.ToLower), Type.EmptyTypes) ?? throw new InvalidOperationException());
-                    rightExpression = Expression.Constant(value?.ToString().ToLower());
-                    break;
-                case ExpressionOperator.LessThan:
-                case ExpressionOperator.LessThanOrEqual:
-                case ExpressionOperator.GreaterThan:
-                case ExpressionOperator.GreaterThanOrEqual:
-                case ExpressionOperator.ContainsOnValue:
-                    throw new ArgumentException($"Operator {@operator} isn't valid for the type {propertyType.Name}.", nameof(@operator));
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(@operator), @operator, null);
-            }
+            return result;
         }
 
         /// <summary>
@@ -554,6 +604,8 @@
         /// </exception>
         private static object ParseStringToNumber(object value, Type propertyType)
         {
+            propertyType = propertyType.IsNullableType() ? Nullable.GetUnderlyingType(propertyType) : propertyType;
+
             var parameters = new[]
             {
                 value, null
@@ -561,15 +613,15 @@
 
             var argumentTypes = new[]
             {
-                value.GetType(), propertyType.MakeByRefType()
+                value.GetType(), propertyType?.MakeByRefType()
             };
 
-            var parseSuccess = (bool?)propertyType.GetMethod(nameof(int.TryParse), argumentTypes)?.Invoke(null, parameters);
+            var parseSuccess = (bool?)propertyType?.GetMethod(nameof(int.TryParse), argumentTypes)?.Invoke(null, parameters);
 
             if (parseSuccess.GetValueOrDefault())
                 return parameters[1];
 
-            throw new ArgumentException($"Value '{value}' of type '{value.GetType().Name}' isn't valid for comparing with values of type '{propertyType.Name}'.", nameof(value));
+            throw new ArgumentException($"Value '{value}' of type '{value.GetType().Name}' isn't valid for comparing with values of type '{propertyType?.Name}'.", nameof(value));
         }
 
         /// <summary>
@@ -642,15 +694,18 @@
         /// <param name="value">
         ///     The collection to be converted.
         /// </param>
+        /// <param name="isNullable">
+        ///     Indicates whether the <see cref="DateTime"/> type can be null.
+        /// </param>
         /// <returns>
         ///     The object representing the converted collection.
         /// </returns>
         /// <exception cref="ArgumentException">
         ///     The exception thrown when the value cannot be converted.
         /// </exception>
-        private static object ParseStringCollectionToDateTime(object value)
+        private static object ParseStringCollectionToDateTime(object value, bool isNullable = false)
         {
-            var propertyType = typeof(DateTime);
+            var propertyType = isNullable ? typeof(DateTime?) : typeof(DateTime);
 
             if (!(value is IEnumerable<string> collection))
                 return null;

@@ -39,6 +39,9 @@
         /// </returns>
         public static bool IsDateTime(this Type type)
         {
+            if (type.IsNullableType())
+                type = Nullable.GetUnderlyingType(type);
+
             return type == typeof(DateTime);
         }
 
@@ -115,8 +118,11 @@
         /// </returns>
         public static bool IsNumeric(this Type type)
         {
+            if (type.IsNullableType())
+                type = Nullable.GetUnderlyingType(type);
+
             return type == typeof(byte) || type == typeof(sbyte) || type == typeof(ushort) || type == typeof(uint) || type == typeof(ulong) ||
-                type == typeof(short) || type == typeof(int) || type == typeof(long) || type == typeof(float) || type == typeof(double) || type == typeof(decimal);
+            type == typeof(short) || type == typeof(int) || type == typeof(long) || type == typeof(float) || type == typeof(double) || type == typeof(decimal);
         }
 
         /// <summary>
@@ -131,6 +137,37 @@
         public static bool IsString(this Type type)
         {
             return type == typeof(string);
+        }
+
+        /// <summary>
+        ///     Returns a value indicating whether the provided type is a <see cref="bool" /> type.
+        /// </summary>
+        /// <param name="type">
+        ///     The type to be checked.
+        /// </param>
+        /// <returns>
+        ///     True if the type is a <see cref="bool" /> type; otherwise, false.
+        /// </returns>
+        public static bool IsBoolean(this Type type)
+        {
+            if (type.IsNullableType())
+                type = Nullable.GetUnderlyingType(type);
+
+            return type == typeof(bool);
+        }
+
+        /// <summary>
+        ///     Returns a value indicating whether the provided type is a <see cref="Nullable{T}" /> type.
+        /// </summary>
+        /// <param name="type">
+        ///     The type to be checked.
+        /// </param>
+        /// <returns>
+        ///     True if the type is a <see cref="Nullable{T}" /> type; otherwise, false.
+        /// </returns>
+        public static bool IsNullableType(this Type type)
+        {
+            return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>);
         }
     }
 }

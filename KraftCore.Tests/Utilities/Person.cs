@@ -58,5 +58,20 @@
         ///     Gets or sets the favorite words.
         /// </summary>
         public ICollection<string> FavoriteWords { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the driver's license date.
+        /// </summary>
+        public DateTime? DateOfDriversLicense { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the account balance.
+        /// </summary>
+        public decimal? AccountBalance { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the favorite numbers.
+        /// </summary>
+        public IEnumerable<int?> LeastFavoriteNumbers { get; set; }
     }
 }
