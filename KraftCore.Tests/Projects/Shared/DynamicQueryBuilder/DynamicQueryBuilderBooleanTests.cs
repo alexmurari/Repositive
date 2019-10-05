@@ -10,12 +10,12 @@
     // ReSharper disable InconsistentNaming
 
     /// <summary>
-    ///      Tests for the dynamic query builder.
+    ///     Tests for the dynamic query builder.
     /// </summary>
     public class DynamicQueryBuilderBooleanTests : DynamicQueryBuilderTestsBase
     {
         /// <summary>
-        /// Asserts that an equality query with single element of boolean type gives correct result when executed.
+        ///     Asserts that an equality query with single element of boolean type gives correct result when executed.
         /// </summary>
         [Fact]
         public void Assert_Equality_Query_With_Single_Element_Of_Boolean_Type_Gives_Correct_Result()
@@ -34,7 +34,7 @@
         }
 
         /// <summary>
-        /// Asserts that an non-equality query with single element of boolean type gives correct result when executed.
+        ///     Asserts that an non-equality query with single element of boolean type gives correct result when executed.
         /// </summary>
         [Fact]
         public void Assert_Non_Equality_Query_With_Single_Element_Of_Boolean_Type_Gives_Correct_Result()
@@ -53,7 +53,7 @@
         }
 
         /// <summary>
-        /// Asserts that an contains on value query with single element of boolean type gives correct result when executed.
+        ///     Asserts that an contains on value query with single element of boolean type gives correct result when executed.
         /// </summary>
         [Fact]
         public void Assert_Contains_On_Value_Query_With_Single_Element_Of_Boolean_Type_Gives_Correct_Result()

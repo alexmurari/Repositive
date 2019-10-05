@@ -15,12 +15,12 @@
     public class ExpressionTests
     {
         /// <summary>
-        /// The collection of fake persons to be used by the tests.
+        ///     The collection of fake persons to be used by the tests.
         /// </summary>
         private readonly List<Person> _persons;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ExpressionTests"/> class.
+        ///     Initializes a new instance of the <see cref="ExpressionTests" /> class.
         /// </summary>
         public ExpressionTests()
         {
@@ -193,7 +193,7 @@
 
         /// <summary>
         ///     Asserts that an binary expression of <see cref="ExpressionOperator.ContainsOnValue" /> comparison gives the correct
-        ///     result when operating on generic string collections that represents <see cref="DateTime"/> objects.
+        ///     result when operating on generic string collections that represents <see cref="DateTime" /> objects.
         /// </summary>
         [Fact]
         public void Assert_Binary_Expression_Of_Contains_On_Value_Comparison_Of_Generic_String_Collection_Of_Numeric_Values_Gives_Correct_Result()
@@ -213,7 +213,7 @@
 
         /// <summary>
         ///     Asserts that an binary expression of <see cref="ExpressionOperator.ContainsOnValue" /> comparison gives the correct
-        ///     result when operating on generic string collections that represents <see cref="DateTime"/> objects.
+        ///     result when operating on generic string collections that represents <see cref="DateTime" /> objects.
         /// </summary>
         [Fact]
         public void Assert_Binary_Expression_Of_Contains_On_Value_Comparison_Of_Generic_String_Collection_Of_DateTime_Values_Gives_Correct_Result()

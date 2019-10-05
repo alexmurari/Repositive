@@ -6,12 +6,12 @@
     using KraftCore.Tests.Utilities;
 
     /// <summary>
-    /// Base class for the dynamic query builder tests.
+    ///     Base class for the dynamic query builder tests.
     /// </summary>
     public abstract class DynamicQueryBuilderTestsBase
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="DynamicQueryBuilderTestsBase"/> class.
+        ///     Initializes a new instance of the <see cref="DynamicQueryBuilderTestsBase" /> class.
         /// </summary>
         protected DynamicQueryBuilderTestsBase()
         {
@@ -19,27 +19,27 @@
         }
 
         /// <summary>
-        /// Gets the collection of fake persons to be used by the tests.
+        ///     Gets the collection of fake persons to be used by the tests.
         /// </summary>
         protected List<Person> Persons { get; }
 
         /// <summary>
-        /// Builds the <see cref="string"/> representing the query from the provided parameters.
+        ///     Builds the <see cref="string" /> representing the query from the provided parameters.
         /// </summary>
         /// <param name="operator">
-        /// The operator of query.
+        ///     The operator of query.
         /// </param>
         /// <param name="propertyName">
-        /// The name property of the property to be compared by the query.
+        ///     The name property of the property to be compared by the query.
         /// </param>
         /// <param name="value">
-        /// The value to compare.
+        ///     The value to compare.
         /// </param>
         /// <returns>
-        /// The <see cref="string"/> representing the query.
+        ///     The <see cref="string" /> representing the query.
         /// </returns>
         /// <exception cref="ArgumentOutOfRangeException">
-        /// Exception thrown when the operator value is out of the valid range of values.
+        ///     Exception thrown when the operator value is out of the valid range of values.
         /// </exception>
         protected static string BuildQueryText(ExpressionOperator @operator, string propertyName, object value)
         {

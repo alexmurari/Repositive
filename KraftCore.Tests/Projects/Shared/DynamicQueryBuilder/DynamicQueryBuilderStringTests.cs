@@ -11,12 +11,12 @@
     // ReSharper disable InconsistentNaming
 
     /// <summary>
-    ///      Tests for the dynamic query builder.
+    ///     Tests for the dynamic query builder.
     /// </summary>
     public class DynamicQueryBuilderStringTests : DynamicQueryBuilderTestsBase
     {
         /// <summary>
-        /// Asserts that an equality query with single element of string type gives correct result when executed.
+        ///     Asserts that an equality query with single element of string type gives correct result when executed.
         /// </summary>
         [Fact]
         public void Assert_Equality_Query_With_Single_Element_Of_String_Type_Gives_Correct_Result()
@@ -35,7 +35,7 @@
         }
 
         /// <summary>
-        /// Asserts that an non-equality query with single element of string type gives correct result when executed.
+        ///     Asserts that an non-equality query with single element of string type gives correct result when executed.
         /// </summary>
         [Fact]
         public void Assert_Non_Equality_Query_With_Single_Element_Of_String_Type_Gives_Correct_Result()
@@ -54,7 +54,7 @@
         }
 
         /// <summary>
-        /// Asserts that an starts with query with single element of string type gives correct result when executed.
+        ///     Asserts that an starts with query with single element of string type gives correct result when executed.
         /// </summary>
         [Fact]
         public void Assert_Starts_With_Query_With_Single_Element_Of_String_Type_Gives_Correct_Result()
@@ -73,7 +73,7 @@
         }
 
         /// <summary>
-        /// Asserts that an ends with query with single element of string type gives correct result when executed.
+        ///     Asserts that an ends with query with single element of string type gives correct result when executed.
         /// </summary>
         [Fact]
         public void Assert_Ends_With_Query_With_Single_Element_Of_String_Type_Gives_Correct_Result()
@@ -92,7 +92,7 @@
         }
 
         /// <summary>
-        /// Asserts that an contains query with single element of string type gives correct result when executed.
+        ///     Asserts that an contains query with single element of string type gives correct result when executed.
         /// </summary>
         [Fact]
         public void Assert_Contains_Query_With_Single_Element_Of_String_Type_Gives_Correct_Result()
@@ -111,7 +111,7 @@
         }
 
         /// <summary>
-        /// Asserts that an contains on value query with single element of string type gives correct result when executed.
+        ///     Asserts that an contains on value query with single element of string type gives correct result when executed.
         /// </summary>
         [Fact]
         public void Assert_Contains_On_Value_Query_With_Single_Element_Of_String_Type_Gives_Correct_Result()

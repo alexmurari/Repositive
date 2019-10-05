@@ -101,7 +101,6 @@
                 if (expression == null)
                     expression = ExpressionBuilder.CreateBinaryExpression<T>(propertyName, value, @operator);
                 else
-                {
                     switch (aggregate)
                     {
                         case ExpressionAggregate.And:
@@ -113,7 +112,6 @@
                         default:
                             throw new ArgumentOutOfRangeException(nameof(aggregate), aggregate, "Invalid aggregate operator.");
                     }
-                }
             }
 
             return expression;

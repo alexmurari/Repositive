@@ -16,7 +16,7 @@
         ///     Initializes a new instance of the <see cref="GenericService{TEntity}" /> class.
         /// </summary>
         /// <param name="repository">
-        ///     The repository for this service to query and save instances of <typeparamref name="TEntity"/>.
+        ///     The repository for this service to query and save instances of <typeparamref name="TEntity" />.
         /// </param>
         protected GenericService(IGenericRepository<TEntity> repository)
         {
@@ -24,7 +24,7 @@
         }
 
         /// <summary>
-        ///     Gets the repository that queries and saves instances of <typeparamref name="TEntity"/>.
+        ///     Gets the repository that queries and saves instances of <typeparamref name="TEntity" />.
         /// </summary>
         protected IGenericRepository<TEntity> Repository { get; }
     }

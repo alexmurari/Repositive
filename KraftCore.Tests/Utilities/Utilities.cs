@@ -51,7 +51,14 @@
                 .RuleFor(t => t.FullName, (f, p) => string.Concat(p.FirstName, " ", p.LastName))
                 .RuleFor(t => t.DateOfBirth, f => f.Date.Past(100, DateTime.Now.AddYears(-25)))
                 .RuleFor(t => t.Age, (f, p) => DateTime.Now.Year - p.DateOfBirth.Year)
-                .RuleFor(t => t.BestFriend, (f, p) => new Person { FirstName = f.Name.FirstName(), LastName = f.Name.LastName(), DateOfBirth = f.Date.Past(100, DateTime.Now.AddYears(-25)), BestFriend = p })
+                .RuleFor(t => t.BestFriend,
+                         (f, p) => new Person
+                         {
+                             FirstName = f.Name.FirstName(),
+                             LastName = f.Name.LastName(),
+                             DateOfBirth = f.Date.Past(100, DateTime.Now.AddYears(-25)),
+                             BestFriend = p
+                         })
                 .RuleFor(t => t.FavoriteNumbers, f => f.Random.ListItems(Enumerable.Range(1, 5000).ToList(), 5))
                 .RuleFor(t => t.FavoriteWords, f => f.Random.WordsArray(10))
                 .RuleFor(t => t.FavoriteColors, f => f.Random.ArrayElements(Colors, 3))

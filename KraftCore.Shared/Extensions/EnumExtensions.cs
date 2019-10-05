@@ -4,18 +4,18 @@
     using System.ComponentModel;
 
     /// <summary>
-    /// Provides extension methods to the <see cref="Enum"/> type.
+    ///     Provides extension methods to the <see cref="Enum" /> type.
     /// </summary>
     public static class EnumExtensions
     {
         /// <summary>
-        /// Gets the description of the enumeration defined in the <see cref="DescriptionAttribute"/>.
+        ///     Gets the description of the enumeration defined in the <see cref="DescriptionAttribute" />.
         /// </summary>
         /// <param name="value">
-        /// The value representing the enumeration to get the description from.
+        ///     The value representing the enumeration to get the description from.
         /// </param>
         /// <returns>
-        /// The enumeration description.
+        ///     The enumeration description.
         /// </returns>
         public static string GetDescription(this Enum value)
         {

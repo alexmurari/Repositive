@@ -14,7 +14,8 @@
     public static class ExpressionBuilder
     {
         /// <summary>
-        ///     Creates a lambda expression that represents an accessor to a property from an object of type <typeparamref name="T" />.
+        ///     Creates a lambda expression that represents an accessor to a property from an object of type
+        ///     <typeparamref name="T" />.
         /// </summary>
         /// <param name="propertyNameOrPath">
         ///     The name or the path to the property to be accessed composed of simple dot-separated property access expressions.
@@ -84,7 +85,8 @@
         }
 
         /// <summary>
-        ///     Creates a <see cref="MemberExpression" /> that represents accessing a property from an object of type <typeparamref name="T" />.
+        ///     Creates a <see cref="MemberExpression" /> that represents accessing a property from an object of type
+        ///     <typeparamref name="T" />.
         /// </summary>
         /// <param name="propertyNameOrPath">
         ///     The name or the path to the property to be accessed composed of simple dot-separated property access expressions.
@@ -116,7 +118,8 @@
         ///     The type with the property to be compared.
         /// </typeparam>
         /// <param name="propertyNameOrPath">
-        ///     The name or the path to access the property to be compared composed of simple dot-separated property access expressions.
+        ///     The name or the path to access the property to be compared composed of simple dot-separated property access
+        ///     expressions.
         /// </param>
         /// <param name="value">
         ///     The value to compare the property.
@@ -217,9 +220,7 @@
                 ValidateBinaryExpressionParametersForObject(propertyType, @operator);
 
             if (@operator == ExpressionOperator.ContainsOnValue)
-            {
                 return (rightExpression, leftExpression);
-            }
 
             return (leftExpression, rightExpression);
         }
@@ -261,7 +262,7 @@
         }
 
         /// <summary>
-        ///     Validates the provided parameters for building binary expressions for <see cref="DateTime"/> type comparisons.
+        ///     Validates the provided parameters for building binary expressions for <see cref="DateTime" /> type comparisons.
         /// </summary>
         /// <param name="propertyType">
         ///     The property type.
@@ -333,7 +334,7 @@
         }
 
         /// <summary>
-        ///     Validates the provided parameters for building binary expressions for <see cref="object"/> type comparisons.
+        ///     Validates the provided parameters for building binary expressions for <see cref="object" /> type comparisons.
         /// </summary>
         /// <param name="propertyType">
         ///     The property type.
@@ -369,7 +370,7 @@
         }
 
         /// <summary>
-        ///     Validates the provided parameters for building binary expressions for <see cref="string"/> type comparisons.
+        ///     Validates the provided parameters for building binary expressions for <see cref="string" /> type comparisons.
         /// </summary>
         /// <param name="propertyType">
         ///     The property type.
@@ -405,7 +406,8 @@
         }
 
         /// <summary>
-        ///     Builds the types for the expression parameters according to the specified property, value to compare and expression operator.
+        ///     Builds the types for the expression parameters according to the specified property, value to compare and expression
+        ///     operator.
         /// </summary>
         /// <param name="property">
         ///     The expression representing the property accessor.
@@ -456,13 +458,9 @@
                             value = ParseStringToBoolean(value);
 
                         if (genericType.IsNullableType())
-                        {
                             resultValue = Expression.Convert(Expression.Constant(value), genericType);
-                        }
                         else
-                        {
                             resultValue = Expression.Constant(value);
-                        }
                     }
                     else if (propertyType.IsArray)
                     {
@@ -476,18 +474,12 @@
                             value = ParseStringToBoolean(value);
 
                         if (elementType.IsNullableType())
-                        {
                             resultValue = Expression.Convert(Expression.Constant(value), elementType ?? throw new InvalidOperationException());
-                        }
                         else
-                        {
                             resultValue = Expression.Constant(value);
-                        }
                     }
                     else
-                    {
                         resultValue = Expression.Constant(value);
-                    }
                 }
                 else if (propertyType.IsString())
                 {
@@ -499,45 +491,37 @@
                     resultValue = valueType.IsNumeric() ? Expression.Constant(value) : Expression.Constant(ParseStringToNumber(value, propertyType));
 
                     if (propertyType.IsNullableType())
-                    {
                         resultValue = Expression.Convert(resultValue, propertyType);
-                    }
                 }
                 else if (propertyType.IsBoolean())
                 {
                     resultValue = valueType.IsBoolean() ? Expression.Constant(value) : Expression.Constant(ParseStringToBoolean(value));
 
                     if (propertyType.IsNullableType())
-                    {
                         resultValue = Expression.Convert(resultValue, propertyType);
-                    }
                 }
                 else if (propertyType.IsDateTime())
                 {
                     resultValue = valueType.IsDateTime() ? Expression.Constant(value) : Expression.Constant(ParseStringToDateTime(value));
 
                     if (propertyType.IsNullableType())
-                    {
                         resultValue = Expression.Convert(resultValue, propertyType);
-                    }
                 }
                 else
-                {
                     resultValue = Expression.Constant(value);
-                }
             }
 
             return (resultProperty, resultValue);
         }
 
         /// <summary>
-        ///     Converts the string representation of a true or false value to it's <see cref="bool"/> equivalent.
+        ///     Converts the string representation of a true or false value to it's <see cref="bool" /> equivalent.
         /// </summary>
         /// <param name="value">
         ///     The value to be converted.
         /// </param>
         /// <returns>
-        ///     The <see cref="ConstantExpression"/> representing the converted value.
+        ///     The <see cref="ConstantExpression" /> representing the converted value.
         /// </returns>
         /// <exception cref="ArgumentException">
         ///     The exception thrown when the value cannot be converted.
@@ -547,9 +531,7 @@
             var invokeType = typeof(Convert);
 
             if (int.TryParse(value as string, out var result))
-            {
                 value = result;
-            }
 
             var parameters = new[]
             {
@@ -565,13 +547,13 @@
         }
 
         /// <summary>
-        ///     Converts an collection of strings representing a true or false value to it's <see cref="bool"/> equivalents.
+        ///     Converts an collection of strings representing a true or false value to it's <see cref="bool" /> equivalents.
         /// </summary>
         /// <param name="value">
         ///     The collection to be converted.
         /// </param>
         /// <param name="isNullable">
-        ///     Indicates whether the <see cref="bool"/> type can be null.
+        ///     Indicates whether the <see cref="bool" /> type can be null.
         /// </param>
         /// <returns>
         ///     The object representing the converted collection.
@@ -589,9 +571,7 @@
             var result = (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(propertyType));
 
             foreach (var str in collection)
-            {
                 result.Add(ParseStringToBoolean(str));
-            }
 
             return result;
         }
@@ -606,7 +586,7 @@
         ///     The numeric type that the value must be parsed to.
         /// </param>
         /// <returns>
-        ///     The <see cref="ConstantExpression"/> representing the converted value.
+        ///     The <see cref="ConstantExpression" /> representing the converted value.
         /// </returns>
         /// <exception cref="ArgumentException">
         ///     The exception thrown when the value cannot be converted.
@@ -643,7 +623,7 @@
         ///     The numeric type that the collection elements must be parsed to.
         /// </param>
         /// <returns>
-        ///     The <see cref="ConstantExpression"/> representing the converted value.
+        ///     The <see cref="ConstantExpression" /> representing the converted value.
         /// </returns>
         /// <exception cref="ArgumentException">
         ///     The exception thrown when the value cannot be converted.
@@ -656,21 +636,19 @@
             var result = (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(propertyType));
 
             foreach (var str in collection)
-            {
                 result.Add(ParseStringToNumber(str, propertyType));
-            }
 
             return result;
         }
 
         /// <summary>
-        ///     Converts the string representation of a date and time to it's <see cref="DateTime"/> equivalent.
+        ///     Converts the string representation of a date and time to it's <see cref="DateTime" /> equivalent.
         /// </summary>
         /// <param name="value">
         ///     The value to be converted.
         /// </param>
         /// <returns>
-        ///     The <see cref="ConstantExpression"/> representing the converted value.
+        ///     The <see cref="ConstantExpression" /> representing the converted value.
         /// </returns>
         /// <exception cref="ArgumentException">
         ///     The exception thrown when the value cannot be converted.
@@ -698,13 +676,13 @@
         }
 
         /// <summary>
-        ///     Converts an collection of strings representing a date and time to it's <see cref="DateTime"/> equivalents.
+        ///     Converts an collection of strings representing a date and time to it's <see cref="DateTime" /> equivalents.
         /// </summary>
         /// <param name="value">
         ///     The collection to be converted.
         /// </param>
         /// <param name="isNullable">
-        ///     Indicates whether the <see cref="DateTime"/> type can be null.
+        ///     Indicates whether the <see cref="DateTime" /> type can be null.
         /// </param>
         /// <returns>
         ///     The object representing the converted collection.
@@ -722,9 +700,7 @@
             var result = (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(propertyType));
 
             foreach (var str in collection)
-            {
                 result.Add(ParseStringToDateTime(str));
-            }
 
             return result;
         }

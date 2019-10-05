@@ -69,7 +69,7 @@
     }
 
     /// <summary>
-    /// Expression aggregate operators.
+    ///     Expression aggregate operators.
     /// </summary>
     public enum ExpressionAggregate
     {
