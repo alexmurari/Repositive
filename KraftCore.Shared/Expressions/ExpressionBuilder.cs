@@ -462,22 +462,22 @@
                         else
                             resultValue = Expression.Constant(value);
                     }
-                    else if (propertyType.IsArray)
-                    {
-                        var elementType = propertyType.GetElementType();
+                    else
+                        resultValue = Expression.Constant(value);
+                }
+                else if (propertyType.IsArray)
+                {
+                    var elementType = propertyType.GetElementType();
 
-                        if (elementType.IsNumeric() && !valueType.IsNumeric())
-                            value = ParseStringToNumber(value, elementType);
-                        else if (elementType.IsDateTime() && !valueType.IsDateTime())
-                            value = ParseStringToDateTime(value);
-                        else if (elementType.IsBoolean() && !valueType.IsBoolean())
-                            value = ParseStringToBoolean(value);
+                    if (elementType.IsNumeric() && !valueType.IsNumeric())
+                        value = ParseStringToNumber(value, elementType);
+                    else if (elementType.IsDateTime() && !valueType.IsDateTime())
+                        value = ParseStringToDateTime(value);
+                    else if (elementType.IsBoolean() && !valueType.IsBoolean())
+                        value = ParseStringToBoolean(value);
 
-                        if (elementType.IsNullableType())
-                            resultValue = Expression.Convert(Expression.Constant(value), elementType ?? throw new InvalidOperationException());
-                        else
-                            resultValue = Expression.Constant(value);
-                    }
+                    if (elementType.IsNullableType())
+                        resultValue = Expression.Convert(Expression.Constant(value), elementType ?? throw new InvalidOperationException());
                     else
                         resultValue = Expression.Constant(value);
                 }
