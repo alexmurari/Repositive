@@ -15,13 +15,13 @@
         /// </summary>
         protected DynamicQueryBuilderTestsBase()
         {
-            Persons = Utilities.GetFakePersonCollection();
+            Persons = Utilities.GetFakeHydraCollection();
         }
 
         /// <summary>
         ///     Gets the collection of fake persons to be used by the tests.
         /// </summary>
-        protected List<Person> Persons { get; }
+        protected List<Hydra> Persons { get; }
 
         /// <summary>
         ///     Builds the <see cref="string" /> representing the query from the provided parameters.

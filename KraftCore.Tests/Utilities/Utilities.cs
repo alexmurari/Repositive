@@ -1,10 +1,10 @@
 ﻿namespace KraftCore.Tests.Utilities
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
     using Bogus;
+    using Bogus.Extensions;
 
     /// <summary>
     ///     Utilities for unit testing.
@@ -12,30 +12,14 @@
     internal static class Utilities
     {
         /// <summary>
-        ///     The list of colors.
-        /// </summary>
-        private static readonly string[] Colors =
-        {
-            "Blue", "Red", "Yellow", "Purple", "Cyan", "Black", "White", "Green", "Brown"
-        };
-
-        /// <summary>
         ///     The faker used to create dummy objects with fake data.
         /// </summary>
         private static readonly Faker Faker;
 
         /// <summary>
-        ///     The list of fruits.
+        ///     The faker used to generate fake <see cref="Hydra" /> objects.
         /// </summary>
-        private static readonly string[] Fruits =
-        {
-            "apple", "banana", "orange", "strawberry", "kiwi", "passion-fruit", "blueberry"
-        };
-
-        /// <summary>
-        ///     The person faker used to generate fake <see cref="Person" /> objects.
-        /// </summary>
-        private static readonly Faker<Person> PersonFaker;
+        private static readonly Faker<Hydra> HydraFaker;
 
         /// <summary>
         ///     Initializes static members of the <see cref="Utilities" /> class.
@@ -44,43 +28,72 @@
         {
             Faker = new Faker();
 
-            PersonFaker = new Faker<Person>()
-                .StrictMode(true)
-                .RuleFor(t => t.FirstName, f => f.Name.FirstName())
-                .RuleFor(t => t.LastName, f => f.Name.LastName())
-                .RuleFor(t => t.FullName, (f, p) => string.Concat(p.FirstName, " ", p.LastName))
-                .RuleFor(t => t.DateOfBirth, f => f.Date.Past(100, DateTime.Now.AddYears(-25)))
-                .RuleFor(t => t.Age, (f, p) => DateTime.Now.Year - p.DateOfBirth.Year)
-                .RuleFor(t => t.BestFriend,
-                         (f, p) => new Person
-                         {
-                             FirstName = f.Name.FirstName(),
-                             LastName = f.Name.LastName(),
-                             DateOfBirth = f.Date.Past(100, DateTime.Now.AddYears(-25)),
-                             BestFriend = p
-                         })
-                .RuleFor(t => t.FavoriteNumbers, f => f.Random.ListItems(Enumerable.Range(1, 5000).ToList(), 5))
-                .RuleFor(t => t.FavoriteWords, f => f.Random.WordsArray(10))
-                .RuleFor(t => t.FavoriteColors, f => f.Random.ArrayElements(Colors, 3))
-                .RuleFor(t => t.FavoriteFruits, f => new ArrayList(f.Random.ArrayElements(Fruits, 2)))
-                .RuleFor(t => t.DateOfDriversLicense, f => f.Date.Past(100, DateTime.Now.AddYears(-25)))
-                .RuleFor(t => t.AccountBalance, f => f.Finance.Amount(0, 1000000, 3))
-                .RuleFor(t => t.LeastFavoriteNumbers, f => f.Random.ListItems(Enumerable.Range(5001, 10000).Select(t => (int?)t).ToList(), 5))
-                .RuleFor(t => t.HasPet, f => f.Random.Bool());
+            HydraFaker = new Faker<Hydra>()
+                    .StrictMode(true)
+                    //// Strings
+                    .RuleFor(t => t.FirstName, f => f.Name.FirstName())
+                    .RuleFor(t => t.LastName, f => f.Name.LastName())
+                    .RuleFor(t => t.FullName, f => f.Name.FullName())
+                    .RuleFor(t => t.StringArray, f => f.Random.WordsArray(10))
+                    .RuleFor(t => t.StringCollection, f => f.Random.WordsArray(10))
+                    //// Integers
+                    .RuleFor(t => t.Integer, f => f.Random.Int())
+                    .RuleFor(t => t.NullableInteger, f => f.Random.Int().OrNull(f))
+                    .RuleFor(t => t.IntegerArray, f => GetRandomItems(Enumerable.Range(1, 5000)))
+                    .RuleFor(t => t.NullableIntegerArray, f => GetRandomItems(Enumerable.Range(5001, 10000)).Select(t => t.OrNull(f)))
+                    .RuleFor(t => t.IntegerCollection, f => GetRandomItems(Enumerable.Range(10001, 15000)))
+                    .RuleFor(t => t.NullableIntegerCollection, f => GetRandomItems(Enumerable.Range(15001, 20000)).Select(t => t.OrNull(f)))
+                    //// Doubles
+                    .RuleFor(t => t.Double, f => (double)f.Random.Int() / 3)
+                    .RuleFor(t => t.NullableDouble, f => ((double)f.Random.Int() / 3).OrNull(f))
+                    .RuleFor(t => t.DoubleArray, f => GetRandomItems(Enumerable.Range(1, 5000)).Select(t => t / 3d))
+                    .RuleFor(t => t.NullableDoubleArray, f => GetRandomItems(Enumerable.Range(5001, 10000)).Select(t => (t / 3d).OrNull(f)))
+                    .RuleFor(t => t.DoubleCollection, f => GetRandomItems(Enumerable.Range(10001, 15000)).Select(t => t / 3d))
+                    .RuleFor(t => t.NullableDoubleCollection, f => GetRandomItems(Enumerable.Range(15001, 20000)).Select(t => (t / 3d).OrNull(f)))
+                    //// Decimals
+                    .RuleFor(t => t.Decimal, f => (decimal)f.Random.Int() / 3)
+                    .RuleFor(t => t.NullableDecimal, f => ((decimal)f.Random.Int() / 3).OrNull(f))
+                    .RuleFor(t => t.DecimalArray, f => GetRandomItems(Enumerable.Range(1, 5000)).Select(t => t / 3m))
+                    .RuleFor(t => t.NullableDecimalArray, f => GetRandomItems(Enumerable.Range(5001, 10000)).Select(t => (t / 3m).OrNull(f)))
+                    .RuleFor(t => t.DecimalCollection, f => GetRandomItems(Enumerable.Range(10001, 15000)).Select(t => t / 3m))
+                    .RuleFor(t => t.NullableDecimalCollection, f => GetRandomItems(Enumerable.Range(15001, 20000)).Select(t => (t / 3m).OrNull(f)))
+                    //// DateTimes
+                    .RuleFor(t => t.DateTime, f => f.Date.Past())
+                    .RuleFor(t => t.NullableDateTime, f => f.Date.Future())
+                    .RuleFor(t => t.DateTimeArray, f => GetRandomItems(f.Date.Soon().Range(f.Date.Future())))
+                    .RuleFor(t => t.NullableDateTimeArray, f => GetRandomItems(f.Date.Soon().Range(f.Date.Future())).Select(t => t.OrNull(f)))
+                    .RuleFor(t => t.DateTimeCollection, f => GetRandomItems(f.Date.Soon().Range(f.Date.Future())))
+                    .RuleFor(t => t.NullableDateTimeCollection, f => GetRandomItems(f.Date.Soon().Range(f.Date.Future())).Select(t => t.OrNull(f)))
+                    //// GUIDs
+                    .RuleFor(t => t.Guid, f => f.Random.Guid())
+                    .RuleFor(t => t.NullableGuid, f => f.Random.Guid().OrNull(f))
+                    .RuleFor(t => t.GuidArray, f => GetRandomItems(Enumerable.Range(1, 10).Select(t => Guid.NewGuid())))
+                    .RuleFor(t => t.NullableGuidArray, f => GetRandomItems(Enumerable.Range(1, 10).Select(t => Guid.NewGuid().OrNull(f))))
+                    .RuleFor(t => t.GuidCollection, f => GetRandomItems(Enumerable.Range(1, 10).Select(t => Guid.NewGuid())))
+                    .RuleFor(t => t.NullableGuidCollection, f => GetRandomItems(Enumerable.Range(1, 10).Select(t => Guid.NewGuid().OrNull(f))))
+                    //// Booleans
+                    .RuleFor(t => t.Boolean, f => f.Random.Bool())
+                    .RuleFor(t => t.NullableBoolean, f => f.Random.Bool().OrNull(f))
+                    .RuleFor(t => t.BooleanArray, f => GetRandomItems(Enumerable.Range(1, 5000)).Select(t => t % 2 == 0))
+                    .RuleFor(t => t.NullableBooleanArray, f => GetRandomItems(Enumerable.Range(1, 5000)).Select(t => (t % 2 != 0).OrNull(f)))
+                    .RuleFor(t => t.BooleanCollection, f => GetRandomItems(Enumerable.Range(1, 5000)).Select(t => t % 2 == 0))
+                    .RuleFor(t => t.NullableBooleanCollection, f => GetRandomItems(Enumerable.Range(1, 5000)).Select(t => (t % 2 != 0).OrNull(f)))
+                    //// Objects
+                    .RuleFor(t => t.Object, f => f.PickRandom<Person>());
         }
 
         /// <summary>
-        ///     Gets an collection of <see cref="Person" /> objects filled with fake data.
+        ///     Gets an collection of <see cref="Hydra" /> objects filled with fake data.
         /// </summary>
         /// <param name="count">
         ///     The number of entries to be generated.
         /// </param>
         /// <returns>
-        ///     The collection <see cref="Person" /> objects.
+        ///     The collection <see cref="Hydra" /> objects.
         /// </returns>
-        internal static List<Person> GetFakePersonCollection(int count = 150)
+        internal static List<Hydra> GetFakeHydraCollection(int count = 150)
         {
-            return PersonFaker.Generate(count);
+            return HydraFaker.Generate(count);
         }
 
         /// <summary>
@@ -118,6 +131,23 @@
         internal static T[] GetRandomItems<T>(IEnumerable<T> collection, int count = 5)
         {
             return Faker.Random.ArrayElements(collection.ToArray(), count);
+        }
+
+        /// <summary>
+        ///     Generates a sequence of <see cref="DateTime"/> objects within a specified range.
+        /// </summary>
+        /// <param name="startDate">
+        ///     The value of the first <see cref="DateTime"/> in the sequence.
+        /// </param>
+        /// <param name="endDate">
+        ///     The value of the last <see cref="DateTime"/> in the sequence.
+        /// </param>
+        /// <returns>
+        ///     The collection containing the range of <see cref="DateTime"/> objects.
+        /// </returns>
+        internal static IEnumerable<DateTime> Range(this DateTime startDate, DateTime endDate)
+        {
+            return Enumerable.Range(0, (endDate - startDate).Days + 1).Select(d => startDate.AddDays(d));
         }
     }
 }

@@ -23,7 +23,7 @@
         {
             // Arrange
             var randomPerson = Utilities.GetRandomItem(Persons);
-            var query = DynamicQueryBuilder.Build<Person>(BuildQueryText(ExpressionOperator.Equal, nameof(Person.FullName), randomPerson.FullName));
+            var query = DynamicQueryBuilder.Build<Hydra>(BuildQueryText(ExpressionOperator.Equal, nameof(Hydra.FullName), randomPerson.FullName));
 
             // Act
             var result = Persons.Where(query.Compile()).ToList();
@@ -42,7 +42,7 @@
         {
             // Arrange
             var randomPerson = Utilities.GetRandomItem(Persons);
-            var query = DynamicQueryBuilder.Build<Person>(BuildQueryText(ExpressionOperator.NotEqual, nameof(Person.FullName), randomPerson.FullName));
+            var query = DynamicQueryBuilder.Build<Hydra>(BuildQueryText(ExpressionOperator.NotEqual, nameof(Hydra.FullName), randomPerson.FullName));
 
             // Act
             var result = Persons.Where(query.Compile()).ToList();
@@ -61,7 +61,7 @@
         {
             // Arrange
             var randomPerson = Utilities.GetRandomItem(Persons);
-            var query = DynamicQueryBuilder.Build<Person>(BuildQueryText(ExpressionOperator.StartsWith, nameof(Person.FullName), randomPerson.FirstName));
+            var query = DynamicQueryBuilder.Build<Hydra>(BuildQueryText(ExpressionOperator.StartsWith, nameof(Hydra.FullName), randomPerson.FirstName));
 
             // Act
             var result = Persons.Where(query.Compile()).ToList();
@@ -80,7 +80,7 @@
         {
             // Arrange
             var randomPerson = Utilities.GetRandomItem(Persons);
-            var query = DynamicQueryBuilder.Build<Person>(BuildQueryText(ExpressionOperator.EndsWith, nameof(Person.FullName), randomPerson.LastName));
+            var query = DynamicQueryBuilder.Build<Hydra>(BuildQueryText(ExpressionOperator.EndsWith, nameof(Hydra.FullName), randomPerson.LastName));
 
             // Act
             var result = Persons.Where(query.Compile()).ToList();
@@ -99,7 +99,7 @@
         {
             // Arrange
             var randomPerson = Utilities.GetRandomItem(Persons);
-            var query = DynamicQueryBuilder.Build<Person>(BuildQueryText(ExpressionOperator.Contains, nameof(Person.FullName), randomPerson.FirstName));
+            var query = DynamicQueryBuilder.Build<Hydra>(BuildQueryText(ExpressionOperator.Contains, nameof(Hydra.FullName), randomPerson.FirstName));
 
             // Act
             var result = Persons.Where(query.Compile()).ToList();
@@ -118,7 +118,7 @@
         {
             // Arrange
             var randomNames = Utilities.GetRandomItems(Persons.Select(t => t.FullName));
-            var query = DynamicQueryBuilder.Build<Person>(BuildQueryText(ExpressionOperator.ContainsOnValue, nameof(Person.FullName), string.Join(',', randomNames.Select(t => $"'{t}'"))));
+            var query = DynamicQueryBuilder.Build<Hydra>(BuildQueryText(ExpressionOperator.ContainsOnValue, nameof(Hydra.FullName), string.Join(',', randomNames.Select(t => $"'{t}'"))));
 
             // Act
             var result = Persons.Where(query.Compile()).ToList();

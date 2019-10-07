@@ -22,7 +22,7 @@
         {
             // Arrange
             var randomPerson = Utilities.GetRandomItem(Persons);
-            var query = DynamicQueryBuilder.Build<Person>(BuildQueryText(ExpressionOperator.Equal, nameof(Person.DateOfBirth), randomPerson.DateOfBirth.ToString("O")));
+            var query = DynamicQueryBuilder.Build<Hydra>(BuildQueryText(ExpressionOperator.Equal, nameof(Hydra.DateOfBirth), randomPerson.DateOfBirth.ToString("O")));
 
             // Act
             var result = Persons.Where(query.Compile()).ToList();
@@ -41,7 +41,7 @@
         {
             // Arrange
             var randomPerson = Utilities.GetRandomItem(Persons);
-            var query = DynamicQueryBuilder.Build<Person>(BuildQueryText(ExpressionOperator.NotEqual, nameof(Person.DateOfBirth), randomPerson.DateOfBirth.ToString("O")));
+            var query = DynamicQueryBuilder.Build<Hydra>(BuildQueryText(ExpressionOperator.NotEqual, nameof(Hydra.DateOfBirth), randomPerson.DateOfBirth.ToString("O")));
 
             // Act
             var result = Persons.Where(query.Compile()).ToList();
@@ -60,7 +60,7 @@
         {
             // Arrange
             var randomPerson = Utilities.GetRandomItem(Persons);
-            var query = DynamicQueryBuilder.Build<Person>(BuildQueryText(ExpressionOperator.LessThan, nameof(Person.DateOfBirth), randomPerson.DateOfBirth.ToString("O")));
+            var query = DynamicQueryBuilder.Build<Hydra>(BuildQueryText(ExpressionOperator.LessThan, nameof(Hydra.DateOfBirth), randomPerson.DateOfBirth.ToString("O")));
 
             // Act
             var result = Persons.Where(query.Compile()).ToList();
@@ -79,7 +79,7 @@
         {
             // Arrange
             var randomPerson = Utilities.GetRandomItem(Persons);
-            var query = DynamicQueryBuilder.Build<Person>(BuildQueryText(ExpressionOperator.LessThanOrEqual, nameof(Person.DateOfBirth), randomPerson.DateOfBirth.ToString("O")));
+            var query = DynamicQueryBuilder.Build<Hydra>(BuildQueryText(ExpressionOperator.LessThanOrEqual, nameof(Hydra.DateOfBirth), randomPerson.DateOfBirth.ToString("O")));
 
             // Act
             var result = Persons.Where(query.Compile()).ToList();
@@ -98,7 +98,7 @@
         {
             // Arrange
             var randomPerson = Utilities.GetRandomItem(Persons);
-            var query = DynamicQueryBuilder.Build<Person>(BuildQueryText(ExpressionOperator.GreaterThan, nameof(Person.DateOfBirth), randomPerson.DateOfBirth.ToString("O")));
+            var query = DynamicQueryBuilder.Build<Hydra>(BuildQueryText(ExpressionOperator.GreaterThan, nameof(Hydra.DateOfBirth), randomPerson.DateOfBirth.ToString("O")));
 
             // Act
             var result = Persons.Where(query.Compile()).ToList();
@@ -118,7 +118,7 @@
         {
             // Arrange
             var randomPerson = Utilities.GetRandomItem(Persons);
-            var query = DynamicQueryBuilder.Build<Person>(BuildQueryText(ExpressionOperator.GreaterThanOrEqual, nameof(Person.DateOfBirth), randomPerson.DateOfBirth.ToString("O")));
+            var query = DynamicQueryBuilder.Build<Hydra>(BuildQueryText(ExpressionOperator.GreaterThanOrEqual, nameof(Hydra.DateOfBirth), randomPerson.DateOfBirth.ToString("O")));
 
             // Act
             var result = Persons.Where(query.Compile()).ToList();
@@ -137,7 +137,7 @@
         {
             // Arrange
             var randomAge = Utilities.GetRandomItems(Persons.Select(t => t.DateOfBirth));
-            var query = DynamicQueryBuilder.Build<Person>(BuildQueryText(ExpressionOperator.ContainsOnValue, nameof(Person.DateOfBirth), string.Join(',', randomAge.Select(x => $"'{x:O}'"))));
+            var query = DynamicQueryBuilder.Build<Hydra>(BuildQueryText(ExpressionOperator.ContainsOnValue, nameof(Hydra.DateOfBirth), string.Join(',', randomAge.Select(x => $"'{x:O}'"))));
 
             // Act
             var result = Persons.Where(query.Compile()).ToList();
@@ -156,8 +156,8 @@
         {
             // Arrange
             var randomPerson = Utilities.GetRandomItem(Persons);
-            var query = DynamicQueryBuilder.Build<Person>(BuildQueryText(ExpressionOperator.Equal,
-                                                                         nameof(Person.DateOfDriversLicense),
+            var query = DynamicQueryBuilder.Build<Hydra>(BuildQueryText(ExpressionOperator.Equal,
+                                                                         nameof(Hydra.DateOfDriversLicense),
                                                                          randomPerson.DateOfDriversLicense.GetValueOrDefault().ToString("O")));
 
             // Act
@@ -177,8 +177,8 @@
         {
             // Arrange
             var randomPerson = Utilities.GetRandomItem(Persons);
-            var query = DynamicQueryBuilder.Build<Person>(BuildQueryText(ExpressionOperator.NotEqual,
-                                                                         nameof(Person.DateOfDriversLicense),
+            var query = DynamicQueryBuilder.Build<Hydra>(BuildQueryText(ExpressionOperator.NotEqual,
+                                                                         nameof(Hydra.DateOfDriversLicense),
                                                                          randomPerson.DateOfDriversLicense.GetValueOrDefault().ToString("O")));
 
             // Act
@@ -198,8 +198,8 @@
         {
             // Arrange
             var randomPerson = Utilities.GetRandomItem(Persons);
-            var query = DynamicQueryBuilder.Build<Person>(BuildQueryText(ExpressionOperator.LessThan,
-                                                                         nameof(Person.DateOfDriversLicense),
+            var query = DynamicQueryBuilder.Build<Hydra>(BuildQueryText(ExpressionOperator.LessThan,
+                                                                         nameof(Hydra.DateOfDriversLicense),
                                                                          randomPerson.DateOfDriversLicense.GetValueOrDefault().ToString("O")));
 
             // Act
@@ -219,8 +219,8 @@
         {
             // Arrange
             var randomPerson = Utilities.GetRandomItem(Persons);
-            var query = DynamicQueryBuilder.Build<Person>(BuildQueryText(ExpressionOperator.LessThanOrEqual,
-                                                                         nameof(Person.DateOfDriversLicense),
+            var query = DynamicQueryBuilder.Build<Hydra>(BuildQueryText(ExpressionOperator.LessThanOrEqual,
+                                                                         nameof(Hydra.DateOfDriversLicense),
                                                                          randomPerson.DateOfDriversLicense.GetValueOrDefault().ToString("O")));
 
             // Act
@@ -240,8 +240,8 @@
         {
             // Arrange
             var randomPerson = Utilities.GetRandomItem(Persons);
-            var query = DynamicQueryBuilder.Build<Person>(BuildQueryText(ExpressionOperator.GreaterThan,
-                                                                         nameof(Person.DateOfDriversLicense),
+            var query = DynamicQueryBuilder.Build<Hydra>(BuildQueryText(ExpressionOperator.GreaterThan,
+                                                                         nameof(Hydra.DateOfDriversLicense),
                                                                          randomPerson.DateOfDriversLicense.GetValueOrDefault().ToString("O")));
 
             // Act
@@ -262,8 +262,8 @@
         {
             // Arrange
             var randomPerson = Utilities.GetRandomItem(Persons);
-            var query = DynamicQueryBuilder.Build<Person>(BuildQueryText(ExpressionOperator.GreaterThanOrEqual,
-                                                                         nameof(Person.DateOfDriversLicense),
+            var query = DynamicQueryBuilder.Build<Hydra>(BuildQueryText(ExpressionOperator.GreaterThanOrEqual,
+                                                                         nameof(Hydra.DateOfDriversLicense),
                                                                          randomPerson.DateOfDriversLicense.GetValueOrDefault().ToString("O")));
 
             // Act
@@ -283,8 +283,8 @@
         {
             // Arrange
             var randomAge = Utilities.GetRandomItems(Persons.Select(t => t.DateOfDriversLicense));
-            var query = DynamicQueryBuilder.Build<Person>(BuildQueryText(ExpressionOperator.ContainsOnValue,
-                                                                         nameof(Person.DateOfDriversLicense),
+            var query = DynamicQueryBuilder.Build<Hydra>(BuildQueryText(ExpressionOperator.ContainsOnValue,
+                                                                         nameof(Hydra.DateOfDriversLicense),
                                                                          string.Join(',', randomAge.Select(x => $"'{x:O}'"))));
 
             // Act

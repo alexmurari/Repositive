@@ -17,14 +17,14 @@
         /// <summary>
         ///     The collection of fake persons to be used by the tests.
         /// </summary>
-        private readonly List<Person> _persons;
+        private readonly List<Hydra> _persons;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="ExpressionTests" /> class.
         /// </summary>
         public ExpressionTests()
         {
-            _persons = Utilities.GetFakePersonCollection();
+            _persons = Utilities.GetFakeHydraCollection();
         }
 
         /// <summary>
@@ -37,7 +37,7 @@
             // Arrange
             var randomPerson = Utilities.GetRandomItem(_persons);
             var randomFavColor = Utilities.GetRandomItem(randomPerson.FavoriteColors);
-            var expression = ExpressionBuilder.CreateBinaryExpression<Person>(nameof(Person.FavoriteColors), randomFavColor, ExpressionOperator.Contains);
+            var expression = ExpressionBuilder.CreateBinaryExpression<Hydra>(nameof(Hydra.FavoriteColors), randomFavColor, ExpressionOperator.Contains);
 
             // Act
             var result = _persons.Where(expression.Compile()).ToList();
@@ -58,7 +58,7 @@
             // Arrange
             var randomPerson = Utilities.GetRandomItem(_persons);
             var randomFavNumber = Utilities.GetRandomItem(randomPerson.FavoriteNumbers);
-            var expression = ExpressionBuilder.CreateBinaryExpression<Person>(nameof(Person.FavoriteNumbers), randomFavNumber, ExpressionOperator.Contains);
+            var expression = ExpressionBuilder.CreateBinaryExpression<Hydra>(nameof(Hydra.FavoriteNumbers), randomFavNumber, ExpressionOperator.Contains);
 
             // Act
             var result = _persons.Where(expression.Compile()).ToList();
@@ -79,7 +79,7 @@
             // Arrange
             var randomPerson = Utilities.GetRandomItem(_persons);
             var randomFavWord = Utilities.GetRandomItem(randomPerson.FavoriteWords);
-            var expression = ExpressionBuilder.CreateBinaryExpression<Person>(nameof(Person.FavoriteWords), randomFavWord, ExpressionOperator.Contains);
+            var expression = ExpressionBuilder.CreateBinaryExpression<Hydra>(nameof(Hydra.FavoriteWords), randomFavWord, ExpressionOperator.Contains);
 
             // Act
             var result = _persons.Where(expression.Compile()).ToList();
@@ -100,7 +100,7 @@
             // Arrange
             var randomPerson = Utilities.GetRandomItem(_persons);
             var randomFavFruit = Utilities.GetRandomItem(randomPerson.FavoriteFruits.ToArray());
-            var expression = ExpressionBuilder.CreateBinaryExpression<Person>(nameof(Person.FavoriteFruits), randomFavFruit, ExpressionOperator.Contains);
+            var expression = ExpressionBuilder.CreateBinaryExpression<Hydra>(nameof(Hydra.FavoriteFruits), randomFavFruit, ExpressionOperator.Contains);
 
             // Act
             var result = _persons.Where(expression.Compile()).ToList();
@@ -120,7 +120,7 @@
         {
             // Arrange
             var randomPerson = Utilities.GetRandomItem(_persons);
-            var expression = ExpressionBuilder.CreateBinaryExpression<Person>(nameof(Person.FullName), randomPerson.FirstName, ExpressionOperator.Contains);
+            var expression = ExpressionBuilder.CreateBinaryExpression<Hydra>(nameof(Hydra.FullName), randomPerson.FirstName, ExpressionOperator.Contains);
 
             // Act
             var result = _persons.Where(expression.Compile()).ToList();
@@ -140,7 +140,7 @@
         {
             // Arrange
             var randomFavColors = Utilities.GetRandomItems(_persons.Select(t => t.FavoriteColors));
-            var expression = ExpressionBuilder.CreateBinaryExpression<Person>(nameof(Person.FavoriteColors), randomFavColors, ExpressionOperator.ContainsOnValue);
+            var expression = ExpressionBuilder.CreateBinaryExpression<Hydra>(nameof(Hydra.FavoriteColors), randomFavColors, ExpressionOperator.ContainsOnValue);
 
             // Act
             var result = _persons.Where(expression.Compile()).ToList();
@@ -160,7 +160,7 @@
         {
             // Arrange
             var randomFavNumbers = Utilities.GetRandomItems(_persons.Select(t => t.FavoriteNumbers));
-            var expression = ExpressionBuilder.CreateBinaryExpression<Person>(nameof(Person.FavoriteNumbers), randomFavNumbers, ExpressionOperator.ContainsOnValue);
+            var expression = ExpressionBuilder.CreateBinaryExpression<Hydra>(nameof(Hydra.FavoriteNumbers), randomFavNumbers, ExpressionOperator.ContainsOnValue);
 
             // Act
             var result = _persons.Where(expression.Compile()).ToList();
@@ -180,7 +180,7 @@
         {
             // Arrange
             var randomNames = Utilities.GetRandomItems(_persons.Select(t => t.FullName));
-            var expression = ExpressionBuilder.CreateBinaryExpression<Person>(nameof(Person.FullName), randomNames, ExpressionOperator.ContainsOnValue);
+            var expression = ExpressionBuilder.CreateBinaryExpression<Hydra>(nameof(Hydra.FullName), randomNames, ExpressionOperator.ContainsOnValue);
 
             // Act
             var result = _persons.Where(expression.Compile()).ToList();
@@ -200,7 +200,7 @@
         {
             // Arrange
             var randomAges = Utilities.GetRandomItems(_persons.Select(t => t.Age));
-            var expression = ExpressionBuilder.CreateBinaryExpression<Person>(nameof(Person.Age), randomAges.Select(t => t.ToString()), ExpressionOperator.ContainsOnValue);
+            var expression = ExpressionBuilder.CreateBinaryExpression<Hydra>(nameof(Hydra.Age), randomAges.Select(t => t.ToString()), ExpressionOperator.ContainsOnValue);
 
             // Act
             var result = _persons.Where(expression.Compile()).ToList();
@@ -220,7 +220,7 @@
         {
             // Arrange
             var randomDateOfBirths = Utilities.GetRandomItems(_persons.Select(t => t.DateOfBirth));
-            var expression = ExpressionBuilder.CreateBinaryExpression<Person>(nameof(Person.DateOfBirth), randomDateOfBirths.Select(t => t.ToString("O")), ExpressionOperator.ContainsOnValue);
+            var expression = ExpressionBuilder.CreateBinaryExpression<Hydra>(nameof(Hydra.DateOfBirth), randomDateOfBirths.Select(t => t.ToString("O")), ExpressionOperator.ContainsOnValue);
 
             // Act
             var result = _persons.Where(expression.Compile()).ToList();
@@ -240,7 +240,7 @@
         {
             // Arrange
             var randomFavFruits = Utilities.GetRandomItems(_persons.Select(t => t.FavoriteFruits));
-            var expression = ExpressionBuilder.CreateBinaryExpression<Person>(nameof(Person.FavoriteFruits), randomFavFruits, ExpressionOperator.ContainsOnValue);
+            var expression = ExpressionBuilder.CreateBinaryExpression<Hydra>(nameof(Hydra.FavoriteFruits), randomFavFruits, ExpressionOperator.ContainsOnValue);
 
             // Act
             var result = _persons.Where(expression.Compile()).ToList();
@@ -260,7 +260,7 @@
         {
             // Arrange
             var randomPerson = Utilities.GetRandomItem(_persons);
-            var expression = ExpressionBuilder.CreateBinaryExpression<Person>(nameof(Person.FullName), randomPerson.LastName, ExpressionOperator.EndsWith);
+            var expression = ExpressionBuilder.CreateBinaryExpression<Hydra>(nameof(Hydra.FullName), randomPerson.LastName, ExpressionOperator.EndsWith);
 
             // Act
             var result = _persons.Where(expression.Compile()).ToList();
@@ -280,7 +280,7 @@
         {
             // Arrange
             var randomPerson = Utilities.GetRandomItem(_persons);
-            var expression = ExpressionBuilder.CreateBinaryExpression<Person>(nameof(Person.DateOfBirth), randomPerson.DateOfBirth, ExpressionOperator.Equal);
+            var expression = ExpressionBuilder.CreateBinaryExpression<Hydra>(nameof(Hydra.DateOfBirth), randomPerson.DateOfBirth, ExpressionOperator.Equal);
 
             // Act
             var result = _persons.Where(expression.Compile()).ToList();
@@ -300,7 +300,7 @@
         {
             // Arrange
             var randomPerson = Utilities.GetRandomItem(_persons);
-            var expression = ExpressionBuilder.CreateBinaryExpression<Person>(nameof(Person.Age), randomPerson.Age, ExpressionOperator.Equal);
+            var expression = ExpressionBuilder.CreateBinaryExpression<Hydra>(nameof(Hydra.Age), randomPerson.Age, ExpressionOperator.Equal);
 
             // Act
             var result = _persons.Where(expression.Compile()).ToList();
@@ -320,7 +320,7 @@
         {
             // Arrange
             var randomPerson = Utilities.GetRandomItem(_persons);
-            var expression = ExpressionBuilder.CreateBinaryExpression<Person>(nameof(Person.BestFriend), randomPerson.BestFriend, ExpressionOperator.Equal);
+            var expression = ExpressionBuilder.CreateBinaryExpression<Hydra>(nameof(Hydra.BestFriend), randomPerson.BestFriend, ExpressionOperator.Equal);
 
             // Act
             var result = _persons.Where(expression.Compile()).ToList();
@@ -340,7 +340,7 @@
         {
             // Arrange
             var randomPerson = Utilities.GetRandomItem(_persons);
-            var expression = ExpressionBuilder.CreateBinaryExpression<Person>(nameof(Person.FirstName), randomPerson.FirstName, ExpressionOperator.Equal);
+            var expression = ExpressionBuilder.CreateBinaryExpression<Hydra>(nameof(Hydra.FirstName), randomPerson.FirstName, ExpressionOperator.Equal);
 
             // Act
             var result = _persons.Where(expression.Compile()).ToList();
@@ -360,7 +360,7 @@
         {
             // Arrange
             var randomPerson = Utilities.GetRandomItem(_persons);
-            var expression = ExpressionBuilder.CreateBinaryExpression<Person>(nameof(Person.DateOfBirth), randomPerson.DateOfBirth, ExpressionOperator.GreaterThan);
+            var expression = ExpressionBuilder.CreateBinaryExpression<Hydra>(nameof(Hydra.DateOfBirth), randomPerson.DateOfBirth, ExpressionOperator.GreaterThan);
 
             // Act
             var result = _persons.Where(expression.Compile()).ToList();
@@ -380,7 +380,7 @@
         {
             // Arrange
             var randomPerson = Utilities.GetRandomItem(_persons);
-            var expression = ExpressionBuilder.CreateBinaryExpression<Person>(nameof(Person.Age), randomPerson.Age, ExpressionOperator.GreaterThan);
+            var expression = ExpressionBuilder.CreateBinaryExpression<Hydra>(nameof(Hydra.Age), randomPerson.Age, ExpressionOperator.GreaterThan);
 
             // Act
             var result = _persons.Where(expression.Compile()).ToList();
@@ -400,7 +400,7 @@
         {
             // Arrange
             var randomPerson = Utilities.GetRandomItem(_persons);
-            var expression = ExpressionBuilder.CreateBinaryExpression<Person>(nameof(Person.DateOfBirth), randomPerson.DateOfBirth, ExpressionOperator.GreaterThanOrEqual);
+            var expression = ExpressionBuilder.CreateBinaryExpression<Hydra>(nameof(Hydra.DateOfBirth), randomPerson.DateOfBirth, ExpressionOperator.GreaterThanOrEqual);
 
             // Act
             var result = _persons.Where(expression.Compile()).ToList();
@@ -420,7 +420,7 @@
         {
             // Arrange
             var randomPerson = Utilities.GetRandomItem(_persons);
-            var expression = ExpressionBuilder.CreateBinaryExpression<Person>(nameof(Person.Age), randomPerson.Age, ExpressionOperator.GreaterThanOrEqual);
+            var expression = ExpressionBuilder.CreateBinaryExpression<Hydra>(nameof(Hydra.Age), randomPerson.Age, ExpressionOperator.GreaterThanOrEqual);
 
             // Act
             var result = _persons.Where(expression.Compile()).ToList();
@@ -440,7 +440,7 @@
         {
             // Arrange
             var randomPerson = Utilities.GetRandomItem(_persons);
-            var expression = ExpressionBuilder.CreateBinaryExpression<Person>(nameof(Person.DateOfBirth), randomPerson.DateOfBirth, ExpressionOperator.LessThan);
+            var expression = ExpressionBuilder.CreateBinaryExpression<Hydra>(nameof(Hydra.DateOfBirth), randomPerson.DateOfBirth, ExpressionOperator.LessThan);
 
             // Act
             var result = _persons.Where(expression.Compile()).ToList();
@@ -460,7 +460,7 @@
         {
             // Arrange
             var randomPerson = Utilities.GetRandomItem(_persons);
-            var expression = ExpressionBuilder.CreateBinaryExpression<Person>(nameof(Person.Age), randomPerson.Age, ExpressionOperator.LessThan);
+            var expression = ExpressionBuilder.CreateBinaryExpression<Hydra>(nameof(Hydra.Age), randomPerson.Age, ExpressionOperator.LessThan);
 
             // Act
             var result = _persons.Where(expression.Compile()).ToList();
@@ -480,7 +480,7 @@
         {
             // Arrange
             var randomPerson = Utilities.GetRandomItem(_persons);
-            var expression = ExpressionBuilder.CreateBinaryExpression<Person>(nameof(Person.DateOfBirth), randomPerson.DateOfBirth, ExpressionOperator.LessThanOrEqual);
+            var expression = ExpressionBuilder.CreateBinaryExpression<Hydra>(nameof(Hydra.DateOfBirth), randomPerson.DateOfBirth, ExpressionOperator.LessThanOrEqual);
 
             // Act
             var result = _persons.Where(expression.Compile()).ToList();
@@ -500,7 +500,7 @@
         {
             // Arrange
             var randomPerson = Utilities.GetRandomItem(_persons);
-            var expression = ExpressionBuilder.CreateBinaryExpression<Person>(nameof(Person.Age), randomPerson.Age, ExpressionOperator.LessThanOrEqual);
+            var expression = ExpressionBuilder.CreateBinaryExpression<Hydra>(nameof(Hydra.Age), randomPerson.Age, ExpressionOperator.LessThanOrEqual);
 
             // Act
             var result = _persons.Where(expression.Compile()).ToList();
@@ -520,7 +520,7 @@
         {
             // Arrange
             var randomPerson = Utilities.GetRandomItem(_persons);
-            var expression = ExpressionBuilder.CreateBinaryExpression<Person>(nameof(Person.DateOfBirth), randomPerson.DateOfBirth, ExpressionOperator.NotEqual);
+            var expression = ExpressionBuilder.CreateBinaryExpression<Hydra>(nameof(Hydra.DateOfBirth), randomPerson.DateOfBirth, ExpressionOperator.NotEqual);
 
             // Act
             var result = _persons.Where(expression.Compile()).ToList();
@@ -540,7 +540,7 @@
         {
             // Arrange
             var randomPerson = Utilities.GetRandomItem(_persons);
-            var expression = ExpressionBuilder.CreateBinaryExpression<Person>(nameof(Person.Age), randomPerson.Age, ExpressionOperator.NotEqual);
+            var expression = ExpressionBuilder.CreateBinaryExpression<Hydra>(nameof(Hydra.Age), randomPerson.Age, ExpressionOperator.NotEqual);
 
             // Act
             var result = _persons.Where(expression.Compile()).ToList();
@@ -560,7 +560,7 @@
         {
             // Arrange
             var randomPerson = Utilities.GetRandomItem(_persons);
-            var expression = ExpressionBuilder.CreateBinaryExpression<Person>(nameof(Person.BestFriend), randomPerson.BestFriend, ExpressionOperator.NotEqual);
+            var expression = ExpressionBuilder.CreateBinaryExpression<Hydra>(nameof(Hydra.BestFriend), randomPerson.BestFriend, ExpressionOperator.NotEqual);
 
             // Act
             var result = _persons.Where(expression.Compile()).ToList();
@@ -580,7 +580,7 @@
         {
             // Arrange
             var randomPerson = Utilities.GetRandomItem(_persons);
-            var expression = ExpressionBuilder.CreateBinaryExpression<Person>(nameof(Person.FirstName), randomPerson.FirstName, ExpressionOperator.NotEqual);
+            var expression = ExpressionBuilder.CreateBinaryExpression<Hydra>(nameof(Hydra.FirstName), randomPerson.FirstName, ExpressionOperator.NotEqual);
 
             // Act
             var result = _persons.Where(expression.Compile()).ToList();
@@ -600,7 +600,7 @@
         {
             // Arrange
             var randomPerson = Utilities.GetRandomItem(_persons);
-            var expression = ExpressionBuilder.CreateBinaryExpression<Person>(nameof(Person.FullName), randomPerson.FirstName, ExpressionOperator.StartsWith);
+            var expression = ExpressionBuilder.CreateBinaryExpression<Hydra>(nameof(Hydra.FullName), randomPerson.FirstName, ExpressionOperator.StartsWith);
 
             // Act
             var result = _persons.Where(expression.Compile()).ToList();
