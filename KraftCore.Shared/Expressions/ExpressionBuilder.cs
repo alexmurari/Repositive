@@ -131,7 +131,6 @@
         private static Expression<Func<T, bool>> BuildBinaryExpression<T>(string propertyNameOrPath, object value, ExpressionOperator @operator)
         {
             propertyNameOrPath.ThrowIfNullOrWhitespace(nameof(propertyNameOrPath));
-            value.ThrowIfNull(nameof(value));
 
             var (parameter, property) = BuildAccessor<T>(propertyNameOrPath);
             var (leftExpression, rightExpression) = BuildBinaryExpressionParameters(property, value, @operator);
@@ -427,7 +426,10 @@
             Expression resultValue;
 
             var propertyType = property.Type;
-            var valueType = value.GetType();
+            var valueType = value?.GetType();
+
+            if (!propertyType.IsClass || propertyType.IsCollection())
+                valueType.ThrowIfNull(nameof(value));
 
             if (@operator == ExpressionOperator.ContainsOnValue)
             {
@@ -484,7 +486,7 @@
                 else if (propertyType.IsString())
                 {
                     resultProperty = Expression.Call(property, typeof(string).GetMethod(nameof(string.ToLower), Type.EmptyTypes) ?? throw new InvalidOperationException());
-                    resultValue = Expression.Constant(value.ToString().ToLower());
+                    resultValue = Expression.Constant(value?.ToString().ToLower());
                 }
                 else if (propertyType.IsNumeric())
                 {

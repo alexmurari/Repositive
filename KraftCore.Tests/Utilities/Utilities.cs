@@ -46,16 +46,16 @@
 
             PersonFaker = new Faker<Person>()
                 .StrictMode(true)
-                .RuleFor(t => t.FirstName, f => f.Name.FirstName())
-                .RuleFor(t => t.LastName, f => f.Name.LastName())
-                .RuleFor(t => t.FullName, (f, p) => string.Concat(p.FirstName, " ", p.LastName))
+                .RuleFor(t => t.FirstName, f => f.Name.FirstName().Replace(@"'", @"\'"))
+                .RuleFor(t => t.LastName, f => f.Name.LastName().Replace(@"'", @"\'"))
+                .RuleFor(t => t.FullName, (f, p) => string.Concat(p.FirstName, " ", p.LastName).Replace(@"'", @"\'"))
                 .RuleFor(t => t.DateOfBirth, f => f.Date.Past(100, DateTime.Now.AddYears(-25)))
                 .RuleFor(t => t.Age, (f, p) => DateTime.Now.Year - p.DateOfBirth.Year)
                 .RuleFor(t => t.BestFriend,
                          (f, p) => new Person
                          {
-                             FirstName = f.Name.FirstName(),
-                             LastName = f.Name.LastName(),
+                             FirstName = f.Name.FirstName().Replace(@"'", @"\'"),
+                             LastName = f.Name.LastName().Replace(@"'", @"\'"),
                              DateOfBirth = f.Date.Past(100, DateTime.Now.AddYears(-25)),
                              BestFriend = p
                          })
