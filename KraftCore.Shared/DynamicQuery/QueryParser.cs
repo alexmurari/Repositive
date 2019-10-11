@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Linq;
-    using System.Text;
     using System.Text.RegularExpressions;
     using KraftCore.Shared.Expressions;
     using KraftCore.Shared.Extensions;
@@ -15,36 +14,48 @@
     internal static class QueryParser
     {
         /// <summary>
-        ///     Regular expression to match the operator that aggregate queries.
+        ///     Regular expression that matches the elements (operator, property and values) of a single query.
         /// </summary>
-        private static readonly Regex QueryAggregatorRegex = new Regex("([\\+])(?:(?=(\\\\?))\\2.)[A-Za-z]{1,2}\\1", RegexOptions.Compiled);
+        /// <remarks>
+        ///     Explanation:
+        ///         - Operator part.
+        ///             - <code>^[A-Za-z]{2,3}(?=(\s*\(\s*))</code>
+        ///             - Matches the 2 or 3 first characters in the query string that represents the query operator.
+        ///             - Result location on <see cref="Match"/> object: <see cref="Group"/> name: 'operator'.
+        ///         - Property part.
+        ///             - <code>(?&lt;=^[A-Za-z]{2,3}\s*\(\s*)'(?&lt;property&gt;(?!\.).[a-zA-Z][a-zA-Z0-9._]+)(?&lt;!\.)'\s*(?=(,\s*)))</code>
+        ///             - Matches the name of property that the query targets.
+        ///             - Result location on <see cref="Match"/> object: <see cref="Group"/> name: 'property'.
+        ///         - Value part (when single value).
+        ///             - <code>(?&lt;=(^[a-zA-Z]{2,3}\s*\(\s*\'[a-zA-Z]+\'\s*\,\s*))'(.+?)'\s*(?=\))</code>
+        ///             - Matches the value of the query when it's a single value (non-array).
+        ///             - Result location on <see cref="Match"/> object: <see cref="Group"/> name: 'value'.
+        ///          - Value part (when array of values).
+        ///             - <code>((?:\[\s*|\G(?!\A))('(.+?)')(?:(?:\s*,\s*(?=[^\]]*?\]))|\s*\]))</code>
+        ///             - Matches the value of the query when it's a array of values.
+        ///             - Result location on <see cref="Match"/> object: <see cref="Group"/> name: 'arrayValues'.
+        /// </remarks>
+        private static readonly Regex QueryElementsRegex =
+            new Regex(
+                @"((?<operator>[A-Za-z]{2,3})(?=(\s*\(\s*))|(?<=^[A-Za-z]{2,3}\s*\(\s*)'(?<property>(?!\.).[a-zA-Z][a-zA-Z0-9._]+)(?<!\.)'\s*(?=(,\s*)))|(?<=(^[a-zA-Z]{2,3}\s*\(\s*\'[a-zA-Z\.]+\'\s*\,\s*))'(?<value>.+?)'\s*(?=\))|((?:\[\s*|\G(?!\A))('(?<arrayValues>.+?)')(?:(?:\s*,\s*(?=[^\]]*?\]))|\s*\]))",
+                RegexOptions.Compiled & RegexOptions.ExplicitCapture);
 
         /// <summary>
-        ///     Regular expression to match the operator, property and single value of a query.
+        ///     Regular expression that matches the operators that aggregate queries.
         /// </summary>
-        private static readonly Regex QuerySingleValueRegex =
-            new Regex("^([A-Za-z]{2,3})(?=\\()|(?<=\\()([\"'])(?:(?=(\\\\?))\\3.)[a-zA-Z][a-zA-Z0-9_]+\\2|(?<!\\[)(?<=\\s*\\,\\s*)([\"'])(?:(?=(\\\\?))\\5.)+?\\4(?!\\])", RegexOptions.Compiled);
-
-        /// <summary>
-        ///     Regular expression to match the operator, property and an array of values of a query.
-        /// </summary>
-        private static readonly Regex QueryMultipleValueRegex =
-            new Regex("^^([A-Za-z]{2,3})(?=\\()|(?<=\\()([\"'])(?:(?=(\\\\?))\\3.)[a-zA-Z][a-zA-Z0-9_]+\\2|(?:\\[|\\G(?!^))('[^']+?')\\s*,?\\s*(?=[^\\]]*?\\])", RegexOptions.Compiled);
-
-        /// <summary>
-        ///     The special characters.
-        /// </summary>
-        private static readonly List<Tuple<string, string, string>> SpecialCharacters = new List<Tuple<string, string, string>>
-        {
-            new Tuple<string, string, string>("'", @"\'", "<!&singleQuote&!>")
-        };
+        /// <remarks>
+        ///     - Result location on <see cref="Match"/> object: <see cref="Group"/> number 1.
+        /// </remarks>
+        private static readonly Regex QueryAggregatorRegex = new Regex(@"(?<=[\'\]]\s*\)\s*)\+([a-zA-Z]{2,3})\+(?=\s*[A-Za-z]{2,3}\s*\(\s*\')", RegexOptions.Compiled);
 
         /// <summary>
         ///     The query keywords.
         /// </summary>
         private static readonly Dictionary<string, object> QueryKeywords = new Dictionary<string, object>
         {
-            { "$!NULL!$", null }
+            {
+                "$!NULL!$", null
+            }
         };
 
         /// <summary>
@@ -58,79 +69,25 @@
         /// </returns>
         internal static IEnumerable<QueryInfo> ParseQuery(string query)
         {
-            var operations = QueryAggregatorRegex.Split(query).Select(t => t.Trim('+')).Where(t => !string.IsNullOrWhiteSpace(t)).ToList();
-            var aggregates = QueryAggregatorRegex.Matches(query).Cast<Match>().Select(t => GetExpressionAggregate(t.Value.Trim('+')) ?? throw new InvalidOperationException()).ToList();
+            var operationsAndAggregates = QueryAggregatorRegex.Split(query).ToArray();
+            var operations = operationsAndAggregates.Where((t, i) => i % 2 == 0).ToArray();
+            var aggregates = operationsAndAggregates.Where((t, i) => i % 2 != 0).Select(GetExpressionAggregate).ToArray();
 
-            if (operations.Count - aggregates.Count != 1)
+            if (operations.Length - aggregates.Length != 1)
                 throw new InvalidOperationException("Malformed query: invalid number of operations and aggregates.");
 
-            for (var i = 0; i < operations.Count; i++)
+            for (var i = 0; i < operations.Length; i++)
             {
-                var multipleValueOperation = QueryMultipleValueRegex.Matches(ReplaceEscapedCharacters(operations[i])).Cast<Match>().ToList();
+                var aggregate = i > 0 ? aggregates[i - 1] : null;
+                var operation = QueryElementsRegex.Matches(operations[i]).Cast<Match>().Select(t => t.Groups).ToArray();
 
-                if (multipleValueOperation.Count >= 3)
-                {
-                    var operationElements = multipleValueOperation.Select(t => t.Value.Trim('\'')).ToList();
-                    var valuesArray = multipleValueOperation.Select(t => t.Groups[4].Value.Trim('\'')).Where(t => !string.IsNullOrWhiteSpace(t)).Select(ReplacePlaceholders).ToArray();
+                var queryOperator = GetExpressionOperator(operation.Select(t => t["operator"].Value).FirstOrDefault(t => !string.IsNullOrWhiteSpace(t)));
+                var property = operation.Select(t => t["property"].Value).FirstOrDefault(t => !string.IsNullOrWhiteSpace(t));
+                var value = (object)operation.Select(t => t["value"].Value).FirstOrDefault(t => !string.IsNullOrWhiteSpace(t))
+                    ?? operation.Select(t => t["arrayValues"].Value).Where(t => !string.IsNullOrWhiteSpace(t)).ToArray();
 
-                    yield return new QueryInfo(i > 0 ? (ExpressionAggregate?)aggregates[i - 1] : null,
-                                               GetExpressionOperator(operationElements[0]) ?? throw new InvalidOperationException(),
-                                               operationElements[1],
-                                               ReplaceKeywords(valuesArray));
-
-                    continue;
-                }
-
-                var singleValueOperation = QuerySingleValueRegex.Matches(operations[i]).Cast<Match>().ToList();
-
-                if (singleValueOperation.Count == 3)
-                {
-                    var operationElements = singleValueOperation.Select(t => t.Value.Trim('\'')).ToList();
-
-                    yield return new QueryInfo(i > 0 ? (ExpressionAggregate?)aggregates[i - 1] : null,
-                                               GetExpressionOperator(operationElements[0]) ?? throw new InvalidOperationException(),
-                                               operationElements[1],
-                                               ReplaceKeywords(operationElements[2]));
-                }
+                yield return new QueryInfo(aggregate, queryOperator.GetValueOrDefault(), property, ReplaceKeywords(value));
             }
-        }
-
-        /// <summary>
-        ///     Replaces the escaped special characters in the provided <see cref="string" /> with placeholders.
-        /// </summary>
-        /// <param name="query">
-        ///     The string containing the characters to be replaced.
-        /// </param>
-        /// <returns>
-        ///     The string with the replaced characters.
-        /// </returns>
-        private static string ReplaceEscapedCharacters(string query)
-        {
-            var sb = new StringBuilder(query);
-
-            foreach (var (_, escapedChar, placeholder) in SpecialCharacters)
-                sb = sb.Replace(escapedChar, placeholder);
-
-            return sb.ToString();
-        }
-
-        /// <summary>
-        ///     Replaces the placeholders for special characters in the provided <see cref="string" /> with the actual special characters.
-        /// </summary>
-        /// <param name="query">
-        ///     The string containing the placeholders to be replaced.
-        /// </param>
-        /// <returns>
-        ///     The string with the replaced placeholders.
-        /// </returns>
-        private static string ReplacePlaceholders(string query)
-        {
-            var sb = new StringBuilder(query);
-
-            foreach (var (originalChar, _, placeholder) in SpecialCharacters)
-                sb = sb.Replace(placeholder, originalChar);
-
-            return sb.ToString();
         }
 
         /// <summary>

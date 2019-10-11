@@ -42,7 +42,7 @@
         /// </returns>
         private static Expression<Func<T, bool>> BuildQuery<T>(string query)
         {
-            var queries = QueryParser.ParseQuery(query).ToList();
+            var queries = QueryParser.ParseQuery(query).ToArray();
             Expression<Func<T, bool>> expression = null;
 
             foreach (var queryInfo in queries)
