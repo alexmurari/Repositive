@@ -8,6 +8,8 @@
     using KraftCore.Shared.Expressions;
     using KraftCore.Shared.Extensions;
 
+    // ReSharper disable ParameterOnlyUsedForPreconditionCheck.Local
+
     /// <summary>
     ///     Provides methods to parse the string representation of a query to a object representation.
     /// </summary>
@@ -86,7 +88,24 @@
                 var value = (object)operation.Select(t => t["value"].Value).FirstOrDefault(t => !string.IsNullOrWhiteSpace(t))
                     ?? operation.Select(t => t["arrayValues"].Value).Where(t => !string.IsNullOrWhiteSpace(t)).ToArray();
 
+                ValidateQuery(aggregate, queryOperator, property, value, i > 0);
+
                 yield return new QueryInfo(aggregate, queryOperator.GetValueOrDefault(), property, ReplaceKeywords(value));
+            }
+
+            void ValidateQuery(ExpressionAggregate? aggregate, ExpressionOperator? @operator, string property, object value, bool needAggregate)
+            {
+                if (needAggregate && !aggregate.HasValue)
+                    throw new InvalidOperationException("Malformed query: invalid aggregate operator.");
+
+                if (!@operator.HasValue)
+                    throw new InvalidOperationException("Malformed query: invalid comparison operator.");
+
+                if (string.IsNullOrWhiteSpace(property))
+                    throw new InvalidOperationException("Malformed query: invalid property name/path.");
+
+                if (value == null || (value is string[] stringArray && stringArray.Length == 0))
+                    throw new InvalidOperationException("Malformed query: invalid value.");
             }
         }
 
