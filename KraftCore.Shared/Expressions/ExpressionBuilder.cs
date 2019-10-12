@@ -433,7 +433,7 @@
 
             if (@operator == ExpressionOperator.ContainsOnValue)
             {
-                value = value.ToList();
+                //// value = value.ToList();
 
                 if (propertyType.IsNumeric() && valueType.IsGenericCollection(typeof(string)))
                     value = ParseStringCollectionToNumber(value, propertyType);
@@ -707,40 +707,40 @@
             return result;
         }
 
-        /// <summary>
-        ///     Returns an <see cref="List{T}" /> from an generic collection of objects by enumerating it.
-        /// </summary>
-        /// <param name="collection">
-        ///     The collection to be enumerated.
-        /// </param>
-        /// <returns>
-        ///     The <see cref="object" /> representing the generic list.
-        /// </returns>
-        private static object ToList(this object collection)
-        {
-            var colType = collection.GetType();
+        /////// <summary>
+        ///////     Returns an <see cref="List{T}" /> from an generic collection of objects by enumerating it.
+        /////// </summary>
+        /////// <param name="collection">
+        ///////     The collection to be enumerated.
+        /////// </param>
+        /////// <returns>
+        ///////     The <see cref="object" /> representing the generic list.
+        /////// </returns>
+        ////private static object ToList(this object collection)
+        ////{
+        ////    var colType = collection.GetType();
 
-            if (colType.IsArray)
-                return collection;
+        ////    if (colType.IsArray)
+        ////        return collection;
 
-            if (!colType.IsGenericCollection())
-                throw new ArgumentException("Parameter must be a generic collection to be enumerated.", nameof(collection));
+        ////    if (!colType.IsGenericCollection())
+        ////        throw new ArgumentException("Parameter must be a generic collection to be enumerated.", nameof(collection));
 
-            var valueGenericArgs = colType.GetGenericArguments();
+        ////    var valueGenericArgs = colType.GetGenericArguments();
 
-            if (valueGenericArgs.Length == 1 && colType.IsAssignableFrom(typeof(List<>).MakeGenericType(valueGenericArgs[0])))
-                return collection;
+        ////    if (valueGenericArgs.Length == 1 && colType.IsAssignableFrom(typeof(List<>).MakeGenericType(valueGenericArgs[0])))
+        ////        return collection;
 
-            var containsMethod = typeof(Enumerable).GetMethods()
-                .Single(x => x.Name == nameof(Enumerable.ToList) && x.GetParameters().Length == 1)
-                .MakeGenericMethod(valueGenericArgs[valueGenericArgs.Length - 1]);
+        ////    var containsMethod = typeof(Enumerable).GetMethods()
+        ////        .Single(x => x.Name == nameof(Enumerable.AsEnumerable) && x.GetParameters().Length == 1)
+        ////        .MakeGenericMethod(valueGenericArgs[valueGenericArgs.Length - 1]);
 
-            var parameters = new[]
-            {
-                collection
-            };
+        ////    var parameters = new[]
+        ////    {
+        ////        collection
+        ////    };
 
-            return containsMethod.Invoke(null, parameters);
-        }
+        ////    return containsMethod.Invoke(null, parameters);
+        ////}
     }
 }

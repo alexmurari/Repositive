@@ -33,9 +33,9 @@
         };
 
         /// <summary>
-        ///     The person faker used to generate fake <see cref="Person" /> objects.
+        /// The person list.
         /// </summary>
-        private static readonly Faker<Person> PersonFaker;
+        private static readonly List<Person> PersonList = new List<Person>();
 
         /// <summary>
         ///     Initializes static members of the <see cref="Utilities" /> class.
@@ -44,7 +44,7 @@
         {
             Faker = new Faker();
 
-            PersonFaker = new Faker<Person>()
+            var personFaker = new Faker<Person>()
                 .StrictMode(true)
                 .RuleFor(t => t.FirstName, f => f.Name.FirstName().Replace(@"'", @"\'"))
                 .RuleFor(t => t.LastName, f => f.Name.LastName().Replace(@"'", @"\'"))
@@ -67,20 +67,19 @@
                 .RuleFor(t => t.AccountBalance, f => f.Finance.Amount(0, 1000000, 3))
                 .RuleFor(t => t.LeastFavoriteNumbers, f => f.Random.ListItems(Enumerable.Range(5001, 10000).Select(t => (int?)t).ToList(), 5))
                 .RuleFor(t => t.HasPet, f => f.Random.Bool());
+
+            PersonList.AddRange(personFaker.Generate(1000));
         }
 
         /// <summary>
         ///     Gets an collection of <see cref="Person" /> objects filled with fake data.
         /// </summary>
-        /// <param name="count">
-        ///     The number of entries to be generated.
-        /// </param>
         /// <returns>
         ///     The collection <see cref="Person" /> objects.
         /// </returns>
-        internal static List<Person> GetFakePersonCollection(int count = 150)
+        internal static List<Person> GetFakePersonCollection()
         {
-            return PersonFaker.Generate(count);
+            return PersonList;
         }
 
         /// <summary>

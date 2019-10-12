@@ -55,7 +55,7 @@
                             expression = ExpressionBuilder.CreateBinaryExpression<T>(queryInfo.PropertyName, queryInfo.Value, queryInfo.Operator).And(expression);
                             break;
                         case ExpressionAggregate.Or:
-                            ExpressionBuilder.CreateBinaryExpression<T>(queryInfo.PropertyName, queryInfo.Value, queryInfo.Operator).Or(expression);
+                            expression = ExpressionBuilder.CreateBinaryExpression<T>(queryInfo.PropertyName, queryInfo.Value, queryInfo.Operator).Or(expression);
                             break;
                         default:
                             throw new ArgumentOutOfRangeException();
