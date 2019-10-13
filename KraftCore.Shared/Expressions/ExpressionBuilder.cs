@@ -131,7 +131,6 @@
         private static Expression<Func<T, bool>> BuildBinaryExpression<T>(string propertyNameOrPath, object value, ExpressionOperator @operator)
         {
             propertyNameOrPath.ThrowIfNullOrWhitespace(nameof(propertyNameOrPath));
-            value.ThrowIfNull(nameof(value));
 
             var (parameter, property) = BuildAccessor<T>(propertyNameOrPath);
             var (leftExpression, rightExpression) = BuildBinaryExpressionParameters(property, value, @operator);
@@ -427,18 +426,27 @@
             Expression resultValue;
 
             var propertyType = property.Type;
-            var valueType = value.GetType();
+            var valueType = value?.GetType();
+
+            if (value == null || (value is string[] strCollection && strCollection.Contains(null)))
+            {
+                var type = propertyType.IsGenericCollection() ? propertyType.GetGenericArguments()[0] : propertyType;
+
+                if (type.IsValueType)
+                    throw new InvalidOperationException($"Invalid comparison: provided a null value for comparing with a non-nullable type. Type: {type.Name}.");
+
+                if (value == null)
+                    return (resultProperty, Expression.Convert(Expression.Constant(null), type));
+            }
 
             if (@operator == ExpressionOperator.ContainsOnValue)
             {
-                value = value.ToList();
-
                 if (propertyType.IsNumeric() && valueType.IsGenericCollection(typeof(string)))
                     value = ParseStringCollectionToNumber(value, propertyType);
                 else if (propertyType.IsDateTime() && valueType.IsGenericCollection(typeof(string)))
                     value = ParseStringCollectionToDateTime(value, propertyType.IsNullableType());
                 else if (propertyType.IsBoolean() && valueType.IsGenericCollection(typeof(string)))
-                    value = ParseStringCollectionToBoolean(value, propertyType.IsNullableType());
+                    value = ConvertCollectionToBoolean(value, propertyType.IsNullableType());
 
                 resultValue = Expression.Constant(value);
             }
@@ -455,7 +463,7 @@
                         else if (genericType.IsDateTime() && !valueType.IsDateTime())
                             value = ParseStringToDateTime(value);
                         else if (genericType.IsBoolean() && !valueType.IsBoolean())
-                            value = ParseStringToBoolean(value);
+                            value = ConvertToBoolean(value);
 
                         if (genericType.IsNullableType())
                             resultValue = Expression.Convert(Expression.Constant(value), genericType);
@@ -474,7 +482,7 @@
                     else if (elementType.IsDateTime() && !valueType.IsDateTime())
                         value = ParseStringToDateTime(value);
                     else if (elementType.IsBoolean() && !valueType.IsBoolean())
-                        value = ParseStringToBoolean(value);
+                        value = ConvertToBoolean(value);
 
                     if (elementType.IsNullableType())
                         resultValue = Expression.Convert(Expression.Constant(value), elementType ?? throw new InvalidOperationException());
@@ -495,7 +503,7 @@
                 }
                 else if (propertyType.IsBoolean())
                 {
-                    resultValue = valueType.IsBoolean() ? Expression.Constant(value) : Expression.Constant(ParseStringToBoolean(value));
+                    resultValue = valueType.IsBoolean() ? Expression.Constant(value) : Expression.Constant(ConvertToBoolean(value));
 
                     if (propertyType.IsNullableType())
                         resultValue = Expression.Convert(resultValue, propertyType);
@@ -526,28 +534,16 @@
         /// <exception cref="ArgumentException">
         ///     The exception thrown when the value cannot be converted.
         /// </exception>
-        private static object ParseStringToBoolean(object value)
+        private static bool? ConvertToBoolean(object value)
         {
-            var invokeType = typeof(Convert);
+            if (value == null)
+                return null;
 
-            if (int.TryParse(value as string, out var result))
-                value = result;
-
-            var parameters = new[]
-            {
-                value
-            };
-
-            var argumentTypes = new[]
-            {
-                value.GetType()
-            };
-
-            return invokeType.GetMethod(nameof(Convert.ToBoolean), argumentTypes)?.Invoke(null, parameters);
+            return Convert.ToBoolean(value);
         }
 
         /// <summary>
-        ///     Converts an collection of strings representing a true or false value to it's <see cref="bool" /> equivalents.
+        ///     Converts an collection of objects representing a true or false value to it's <see cref="bool" /> equivalents.
         /// </summary>
         /// <param name="value">
         ///     The collection to be converted.
@@ -561,19 +557,17 @@
         /// <exception cref="ArgumentException">
         ///     The exception thrown when the value cannot be converted.
         /// </exception>
-        private static object ParseStringCollectionToBoolean(object value, bool isNullable = false)
+        private static object ConvertCollectionToBoolean(object value, bool isNullable = false)
         {
-            var propertyType = isNullable ? typeof(bool?) : typeof(bool);
+            if (value is IEnumerable<object> collection)
+            {
+                if (isNullable)
+                    return collection.Select(ConvertToBoolean).ToList();
 
-            if (!(value is IEnumerable<string> collection))
-                return null;
+                return collection.Select(ConvertToBoolean).Cast<bool>().ToList();
+            }
 
-            var result = (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(propertyType));
-
-            foreach (var str in collection)
-                result.Add(ParseStringToBoolean(str));
-
-            return result;
+            return value;
         }
 
         /// <summary>
@@ -593,6 +587,9 @@
         /// </exception>
         private static object ParseStringToNumber(object value, Type propertyType)
         {
+            if (value == null)
+                return null;
+
             propertyType = propertyType.IsNullableType() ? Nullable.GetUnderlyingType(propertyType) : propertyType;
 
             var parameters = new[]
@@ -653,26 +650,15 @@
         /// <exception cref="ArgumentException">
         ///     The exception thrown when the value cannot be converted.
         /// </exception>
-        private static object ParseStringToDateTime(object value)
+        private static DateTime? ParseStringToDateTime(object value)
         {
-            var propertyType = typeof(DateTime);
+            if (value == null)
+                return null;
 
-            var parameters = new[]
-            {
-                value, null
-            };
+            if (DateTime.TryParse(value.ToString(), out var result))
+                return result;
 
-            var argumentTypes = new[]
-            {
-                value.GetType(), propertyType.MakeByRefType()
-            };
-
-            var parseSuccess = (bool?)propertyType.GetMethod(nameof(DateTime.TryParse), argumentTypes)?.Invoke(null, parameters);
-
-            if (parseSuccess.GetValueOrDefault())
-                return parameters[1];
-
-            throw new ArgumentException($"Value '{value}' of type '{value.GetType().Name}' isn't valid for comparing with values of type '{propertyType.Name}'.", nameof(value));
+            throw new ArgumentException($"Value '{value}' of type '{value.GetType().Name}' isn't valid for comparing with values of type '{nameof(DateTime)}'.", nameof(value));
         }
 
         /// <summary>
@@ -692,53 +678,15 @@
         /// </exception>
         private static object ParseStringCollectionToDateTime(object value, bool isNullable = false)
         {
-            var propertyType = isNullable ? typeof(DateTime?) : typeof(DateTime);
-
-            if (!(value is IEnumerable<string> collection))
-                return null;
-
-            var result = (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(propertyType));
-
-            foreach (var str in collection)
-                result.Add(ParseStringToDateTime(str));
-
-            return result;
-        }
-
-        /// <summary>
-        ///     Returns an <see cref="List{T}" /> from an generic collection of objects by enumerating it.
-        /// </summary>
-        /// <param name="collection">
-        ///     The collection to be enumerated.
-        /// </param>
-        /// <returns>
-        ///     The <see cref="object" /> representing the generic list.
-        /// </returns>
-        private static object ToList(this object collection)
-        {
-            var colType = collection.GetType();
-
-            if (colType.IsArray)
-                return collection;
-
-            if (!colType.IsGenericCollection())
-                throw new ArgumentException("Parameter must be a generic collection to be enumerated.", nameof(collection));
-
-            var valueGenericArgs = colType.GetGenericArguments();
-
-            if (valueGenericArgs.Length == 1 && colType.IsAssignableFrom(typeof(List<>).MakeGenericType(valueGenericArgs[0])))
-                return collection;
-
-            var containsMethod = typeof(Enumerable).GetMethods()
-                .Single(x => x.Name == nameof(Enumerable.ToList) && x.GetParameters().Length == 1)
-                .MakeGenericMethod(valueGenericArgs[valueGenericArgs.Length - 1]);
-
-            var parameters = new[]
+            if (value is IEnumerable<string> collection)
             {
-                collection
-            };
+                if (isNullable)
+                    return collection.Select(ParseStringToDateTime).ToList();
 
-            return containsMethod.Invoke(null, parameters);
+                return collection.Select(ParseStringToDateTime).Cast<DateTime>().ToList();
+            }
+
+            return null;
         }
     }
 }
