@@ -428,8 +428,16 @@
             var propertyType = property.Type;
             var valueType = value?.GetType();
 
-            if (!propertyType.IsClass || propertyType.IsCollection())
-                valueType.ThrowIfNull(nameof(value));
+            if (value == null || (value is string[] strCollection && strCollection.Contains(null)))
+            {
+                var type = propertyType.IsGenericCollection() ? propertyType.GetGenericArguments()[0] : propertyType;
+
+                if (type.IsValueType)
+                    throw new InvalidOperationException($"Invalid comparison: provided a null value for comparing with a non-nullable type. Type: {type.Name}.");
+
+                if (value == null)
+                    return (resultProperty, Expression.Convert(Expression.Constant(null), type));
+            }
 
             if (@operator == ExpressionOperator.ContainsOnValue)
             {
@@ -484,7 +492,7 @@
                 else if (propertyType.IsString())
                 {
                     resultProperty = Expression.Call(property, typeof(string).GetMethod(nameof(string.ToLower), Type.EmptyTypes) ?? throw new InvalidOperationException());
-                    resultValue = Expression.Constant(value?.ToString().ToLower());
+                    resultValue = Expression.Constant(value.ToString().ToLower());
                 }
                 else if (propertyType.IsNumeric())
                 {
@@ -526,8 +534,11 @@
         /// <exception cref="ArgumentException">
         ///     The exception thrown when the value cannot be converted.
         /// </exception>
-        private static bool ConvertToBoolean(object value)
+        private static bool? ConvertToBoolean(object value)
         {
+            if (value == null)
+                return null;
+
             return Convert.ToBoolean(value);
         }
 
@@ -551,9 +562,9 @@
             if (value is IEnumerable<object> collection)
             {
                 if (isNullable)
-                    return collection.Select(ConvertToBoolean).Cast<bool?>().ToList();
+                    return collection.Select(ConvertToBoolean).ToList();
 
-                return collection.Select(ConvertToBoolean).ToList();
+                return collection.Select(ConvertToBoolean).Cast<bool>().ToList();
             }
 
             return value;
@@ -576,6 +587,9 @@
         /// </exception>
         private static object ParseStringToNumber(object value, Type propertyType)
         {
+            if (value == null)
+                return null;
+
             propertyType = propertyType.IsNullableType() ? Nullable.GetUnderlyingType(propertyType) : propertyType;
 
             var parameters = new[]
@@ -636,12 +650,15 @@
         /// <exception cref="ArgumentException">
         ///     The exception thrown when the value cannot be converted.
         /// </exception>
-        private static DateTime ParseStringToDateTime(object value)
+        private static DateTime? ParseStringToDateTime(object value)
         {
-            if (DateTime.TryParse(value?.ToString(), out var result))
+            if (value == null)
+                return null;
+
+            if (DateTime.TryParse(value.ToString(), out var result))
                 return result;
 
-            throw new ArgumentException($"Value '{value}' of type '{value?.GetType().Name}' isn't valid for comparing with values of type '{nameof(DateTime)}'.", nameof(value));
+            throw new ArgumentException($"Value '{value}' of type '{value.GetType().Name}' isn't valid for comparing with values of type '{nameof(DateTime)}'.", nameof(value));
         }
 
         /// <summary>
@@ -664,9 +681,9 @@
             if (value is IEnumerable<string> collection)
             {
                 if (isNullable)
-                    return collection.Select(ParseStringToDateTime).Cast<DateTime?>().ToList();
+                    return collection.Select(ParseStringToDateTime).ToList();
 
-                return collection.Select(ParseStringToDateTime).ToList();
+                return collection.Select(ParseStringToDateTime).Cast<DateTime>().ToList();
             }
 
             return null;
