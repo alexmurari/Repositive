@@ -157,6 +157,23 @@
         }
 
         /// <summary>
+        ///     Returns a value indicating whether the provided type is a <see cref="Guid" /> type.
+        /// </summary>
+        /// <param name="type">
+        ///     The type to be checked.
+        /// </param>
+        /// <returns>
+        ///     True if the type is a <see cref="Guid" /> type; otherwise, false.
+        /// </returns>
+        public static bool IsGuid(this Type type)
+        {
+            if (type.IsNullableType())
+                type = Nullable.GetUnderlyingType(type);
+
+            return type == typeof(Guid);
+        }
+
+        /// <summary>
         ///     Returns a value indicating whether the provided type is a <see cref="Nullable{T}" /> type.
         /// </summary>
         /// <param name="type">
