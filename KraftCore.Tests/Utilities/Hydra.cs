@@ -1,7 +1,6 @@
 ﻿namespace KraftCore.Tests.Utilities
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
 
     /// <summary>
@@ -36,6 +35,38 @@
         /// </summary>
         public ICollection<string> StringCollection { get; set; }
 
+        //// Chars
+
+        /// <summary>
+        /// Gets or sets the integer.
+        /// </summary>
+        public char Char { get; set; }
+
+        /// <summary>
+        /// Gets or sets the null allowed integer.
+        /// </summary>
+        public char? NullableChar { get; set; }
+
+        /// <summary>
+        /// Gets or sets the integer array.
+        /// </summary>
+        public char[] CharArray { get; set; }
+
+        /// <summary>
+        /// Gets or sets the null allowed integer array.
+        /// </summary>
+        public char?[] NullableCharArray { get; set; }
+
+        /// <summary>
+        /// Gets or sets the integer collection.
+        /// </summary>
+        public ICollection<char> CharCollection { get; set; }
+
+        /// <summary>
+        /// Gets or sets the null allowed integer collection.
+        /// </summary>
+        public ICollection<char?> NullableCharCollection { get; set; }
+
         //// Integers
 
         /// <summary>
@@ -67,6 +98,38 @@
         /// Gets or sets the null allowed integer collection.
         /// </summary>
         public ICollection<int?> NullableIntegerCollection { get; set; }
+
+        //// Floats
+
+        /// <summary>
+        /// Gets or sets the float.
+        /// </summary>
+        public float Float { get; set; }
+
+        /// <summary>
+        /// Gets or sets the null allowed float.
+        /// </summary>
+        public float? NullableFloat { get; set; }
+
+        /// <summary>
+        /// Gets or sets the float array.
+        /// </summary>
+        public float[] FloatArray { get; set; }
+
+        /// <summary>
+        /// Gets or sets the null allowed float array.
+        /// </summary>
+        public float?[] NullableFloatArray { get; set; }
+
+        /// <summary>
+        /// Gets or sets the float collection.
+        /// </summary>
+        public ICollection<float> FloatCollection { get; set; }
+
+        /// <summary>
+        /// Gets or sets the null allowed float collection.
+        /// </summary>
+        public ICollection<float?> NullableFloatCollection { get; set; }
 
         //// Doubles
 
@@ -230,24 +293,24 @@
 
         // Objects
 
-        /// <summary>
-        /// Gets or sets the object.
-        /// </summary>
-        public object Object { get; set; }
+        /////// <summary>
+        /////// Gets or sets the object.
+        /////// </summary>
+        ////public object Object { get; set; }
 
-        /// <summary>
-        /// Gets or sets the object array.
-        /// </summary>
-        public object[] ObjectArray { get; set; }
+        /////// <summary>
+        /////// Gets or sets the object array.
+        /////// </summary>
+        ////public object[] ObjectArray { get; set; }
 
-        /// <summary>
-        /// Gets or sets the object collection.
-        /// </summary>
-        public ICollection<object> ObjectCollection { get; set; }
+        /////// <summary>
+        /////// Gets or sets the object collection.
+        /////// </summary>
+        ////public ICollection<object> ObjectCollection { get; set; }
 
-        /// <summary>
-        /// Gets or sets the object list.
-        /// </summary>
-        public ArrayList ObjectList { get; set; }
+        /////// <summary>
+        /////// Gets or sets the object list.
+        /////// </summary>
+        ////public ArrayList ObjectList { get; set; }
     }
 }
