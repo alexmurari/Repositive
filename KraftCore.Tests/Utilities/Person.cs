@@ -88,5 +88,15 @@
         ///     Gets or sets the person's optional unique identifier.
         /// </summary>
         public Guid? OptionalPersonGuid { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the person's unique identifier.
+        /// </summary>
+        public char PersonChar { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the person's optional unique identifier.
+        /// </summary>
+        public char? OptionalPersonChar { get; set; }
     }
 }

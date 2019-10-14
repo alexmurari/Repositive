@@ -3,6 +3,7 @@
     using System;
     using System.Linq;
     using System.Linq.Expressions;
+    using KraftCore.Shared.DynamicQuery.Parser;
     using KraftCore.Shared.Expressions;
     using KraftCore.Shared.Extensions;
 
