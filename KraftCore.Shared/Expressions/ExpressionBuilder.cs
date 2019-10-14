@@ -447,6 +447,8 @@
                     value = ParseStringCollectionToDateTime(value, propertyType.IsNullableType());
                 else if (propertyType.IsBoolean() && valueType.IsGenericCollection(typeof(string)))
                     value = ConvertCollectionToBoolean(value, propertyType.IsNullableType());
+                else if (propertyType.IsGuid() && valueType.IsGenericCollection(typeof(string)))
+                    value = ParseStringCollectionToGuid(value, propertyType.IsNullableType());
 
                 resultValue = Expression.Constant(value);
             }
@@ -464,6 +466,8 @@
                             value = ParseStringToDateTime(value);
                         else if (genericType.IsBoolean() && !valueType.IsBoolean())
                             value = ConvertToBoolean(value);
+                        else if (genericType.IsGuid() && !valueType.IsGuid())
+                            value = ParseStringToGuid(value);
 
                         if (genericType.IsNullableType())
                             resultValue = Expression.Convert(Expression.Constant(value), genericType);
@@ -483,6 +487,8 @@
                         value = ParseStringToDateTime(value);
                     else if (elementType.IsBoolean() && !valueType.IsBoolean())
                         value = ConvertToBoolean(value);
+                    else if (elementType.IsGuid() && !valueType.IsGuid())
+                        value = ParseStringToGuid(value);
 
                     if (elementType.IsNullableType())
                         resultValue = Expression.Convert(Expression.Constant(value), elementType ?? throw new InvalidOperationException());
@@ -501,6 +507,13 @@
                     if (propertyType.IsNullableType())
                         resultValue = Expression.Convert(resultValue, propertyType);
                 }
+                else if (propertyType.IsDateTime())
+                {
+                    resultValue = valueType.IsDateTime() ? Expression.Constant(value) : Expression.Constant(ParseStringToDateTime(value));
+
+                    if (propertyType.IsNullableType())
+                        resultValue = Expression.Convert(resultValue, propertyType);
+                }
                 else if (propertyType.IsBoolean())
                 {
                     resultValue = valueType.IsBoolean() ? Expression.Constant(value) : Expression.Constant(ConvertToBoolean(value));
@@ -508,9 +521,9 @@
                     if (propertyType.IsNullableType())
                         resultValue = Expression.Convert(resultValue, propertyType);
                 }
-                else if (propertyType.IsDateTime())
+                else if (propertyType.IsGuid())
                 {
-                    resultValue = valueType.IsDateTime() ? Expression.Constant(value) : Expression.Constant(ParseStringToDateTime(value));
+                    resultValue = valueType.IsGuid() ? Expression.Constant(value) : Expression.Constant(ParseStringToGuid(value));
 
                     if (propertyType.IsNullableType())
                         resultValue = Expression.Convert(resultValue, propertyType);
@@ -529,7 +542,7 @@
         ///     The value to be converted.
         /// </param>
         /// <returns>
-        ///     The <see cref="ConstantExpression" /> representing the converted value.
+        ///     The <see cref="bool" /> representing the converted value.
         /// </returns>
         /// <exception cref="ArgumentException">
         ///     The exception thrown when the value cannot be converted.
@@ -580,7 +593,7 @@
         ///     The numeric type that the value must be parsed to.
         /// </param>
         /// <returns>
-        ///     The <see cref="ConstantExpression" /> representing the converted value.
+        ///     The <see cref="object" /> representing the converted value.
         /// </returns>
         /// <exception cref="ArgumentException">
         ///     The exception thrown when the value cannot be converted.
@@ -620,7 +633,7 @@
         ///     The numeric type that the collection elements must be parsed to.
         /// </param>
         /// <returns>
-        ///     The <see cref="ConstantExpression" /> representing the converted value.
+        ///     The <see cref="object" /> representing the converted value.
         /// </returns>
         /// <exception cref="ArgumentException">
         ///     The exception thrown when the value cannot be converted.
@@ -645,7 +658,7 @@
         ///     The value to be converted.
         /// </param>
         /// <returns>
-        ///     The <see cref="ConstantExpression" /> representing the converted value.
+        ///     The <see cref="DateTime" /> representing the converted value.
         /// </returns>
         /// <exception cref="ArgumentException">
         ///     The exception thrown when the value cannot be converted.
@@ -684,6 +697,57 @@
                     return collection.Select(ParseStringToDateTime).ToList();
 
                 return collection.Select(ParseStringToDateTime).Cast<DateTime>().ToList();
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        ///     Converts the string representation of a globally unique identifier to it's <see cref="Guid" /> equivalent.
+        /// </summary>
+        /// <param name="value">
+        ///     The value to be converted.
+        /// </param>
+        /// <returns>
+        ///     The <see cref="object" /> representing the converted value.
+        /// </returns>
+        /// <exception cref="ArgumentException">
+        ///     The exception thrown when the value cannot be converted.
+        /// </exception>
+        private static Guid? ParseStringToGuid(object value)
+        {
+            if (value == null)
+                return null;
+
+            if (Guid.TryParse(value.ToString(), out var result))
+                return result;
+
+            throw new ArgumentException($"Value '{value}' of type '{value.GetType().Name}' isn't valid for comparing with values of type '{nameof(Guid)}'.", nameof(value));
+        }
+
+        /// <summary>
+        ///     Converts an collection of strings representing globally unique identifiers to it's <see cref="Guid" /> equivalents.
+        /// </summary>
+        /// <param name="value">
+        ///     The collection to be converted.
+        /// </param>
+        /// <param name="isNullable">
+        ///     Indicates whether the <see cref="DateTime" /> type can be null.
+        /// </param>
+        /// <returns>
+        ///     The object representing the converted collection.
+        /// </returns>
+        /// <exception cref="ArgumentException">
+        ///     The exception thrown when the value cannot be converted.
+        /// </exception>
+        private static object ParseStringCollectionToGuid(object value, bool isNullable = false)
+        {
+            if (value is IEnumerable<string> collection)
+            {
+                if (isNullable)
+                    return collection.Select(ParseStringToGuid).ToList();
+
+                return collection.Select(ParseStringToGuid).Cast<Guid>().ToList();
             }
 
             return null;
