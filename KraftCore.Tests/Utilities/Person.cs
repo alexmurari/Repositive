@@ -78,5 +78,15 @@
         ///     Gets or sets a value indicating whether the person has a pet.
         /// </summary>
         public bool HasPet { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the person's unique identifier.
+        /// </summary>
+        public Guid PersonGuid { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the person's optional unique identifier.
+        /// </summary>
+        public Guid? OptionalPersonGuid { get; set; }
     }
 }
