@@ -13,12 +13,12 @@
         /// <summary>
         ///     Returns a value indicating whether the provided type is a collection type.
         /// </summary>
-        /// <param name="type">The type to be checked.</param>
-        /// <returns>True if it is a collection type; otherwise, false.</returns>
         /// <remarks>
         ///     Although <see cref="string" /> implements <see cref="IEnumerable{T}" />, it is not considered a collection type by
         ///     this method.
         /// </remarks>
+        /// <param name="type">The type to be checked.</param>
+        /// <returns>True if it is a collection type; otherwise, false.</returns>
         public static bool IsCollection(this Type type)
         {
             if (type.IsString())
@@ -48,16 +48,16 @@
         /// <summary>
         ///     Returns a value indicating whether the provided type is a generic collection type.
         /// </summary>
+        /// <remarks>
+        ///     Although <see cref="string" /> implements <see cref="IEnumerable{T}" />, it is not considered a collection type by
+        ///     this method.
+        /// </remarks>
         /// <param name="type">
         ///     The type to be checked.
         /// </param>
         /// <returns>
         ///     True if the type is a generic collection; otherwise, false.
         /// </returns>
-        /// <remarks>
-        ///     Although <see cref="string" /> implements <see cref="IEnumerable{T}" />, it is not considered a collection type by
-        ///     this method.
-        /// </remarks>
         public static bool IsGenericCollection(this Type type)
         {
             if (type.IsString())
@@ -71,6 +71,10 @@
         ///     Returns a value indicating whether the provided type is a generic collection and the generic type parameter is the
         ///     same as the provided type.
         /// </summary>
+        /// <remarks>
+        ///     Although <see cref="string" /> implements <see cref="IEnumerable{T}" />, it is not considered a collection type by
+        ///     this method.
+        /// </remarks>
         /// <param name="type">
         ///     The type to be checked.
         /// </param>
@@ -80,10 +84,6 @@
         /// <returns>
         ///     True if the type is a generic collection of the provided generic type argument; otherwise, false.
         /// </returns>
-        /// <remarks>
-        ///     Although <see cref="string" /> implements <see cref="IEnumerable{T}" />, it is not considered a collection type by
-        ///     this method.
-        /// </remarks>
         public static bool IsGenericCollection(this Type type, Type genericTypeArgument)
         {
             if (type.IsString())
@@ -132,7 +132,7 @@
         ///     The type to be checked.
         /// </param>
         /// <returns>
-        ///     True if the type is a string type; otherwise, false.
+        ///     True if the type is a <see cref="string"/> type; otherwise, false.
         /// </returns>
         public static bool IsString(this Type type)
         {
@@ -140,13 +140,13 @@
         }
 
         /// <summary>
-        ///     Returns a value indicating whether the provided type is a <see cref="bool" /> type.
+        ///     Returns a value indicating whether the provided type is a <see cref="char" /> type.
         /// </summary>
         /// <param name="type">
         ///     The type to be checked.
         /// </param>
         /// <returns>
-        ///     True if the type is a <see cref="bool" /> type; otherwise, false.
+        ///     True if the type is a <see cref="char" /> type; otherwise, false.
         /// </returns>
         public static bool IsChar(this Type type)
         {
