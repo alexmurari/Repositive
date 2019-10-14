@@ -68,7 +68,9 @@
                 .RuleFor(t => t.LeastFavoriteNumbers, f => f.Random.ListItems(Enumerable.Range(5001, 10000).Select(t => (int?)t).ToList(), 5))
                 .RuleFor(t => t.HasPet, f => f.Random.Bool())
                 .RuleFor(t => t.PersonGuid, f => f.Random.Guid())
-                .RuleFor(t => t.OptionalPersonGuid, f => f.Random.Guid());
+                .RuleFor(t => t.OptionalPersonGuid, f => f.Random.Guid())
+                .RuleFor(t => t.PersonChar, f => f.Random.Char())
+                .RuleFor(t => t.OptionalPersonChar, f => f.Random.Char());
 
             PersonList.AddRange(personFaker.Generate(1000));
         }

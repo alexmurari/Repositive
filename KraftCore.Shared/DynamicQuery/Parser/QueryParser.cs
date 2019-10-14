@@ -1,4 +1,4 @@
-﻿namespace KraftCore.Shared.DynamicQuery
+﻿namespace KraftCore.Shared.DynamicQuery.Parser
 {
     using System;
     using System.Collections.Generic;

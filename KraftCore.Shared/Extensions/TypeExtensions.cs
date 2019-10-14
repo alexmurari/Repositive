@@ -148,6 +148,23 @@
         /// <returns>
         ///     True if the type is a <see cref="bool" /> type; otherwise, false.
         /// </returns>
+        public static bool IsChar(this Type type)
+        {
+            if (type.IsNullableType())
+                type = Nullable.GetUnderlyingType(type);
+
+            return type == typeof(char);
+        }
+
+        /// <summary>
+        ///     Returns a value indicating whether the provided type is a <see cref="bool" /> type.
+        /// </summary>
+        /// <param name="type">
+        ///     The type to be checked.
+        /// </param>
+        /// <returns>
+        ///     True if the type is a <see cref="bool" /> type; otherwise, false.
+        /// </returns>
         public static bool IsBoolean(this Type type)
         {
             if (type.IsNullableType())

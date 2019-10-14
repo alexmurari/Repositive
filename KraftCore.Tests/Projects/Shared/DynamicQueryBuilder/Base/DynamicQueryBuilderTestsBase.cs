@@ -11,17 +11,9 @@
     public abstract class DynamicQueryBuilderTestsBase
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="DynamicQueryBuilderTestsBase" /> class.
-        /// </summary>
-        protected DynamicQueryBuilderTestsBase()
-        {
-            Persons = Utilities.GetFakePersonCollection();
-        }
-
-        /// <summary>
         ///     Gets the collection of fake persons to be used by the tests.
         /// </summary>
-        protected List<Person> Persons { get; }
+        protected static List<Person> Persons { get; } = Utilities.GetFakePersonCollection();
 
         /// <summary>
         ///     Builds the <see cref="string" /> representing the query from the provided parameters.
