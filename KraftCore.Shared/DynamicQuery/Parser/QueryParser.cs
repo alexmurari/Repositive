@@ -93,9 +93,9 @@
                 yield return new QueryInfo(aggregate, queryOperator.GetValueOrDefault(), property, ReplaceKeywords(value));
             }
 
-            void ValidateQuery(ExpressionAggregate? aggregate, ExpressionOperator? @operator, string property, object value, bool needAggregate)
+            void ValidateQuery(ExpressionAggregate? aggregate, ExpressionOperator? @operator, string property, object value, bool aggregateRequired)
             {
-                if (needAggregate && !aggregate.HasValue)
+                if (aggregateRequired && !aggregate.HasValue)
                     throw new InvalidOperationException("Malformed query: invalid aggregate operator.");
 
                 if (!@operator.HasValue)
