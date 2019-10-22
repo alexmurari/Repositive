@@ -34,11 +34,13 @@
 
             var propertyType = property.Type;
             var propertyUnderlyingType = propertyType.IsGenericCollection() ? propertyType.IsArray ? propertyType.GetElementType() : propertyType.GetGenericArguments()[0] : propertyType;
-            var valueType = value?.GetType();
 
             if (propertyUnderlyingType == null)
                 throw new InvalidOperationException();
-            
+
+            var propertyAbsoluteType = propertyUnderlyingType.IsNullableType() ? Nullable.GetUnderlyingType(propertyUnderlyingType) : propertyUnderlyingType;
+            var valueType = value?.GetType();
+
             switch (value)
             {
                 case null when propertyType.IsValueType && !propertyType.IsNullableType():
@@ -61,7 +63,7 @@
 
             if (@operator == ExpressionOperator.ContainsOnValue)
             {
-                resultValue = Expression.Constant(ParseCollectionValues(value, propertyType));
+                resultValue = Expression.Constant(ParseCollectionValues(value, propertyType, propertyAbsoluteType));
             }
             else
             {
@@ -71,10 +73,6 @@
                     {
                         if (@operator == ExpressionOperator.Contains)
                         {
-                            var propertyAbsoluteType = propertyUnderlyingType.IsNullableType()
-                                ? Nullable.GetUnderlyingType(propertyUnderlyingType)
-                                : propertyUnderlyingType;
-
                             if (propertyAbsoluteType != valueType)
                                 if (propertyUnderlyingType.IsChar())
                                     value = ParseStringToChar(value);
@@ -88,7 +86,9 @@
                                     value = ParseStringToGuid(value);
                         }
                         else
-                            value = ParseCollectionValues(value, propertyUnderlyingType);
+                            value = ParseCollectionValues(value, propertyUnderlyingType, propertyAbsoluteType);
+
+                        valueType = value?.GetType();
 
                         if (!valueType.IsGenericCollection(propertyUnderlyingType) && propertyUnderlyingType.IsNullableType())
                             resultValue = Expression.Convert(Expression.Constant(value), propertyUnderlyingType);
@@ -154,21 +154,24 @@
         /// <param name="propertyType">
         ///     The property type.
         /// </param>
+        /// <param name="propertyAbsoluteType">
+        ///     The absolute underlying property type (if it's a null value type, gets the underlying type).
+        /// </param>
         /// <returns>
         ///     The parsed collection of objects.
         /// </returns>
-        private static object ParseCollectionValues(object value, Type propertyType)
+        private static object ParseCollectionValues(object value, Type propertyType, Type propertyAbsoluteType)
         {
             if (!value.GetType().IsGenericCollection(propertyType))
-                if (propertyType.IsGenericCollection(typeof(char)))
+                if (propertyType.IsGenericCollection(typeof(char)) || propertyAbsoluteType == typeof(char))
                     value = ParseStringCollectionToChar(value, propertyType.IsNullableType());
-                else if (propertyType.IsGenericCollection(TypeExtensions.NumericTypes))
+                else if (propertyType.IsGenericCollection(TypeExtensions.NumericTypes) || TypeExtensions.NumericTypes.Contains(propertyAbsoluteType))
                     value = ParseObjectCollectionToNumber(value, propertyType);
-                else if (propertyType.IsGenericCollection(typeof(DateTime)))
+                else if (propertyType.IsGenericCollection(typeof(DateTime)) || propertyAbsoluteType == typeof(DateTime))
                     value = ParseStringCollectionToDateTime(value, propertyType.IsNullableType());
-                else if (propertyType.IsGenericCollection(typeof(bool)))
+                else if (propertyType.IsGenericCollection(typeof(bool)) || propertyAbsoluteType == typeof(bool))
                     value = ConvertCollectionToBoolean(value, propertyType.IsNullableType());
-                else if (propertyType.IsGenericCollection(typeof(Guid)))
+                else if (propertyType.IsGenericCollection(typeof(Guid)) || propertyAbsoluteType == typeof(Guid))
                     value = ParseStringCollectionToGuid(value, propertyType.IsNullableType());
 
             return value;
