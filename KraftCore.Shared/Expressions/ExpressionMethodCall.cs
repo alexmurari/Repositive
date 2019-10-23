@@ -20,7 +20,7 @@
         /// <returns>The expression representing the call to the method.</returns>
         internal static MethodCallExpression BuildGenericCollectionContainsMethodCall(Expression property, Expression value)
         {
-            return BuildGenericCollectionContainsMethodCall(property, value, null);
+            return BuildEnumerableContainsMethodCall(property, value, null);
         }
 
         /// <summary>
@@ -34,7 +34,7 @@
         /// <returns>The call to the method.</returns>
         internal static MethodCallExpression BuildGenericStringCollectionContainsMethodCall(Expression property, Expression value)
         {
-            return BuildGenericCollectionContainsMethodCall(property, value, StringComparer.OrdinalIgnoreCase);
+            return BuildEnumerableContainsMethodCall(property, value, StringComparer.OrdinalIgnoreCase);
         }
 
         /// <summary>
@@ -111,13 +111,41 @@
         /// <param name="value">
         ///     The expression representing the value to be passed as the method argument.
         /// </param>
+        /// <param name="negate">
+        ///     Informs whether the comparison should be negated (not equal).
+        /// </param>
+        /// <returns>
+        ///     The call to the method.
+        /// </returns>
+        internal static Expression BuildEnumerableSequenceEqualMethodCall(Expression property, Expression value, bool negate = false)
+        {
+            var genericType = property.Type.IsArray ? property.Type.GetElementType() : property.Type.GetGenericArguments()[0];
+
+            var containsMethod = typeof(Enumerable).GetMethods()
+                .Single(x => x.Name == nameof(Enumerable.SequenceEqual) && x.GetParameters().Length == 2)
+                .MakeGenericMethod(genericType);
+
+            var methodCall = Expression.Call(containsMethod, property, value);
+            return negate ? (Expression)Expression.Not(methodCall) : methodCall;
+        }
+
+        /// <summary>
+        ///     Builds an method call expression that represents a call to the '
+        ///     <see cref="Enumerable.Contains{T}(IEnumerable{T}, T, IEqualityComparer{T})" />' method.
+        /// </summary>
+        /// <param name="property">
+        ///     The expression representing the instance for the instance method call.
+        /// </param>
+        /// <param name="value">
+        ///     The expression representing the value to be passed as the method argument.
+        /// </param>
         /// <param name="equalityComparer">
         ///     The equality comparer to be used by the method.
         /// </param>
         /// <returns>
         ///     The call to the method.
         /// </returns>
-        private static MethodCallExpression BuildGenericCollectionContainsMethodCall(Expression property, Expression value, IEqualityComparer equalityComparer)
+        private static MethodCallExpression BuildEnumerableContainsMethodCall(Expression property, Expression value, IEqualityComparer equalityComparer)
         {
             var genericType = property.Type.IsArray ? property.Type.GetElementType() : property.Type.GetGenericArguments()[0];
 

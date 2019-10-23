@@ -50,10 +50,5 @@
         ///     Gets the value.
         /// </summary>
         public object Value { get; }
-
-        /// <summary>
-        ///     Gets a value indicating whether the query value is an array.
-        /// </summary>
-        public bool IsArray => Value is string[];
     }
 }

@@ -150,6 +150,12 @@
                 case ExpressionOperator.GreaterThanOrEqual:
                     body = Expression.GreaterThanOrEqual(leftExpression, rightExpression);
                     break;
+                case ExpressionOperator.Equal when property.Type.IsGenericCollection():
+                    body = ExpressionMethodCallBuilder.BuildEnumerableSequenceEqualMethodCall(leftExpression, rightExpression);
+                    break;
+                case ExpressionOperator.NotEqual when property.Type.IsGenericCollection():
+                    body = ExpressionMethodCallBuilder.BuildEnumerableSequenceEqualMethodCall(leftExpression, rightExpression, true);
+                    break;
                 case ExpressionOperator.Equal:
                     body = Expression.Equal(leftExpression, rightExpression);
                     break;
@@ -202,9 +208,26 @@
         private static (Expression leftExpression, Expression rightExpression) BuildBinaryExpressionParameters(Expression property, object value, ExpressionOperator @operator)
         {
             var propertyType = @operator != ExpressionOperator.ContainsOnValue ? property.Type : value.GetType();
-            var isCollection = propertyType.IsCollection();
+
+            ValidateBinaryExpressionParameters(propertyType, @operator);
 
             var (leftExpression, rightExpression) = ExpressionTypeParser.BuildAccessorAndValue(property, value, @operator);
+
+            return @operator == ExpressionOperator.ContainsOnValue ? (rightExpression, leftExpression) : (leftExpression, rightExpression);
+        }
+
+        /// <summary>
+        ///     Validates the provided parameters for building binary expressions.
+        /// </summary>
+        /// <param name="propertyType">
+        ///     The property type accessed by the expression.
+        /// </param>
+        /// <param name="operator">
+        ///     The comparison operator.
+        /// </param>
+        private static void ValidateBinaryExpressionParameters(Type propertyType, ExpressionOperator @operator)
+        {
+            var isCollection = propertyType.IsCollection();
 
             if (isCollection)
                 ValidateBinaryExpressionParametersForCollection(propertyType, @operator);
@@ -222,11 +245,6 @@
                 ValidateBinaryExpressionParametersForGuid(propertyType, @operator);
             else
                 ValidateBinaryExpressionParametersForObject(propertyType, @operator);
-
-            if (@operator == ExpressionOperator.ContainsOnValue)
-                return (rightExpression, leftExpression);
-
-            return (leftExpression, rightExpression);
         }
 
         /// <summary>
@@ -244,14 +262,14 @@
         /// <exception cref="ArgumentOutOfRangeException">
         ///     Exception thrown when the comparison operator value is out of range.
         /// </exception>
-        private static void ValidateBinaryExpressionParametersForCollection(MemberInfo propertyType, ExpressionOperator @operator)
+        private static void ValidateBinaryExpressionParametersForCollection(Type propertyType, ExpressionOperator @operator)
         {
             switch (@operator)
             {
                 case ExpressionOperator.Contains:
-                case ExpressionOperator.ContainsOnValue:
-                case ExpressionOperator.Equal:
-                case ExpressionOperator.NotEqual:
+                case ExpressionOperator.ContainsOnValue when propertyType.IsCollection():
+                case ExpressionOperator.Equal when propertyType.IsCollection():
+                case ExpressionOperator.NotEqual when propertyType.IsCollection():
                     break;
                 case ExpressionOperator.LessThan:
                 case ExpressionOperator.LessThanOrEqual:
