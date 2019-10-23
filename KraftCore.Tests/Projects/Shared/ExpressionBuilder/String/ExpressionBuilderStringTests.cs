@@ -6,12 +6,23 @@
     using KraftCore.Tests.Projects.Shared.ExpressionBuilder.String.Contracts;
     using KraftCore.Tests.Utilities;
     using Xunit;
+    using Xunit.Abstractions;
 
     /// <summary>
     ///     Unit tests for the dynamic query builder with tests focused on <see cref="string"/> type queries.
     /// </summary>
     public class ExpressionBuilderStringTests : ExpressionBuilderTestBase, IExpressionBuilderStringTests
     {
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="ExpressionBuilderStringTests"/> class.
+        /// </summary>
+        /// <param name="testOutput">
+        ///     The class responsible for providing test output.
+        /// </param>
+        public ExpressionBuilderStringTests(ITestOutputHelper testOutput) : base(testOutput)
+        {
+        }
+
         // String
 
         /// <summary>
@@ -59,16 +70,16 @@
         public void Assert_String_Starts_With_Expression_Is_Generated_Correctly()
         {
             // Arrange
-            var randomHydra = Utilities.GetRandomItem(HydraArmy);
-            var expression = ExpressionBuilder.CreateBinaryExpression<Hydra>(nameof(Hydra.FullName), randomHydra.FirstName, ExpressionOperator.StartsWith);
+            var randomString = Utilities.GetRandomItem(HydraArmy.Select(t => string.Concat(t.FirstName, " ")));
+            var expression = ExpressionBuilder.CreateBinaryExpression<Hydra>(nameof(Hydra.FullName), randomString, ExpressionOperator.StartsWith);
 
             // Act
             var result = HydraArmy.Where(expression.Compile()).ToList();
 
             // Assert
             Assert.NotEmpty(result);
-            Assert.Contains(result, t => t.FullName.StartsWith(randomHydra.FirstName));
-            Assert.DoesNotContain(result, t => t.FullName.StartsWith(randomHydra.FirstName) == false);
+            Assert.Contains(result, t => t.FullName.StartsWith(randomString));
+            Assert.DoesNotContain(result, t => t.FullName.StartsWith(randomString) == false);
         }
 
         /// <summary>
@@ -78,16 +89,16 @@
         public void Assert_String_Ends_With_Expression_Is_Generated_Correctly()
         {
             // Arrange
-            var randomHydra = Utilities.GetRandomItem(HydraArmy);
-            var expression = ExpressionBuilder.CreateBinaryExpression<Hydra>(nameof(Hydra.FullName), randomHydra.LastName, ExpressionOperator.EndsWith);
+            var randomString = Utilities.GetRandomItem(HydraArmy.Select(t => string.Concat(" ", t.LastName)));
+            var expression = ExpressionBuilder.CreateBinaryExpression<Hydra>(nameof(Hydra.FullName), randomString, ExpressionOperator.EndsWith);
 
             // Act
             var result = HydraArmy.Where(expression.Compile()).ToList();
 
             // Assert
             Assert.NotEmpty(result);
-            Assert.Contains(result, t => t.FullName.EndsWith(randomHydra.LastName));
-            Assert.DoesNotContain(result, t => t.FullName.EndsWith(randomHydra.LastName) == false);
+            Assert.Contains(result, t => t.FullName.EndsWith(randomString));
+            Assert.DoesNotContain(result, t => t.FullName.EndsWith(randomString) == false);
         }
 
         /// <summary>
@@ -97,7 +108,7 @@
         public void Assert_String_Contains_Expression_Is_Generated_Correctly()
         {
             // Arrange
-            var randomString = Utilities.GetRandomItem(HydraArmy.Select(t => t.FirstName));
+            var randomString = Utilities.GetRandomItem(HydraArmy.Select(t => string.Concat(t.FirstName, " ")));
             var expression = ExpressionBuilder.CreateBinaryExpression<Hydra>(nameof(Hydra.FullName), randomString, ExpressionOperator.Contains);
 
             // Act

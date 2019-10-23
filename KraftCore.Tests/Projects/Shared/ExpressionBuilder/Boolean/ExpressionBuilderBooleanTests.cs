@@ -5,6 +5,7 @@
     using KraftCore.Tests.Projects.Shared.ExpressionBuilder.Boolean.Contracts;
     using KraftCore.Tests.Utilities;
     using Xunit;
+    using Xunit.Abstractions;
 
     // ReSharper disable InconsistentNaming
 
@@ -13,6 +14,16 @@
     /// </summary>
     public class ExpressionBuilderBooleanTests : ExpressionBuilderTestBase, IExpressionBuilderBooleanTests
     {
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="ExpressionBuilderBooleanTests"/> class.
+        /// </summary>
+        /// <param name="testOutput">
+        ///     The class responsible for providing test output.
+        /// </param>
+        public ExpressionBuilderBooleanTests(ITestOutputHelper testOutput) : base(testOutput)
+        {
+        }
+
         // Boolean
 
         /// <summary>

@@ -6,6 +6,7 @@
     using KraftCore.Tests.Projects.Shared.DynamicQuery.Boolean.Contracts;
     using KraftCore.Tests.Utilities;
     using Xunit;
+    using Xunit.Abstractions;
 
     // ReSharper disable InconsistentNaming
 
@@ -14,6 +15,16 @@
     /// </summary>
     public class DynamicQueryNullableBooleanTests : DynamicQueryTestBase, IDynamicQueryNullableBooleanTests
     {
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="DynamicQueryNullableBooleanTests"/> class.
+        /// </summary>
+        /// <param name="testOutput">
+        ///     The class responsible for providing test output.
+        /// </param>
+        public DynamicQueryNullableBooleanTests(ITestOutputHelper testOutput) : base(testOutput)
+        {
+        }
+
         // Boolean
 
         /// <summary>

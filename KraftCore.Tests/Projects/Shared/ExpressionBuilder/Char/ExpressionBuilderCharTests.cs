@@ -6,12 +6,23 @@
     using KraftCore.Tests.Projects.Shared.ExpressionBuilder.Char.Contracts;
     using KraftCore.Tests.Utilities;
     using Xunit;
+    using Xunit.Abstractions;
 
     /// <summary>
     ///     Unit tests for the dynamic query builder with tests focused on <see cref="char"/> type queries.
     /// </summary>
     public class ExpressionBuilderCharTests : ExpressionBuilderTestBase, IExpressionBuilderCharTests
     {
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="ExpressionBuilderCharTests"/> class.
+        /// </summary>
+        /// <param name="testOutput">
+        ///     The class responsible for providing test output.
+        /// </param>
+        public ExpressionBuilderCharTests(ITestOutputHelper testOutput) : base(testOutput)
+        {
+        }
+
         // Char
 
         /// <summary>

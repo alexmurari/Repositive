@@ -6,6 +6,7 @@
     using KraftCore.Tests.Projects.Shared.DynamicQuery.Decimal.Contracts;
     using KraftCore.Tests.Utilities;
     using Xunit;
+    using Xunit.Abstractions;
 
     // ReSharper disable InconsistentNaming
 
@@ -14,6 +15,16 @@
     /// </summary>
     public class DynamicQueryNullableDecimalTests : DynamicQueryTestBase, IDynamicQueryNullableDecimalTests
     {
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="DynamicQueryNullableDecimalTests"/> class.
+        /// </summary>
+        /// <param name="testOutput">
+        ///     The class responsible for providing test output.
+        /// </param>
+        public DynamicQueryNullableDecimalTests(ITestOutputHelper testOutput) : base(testOutput)
+        {
+        }
+
         // Decimal
 
         /// <summary>

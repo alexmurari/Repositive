@@ -6,6 +6,7 @@
     using KraftCore.Tests.Projects.Shared.ExpressionBuilder.Float.Contracts;
     using KraftCore.Tests.Utilities;
     using Xunit;
+    using Xunit.Abstractions;
 
     // ReSharper disable InconsistentNaming
 
@@ -14,6 +15,16 @@
     /// </summary>
     public class ExpressionBuilderNullableFloatTests : ExpressionBuilderTestBase, IExpressionBuilderNullableFloatTests
     {
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="ExpressionBuilderNullableFloatTests"/> class.
+        /// </summary>
+        /// <param name="testOutput">
+        ///     The class responsible for providing test output.
+        /// </param>
+        public ExpressionBuilderNullableFloatTests(ITestOutputHelper testOutput) : base(testOutput)
+        {
+        }
+
         // Float
 
         /// <summary>

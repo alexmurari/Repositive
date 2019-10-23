@@ -6,6 +6,7 @@
     using KraftCore.Tests.Projects.Shared.DynamicQuery.Integer.Contracts;
     using KraftCore.Tests.Utilities;
     using Xunit;
+    using Xunit.Abstractions;
 
     // ReSharper disable InconsistentNaming
 
@@ -14,6 +15,16 @@
     /// </summary>
     public class DynamicQueryIntegerTests : DynamicQueryTestBase, IDynamicQueryIntegerTests
     {
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="DynamicQueryIntegerTests"/> class.
+        /// </summary>
+        /// <param name="testOutput">
+        ///     The class responsible for providing test output.
+        /// </param>
+        public DynamicQueryIntegerTests(ITestOutputHelper testOutput) : base(testOutput)
+        {
+        }
+
         // Integer
 
         /// <summary>

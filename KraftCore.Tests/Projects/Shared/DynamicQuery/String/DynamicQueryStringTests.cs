@@ -6,12 +6,23 @@
     using KraftCore.Tests.Projects.Shared.DynamicQuery.String.Contracts;
     using KraftCore.Tests.Utilities;
     using Xunit;
+    using Xunit.Abstractions;
 
     /// <summary>
     ///     Unit tests for the dynamic query builder with tests focused on <see cref="string"/> type queries.
     /// </summary>
     public class DynamicQueryStringTests : DynamicQueryTestBase, IDynamicQueryStringTests
     {
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="DynamicQueryStringTests"/> class.
+        /// </summary>
+        /// <param name="testOutput">
+        ///     The class responsible for providing test output.
+        /// </param>
+        public DynamicQueryStringTests(ITestOutputHelper testOutput) : base(testOutput)
+        {
+        }
+
         // String
 
         /// <summary>
@@ -97,7 +108,7 @@
         public void Assert_String_Contains_Dynamic_Query_Expression_Is_Generated_Correctly()
         {
             // Arrange
-            var randomString = Utilities.GetRandomItem(HydraArmy.Select(t => t.FirstName));
+            var randomString = Utilities.GetRandomItem(HydraArmy.Select(t => string.Concat(t.FirstName, " ")));
             var expression = DynamicQueryBuilder.Build<Hydra>(BuildQueryText(nameof(Hydra.FullName), randomString, ExpressionOperator.Contains));
 
             // Act

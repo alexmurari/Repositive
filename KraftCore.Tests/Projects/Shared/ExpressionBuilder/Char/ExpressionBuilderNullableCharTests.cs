@@ -5,6 +5,7 @@
     using KraftCore.Tests.Projects.Shared.ExpressionBuilder.Char.Contracts;
     using KraftCore.Tests.Utilities;
     using Xunit;
+    using Xunit.Abstractions;
 
     // ReSharper disable InconsistentNaming
 
@@ -13,6 +14,16 @@
     /// </summary>
     public class ExpressionBuilderNullableCharTests : ExpressionBuilderTestBase, IExpressionBuilderNullableCharTests
     {
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="ExpressionBuilderNullableCharTests"/> class.
+        /// </summary>
+        /// <param name="testOutput">
+        ///     The class responsible for providing test output.
+        /// </param>
+        public ExpressionBuilderNullableCharTests(ITestOutputHelper testOutput) : base(testOutput)
+        {
+        }
+
         // Char
 
         /// <summary>

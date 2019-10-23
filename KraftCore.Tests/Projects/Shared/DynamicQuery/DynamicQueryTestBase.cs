@@ -4,8 +4,10 @@
     using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Linq.Expressions;
     using KraftCore.Shared.Expressions;
     using KraftCore.Tests.Utilities;
+    using Xunit.Abstractions;
 
     /// <summary>
     ///     Base class for expression builder unit tests.
@@ -15,10 +17,19 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="DynamicQueryTestBase"/> class.
         /// </summary>
-        protected DynamicQueryTestBase()
+        /// <param name="testOutput">
+        ///     The class responsible for providing test output.
+        /// </param>
+        protected DynamicQueryTestBase(ITestOutputHelper testOutput)
         {
+            TestOutput = testOutput;
             HydraArmy = Utilities.GetFakeHydraCollection();
         }
+
+        /// <summary>
+        ///     Gets the test output helper.
+        /// </summary>
+        protected ITestOutputHelper TestOutput { get; }
 
         /// <summary>
         ///     Gets the hydra army.
@@ -105,6 +116,31 @@
                 default:
                     throw new ArgumentOutOfRangeException(nameof(@operator), @operator, null);
             }
+        }
+
+        /// <summary>
+        ///     Writes to the console an error message describing the operation that caused an assert operation to fail.
+        /// </summary>
+        /// <param name="expression">
+        ///     The generated expression.
+        /// </param>
+        /// <param name="property">
+        ///     The property accessed by the expression.
+        /// </param>
+        /// <param name="value">
+        ///     The value used by the expression to compare.
+        /// </param>
+        protected void WriteErrorMessage(LambdaExpression expression, string property, object value)
+        {
+            if (!(value is string) && value is IEnumerable valueCollection)
+            {
+                var valueList = valueCollection.Cast<object>().ToList();
+                value = valueList.Select(t => string.Concat("'", t?.ToString() ?? "$!NULL!$", "'"));
+            }
+
+            TestOutput.WriteLine($"Expression: {expression}");
+            TestOutput.WriteLine($"Property: {property}");
+            TestOutput.WriteLine($"Value: {value}");
         }
     }
 }

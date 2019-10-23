@@ -7,6 +7,7 @@
     using KraftCore.Tests.Projects.Shared.DynamicQuery.Guid.Contracts;
     using KraftCore.Tests.Utilities;
     using Xunit;
+    using Xunit.Abstractions;
 
     // ReSharper disable InconsistentNaming
 
@@ -15,6 +16,16 @@
     /// </summary>
     public class DynamicQueryNullableGuidTests : DynamicQueryTestBase, IDynamicQueryNullableGuidTests
     {
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="DynamicQueryNullableGuidTests"/> class.
+        /// </summary>
+        /// <param name="testOutput">
+        ///     The class responsible for providing test output.
+        /// </param>
+        public DynamicQueryNullableGuidTests(ITestOutputHelper testOutput) : base(testOutput)
+        {
+        }
+
         // Guid
 
         /// <summary>

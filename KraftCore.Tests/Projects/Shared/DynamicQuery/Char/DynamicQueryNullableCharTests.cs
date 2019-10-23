@@ -6,6 +6,7 @@
     using KraftCore.Tests.Projects.Shared.DynamicQuery.Char.Contracts;
     using KraftCore.Tests.Utilities;
     using Xunit;
+    using Xunit.Abstractions;
 
     // ReSharper disable InconsistentNaming
 
@@ -14,6 +15,16 @@
     /// </summary>
     public class DynamicQueryNullableCharTests : DynamicQueryTestBase, IDynamicQueryNullableCharTests
     {
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="DynamicQueryNullableCharTests"/> class.
+        /// </summary>
+        /// <param name="testOutput">
+        ///     The class responsible for providing test output.
+        /// </param>
+        public DynamicQueryNullableCharTests(ITestOutputHelper testOutput) : base(testOutput)
+        {
+        }
+
         // Char
 
         /// <summary>

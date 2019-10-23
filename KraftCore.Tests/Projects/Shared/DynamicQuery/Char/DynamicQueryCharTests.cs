@@ -6,12 +6,23 @@
     using KraftCore.Tests.Projects.Shared.DynamicQuery.Char.Contracts;
     using KraftCore.Tests.Utilities;
     using Xunit;
+    using Xunit.Abstractions;
 
     /// <summary>
     ///     Unit tests for the dynamic query builder with tests focused on <see cref="char"/> type queries.
     /// </summary>
     public class DynamicQueryCharTests : DynamicQueryTestBase, IDynamicQueryCharTests
     {
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="DynamicQueryCharTests"/> class.
+        /// </summary>
+        /// <param name="testOutput">
+        ///     The class responsible for providing test output.
+        /// </param>
+        public DynamicQueryCharTests(ITestOutputHelper testOutput) : base(testOutput)
+        {
+        }
+
         // Char
 
         /// <summary>
