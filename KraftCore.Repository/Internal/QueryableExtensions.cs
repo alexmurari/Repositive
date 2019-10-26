@@ -4,8 +4,8 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
+    using Exprelsior.ExpressionBuilder;
     using KraftCore.Domain.Contracts;
-    using KraftCore.Shared.Expressions;
     using KraftCore.Shared.Extensions;
     using Microsoft.EntityFrameworkCore;
 

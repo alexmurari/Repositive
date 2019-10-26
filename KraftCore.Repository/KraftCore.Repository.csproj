@@ -39,6 +39,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Exprelsior" Version="1.0.0-alpha-1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.6" />
   </ItemGroup>
 
