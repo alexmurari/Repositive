@@ -12,9 +12,9 @@
     internal sealed class Cryptographer : IDisposable
     {
         /// <summary>
-        ///     The cipher algorithm.
+        ///     The symmetric algorithm.
         /// </summary>
-        private readonly RijndaelManaged _cipher;
+        private readonly SymmetricAlgorithm _cipher;
 
         /// <summary>
         ///     The secret key for the algorithm.
@@ -129,6 +129,7 @@
         private static byte GetIvId(string str)
         {
             var x = (byte)str[0];
+
             for (var i = 1; i < str.Length; i++)
                 x = (byte)((x * 0x180) + (byte)str[i]);
 
@@ -143,6 +144,7 @@
         private byte[] GetIv(byte id)
         {
             var iv = new byte[_cipher.BlockSize / 8];
+
             for (var i = 0; i < iv.Length; i++)
                 iv[i] = (byte)(id ^ _key[i]);
 
