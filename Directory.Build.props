@@ -1,0 +1,16 @@
+<Project>
+  <PropertyGroup>
+    <VersionPrefix>1.0.0</VersionPrefix>
+    <VersionSuffix></VersionSuffix>
+    <Authors>KraftSistemas</Authors>
+    <_CurrentYear>$([System.DateTime]::Now.ToString(yyyy))</_CurrentYear>
+    <Copyright>Copyright (c) 2019 - $(_CurrentYear) KraftSistemas</Copyright>
+    <Company>KraftSistemas</Company>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/alexmurari/KraftCore/</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/alexmurari/KraftCore/</PackageProjectUrl>
+    <Product>KraftCore</Product>
+    <PackageReleaseNotes>
+    </PackageReleaseNotes>
+  </PropertyGroup>
+</Project>

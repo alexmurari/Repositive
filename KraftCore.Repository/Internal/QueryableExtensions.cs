@@ -79,7 +79,7 @@
 
             foreach (var key in keys)
             {
-                var keySelector = ExpressionBuilder.CreateAccessorExpression<TEntity, object>(key);
+                var keySelector = ExpressionBuilder.CreateAccessor<TEntity, object>(key);
                 orderedQuery = orderedQuery == null ? query.OrderBy(keySelector) : orderedQuery.ThenBy(keySelector);
             }
 
@@ -131,7 +131,7 @@
 
             foreach (var key in keys)
             {
-                var keySelector = ExpressionBuilder.CreateAccessorExpression<TEntity, object>(key);
+                var keySelector = ExpressionBuilder.CreateAccessor<TEntity, object>(key);
                 orderedQuery = orderedQuery == null ? query.OrderByDescending(keySelector) : orderedQuery.ThenByDescending(keySelector);
             }
 
