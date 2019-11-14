@@ -19,8 +19,7 @@
         /// </summary>
         /// <remarks>
         ///     The path expression must be composed of simple property access expressions together with calls to
-        ///     <code>Select</code> for
-        ///     composing additional includes after including a collection property.
+        ///     <code>Select</code> for composing additional includes after including a collection property.
         /// </remarks>
         /// <example>
         ///     Examples of possible include paths are:
@@ -56,6 +55,27 @@
         }
 
         /// <summary>
+        ///     Sorts the elements of a sequence according to the specified key and order.
+        /// </summary>
+        /// <param name="query">
+        ///     The source <see cref="IQueryable{T}" /> on which to apply the sorting operation.
+        /// </param>
+        /// <param name="orderBy">
+        ///     The key and direction to sort the elements.
+        /// </param>
+        /// <typeparam name="TEntity">
+        ///     The type of entity being queried.
+        /// </typeparam>
+        /// <returns>
+        ///     The <see cref="IQueryable" />.
+        ///     A new <see cref="IQueryable{T}" /> with the defined sorting operation.
+        /// </returns>
+        internal static IQueryable<TEntity> OrderBy<TEntity>(this IQueryable<TEntity> query, (Expression<Func<TEntity, object>> keySelector, SortDirection direction) orderBy)
+        {
+            return orderBy.direction == SortDirection.Ascending ? query.OrderBy(orderBy.keySelector) : query.OrderByDescending(orderBy.keySelector);
+        }
+
+        /// <summary>
         ///     Sorts the elements of a sequence in ascending order according to a collection of keys.
         /// </summary>
         /// <param name="query">
@@ -84,27 +104,6 @@
             }
 
             return orderedQuery ?? query;
-        }
-
-        /// <summary>
-        ///     Sorts the elements of a sequence according to the specified key and order.
-        /// </summary>
-        /// <param name="query">
-        ///     The source <see cref="IQueryable{T}" /> on which to apply the sorting operation.
-        /// </param>
-        /// <param name="orderBy">
-        ///     The key and direction to sort the elements.
-        /// </param>
-        /// <typeparam name="TEntity">
-        ///     The type of entity being queried.
-        /// </typeparam>
-        /// <returns>
-        ///     The <see cref="IQueryable" />.
-        ///     A new <see cref="IQueryable{T}" /> with the defined sorting operation.
-        /// </returns>
-        internal static IQueryable<TEntity> OrderBy<TEntity>(this IQueryable<TEntity> query, (Expression<Func<TEntity, object>> keySelector, SortDirection direction) orderBy)
-        {
-            return orderBy.direction == SortDirection.Ascending ? query.OrderBy(orderBy.keySelector) : query.OrderByDescending(orderBy.keySelector);
         }
 
         /// <summary>
