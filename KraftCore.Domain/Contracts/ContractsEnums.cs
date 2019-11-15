@@ -22,7 +22,7 @@
     public enum QueryTracking
     {
         /// <summary>
-        ///     Utilizes the default query tracking behavior defined in the repository.
+        ///     The default query tracking behavior defined in the database context.
         /// </summary>
         Default,
 
