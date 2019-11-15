@@ -75,9 +75,9 @@
         ///     Gets the entities and total number of elements of the provided type from the database.
         /// </summary>
         /// <param name="includes">The related entities to be included in the query.</param>
-        /// <param name="noTracking">Informs whether the context should track the objects returned in this query. Inform null to use the repository default value.</param>
+        /// <param name="tracking">The query tracking behavior that defines whether or not the entities returned from the query should be tracked by the database context.</param>
         /// <returns>The list of entities fetched by the query and total number of entities of the given type in the database.</returns>
-        (IEnumerable<TEntity> Entities, int Count) Get(Expression<Func<TEntity, object>>[] includes = null, bool? noTracking = null);
+        (IEnumerable<TEntity> Entities, int Count) Get(Expression<Func<TEntity, object>>[] includes = null, QueryTracking tracking = QueryTracking.Default);
 
         /// <summary>
         ///     Gets the entities in a paginated collection and total number of elements of the provided type from the database. <br />
@@ -86,21 +86,21 @@
         /// <param name="skip">The number of contiguous elements to be bypassed when querying the database.</param>
         /// <param name="take">The number of contiguous elements to be returned when querying the database.</param>
         /// <param name="includes">The related entities to be included in the query.</param>
-        /// <param name="noTracking">Informs whether the context should track the objects returned in this query. Inform null to use the repository default value.</param>
+        /// <param name="tracking">The query tracking behavior that defines whether or not the entities returned from the query should be tracked by the database context.</param>
         /// <returns>The paginated list of entities fetched by the query and total number of entities of the given type in the database.</returns>
-        (IEnumerable<TEntity> Entities, int Count) Get(int skip, int take, Expression<Func<TEntity, object>>[] includes = null, bool? noTracking = null);
+        (IEnumerable<TEntity> Entities, int Count) Get(int skip, int take, Expression<Func<TEntity, object>>[] includes = null, QueryTracking tracking = QueryTracking.Default);
 
         /// <summary>
         ///     Gets the entities and total number of elements of the provided type from the database that match the predicate condition.
         /// </summary>
         /// <param name="predicate">The predicate with the query condition.</param>
         /// <param name="includes">The related entities to be included in the query.</param>
-        /// <param name="noTracking">Informs whether the context should track the objects returned in this query. Inform null to use the repository default value.</param>
+        /// <param name="tracking">The query tracking behavior that defines whether or not the entities returned from the query should be tracked by the database context.</param>
         /// <returns>The list of entities fetched by the query and total number of entities of the given type in the database that match the predicate condition.</returns>
         (IEnumerable<TEntity> Entities, int Count) Get(
             Expression<Func<TEntity, bool>> predicate,
             Expression<Func<TEntity, object>>[] includes = null,
-            bool? noTracking = null);
+            QueryTracking tracking = QueryTracking.Default);
 
         /// <summary>
         ///     Gets the entities in a paginated collection and total number of elements of the provided type from the database that match the predicate condition. <br />
@@ -110,14 +110,14 @@
         /// <param name="take">The number of contiguous elements to be returned when querying the database.</param>
         /// <param name="predicate">The predicate with the query condition.</param>
         /// <param name="includes">The related entities to be included in the query.</param>
-        /// <param name="noTracking">Informs whether the context should track the objects returned in this query. Inform null to use the repository default value.</param>
+        /// <param name="tracking">The query tracking behavior that defines whether or not the entities returned from the query should be tracked by the database context.</param>
         /// <returns>The paginated list of entities fetched by the query and total number of entities of the given type in the database that match the predicate condition.</returns>
         (IEnumerable<TEntity> Entities, int Count) Get(
             int skip,
             int take,
             Expression<Func<TEntity, bool>> predicate,
             Expression<Func<TEntity, object>>[] includes = null,
-            bool? noTracking = null);
+            QueryTracking tracking = QueryTracking.Default);
 
         /// <summary>
         ///     Gets the entities and total number of elements of the provided type from the database. <br />
@@ -125,12 +125,12 @@
         /// </summary>
         /// <param name="orderBy">The key and direction to sort the elements.</param>
         /// <param name="includes">The related entities to be included in the query.</param>
-        /// <param name="noTracking">Informs whether the context should track the objects returned in this query. Inform null to use the repository default value.</param>
+        /// <param name="tracking">The query tracking behavior that defines whether or not the entities returned from the query should be tracked by the database context.</param>
         /// <returns>The list of entities fetched by the query and total number of entities of the given type in the database.</returns>
         (IEnumerable<TEntity> Entities, int Count) Get(
             (Expression<Func<TEntity, object>> keySelector, SortDirection direction) orderBy,
             Expression<Func<TEntity, object>>[] includes = null,
-            bool? noTracking = null);
+            QueryTracking tracking = QueryTracking.Default);
 
         /// <summary>
         ///     Gets the entities in a paginated collection and total number of elements of the provided type from the database. <br />
@@ -141,14 +141,14 @@
         /// <param name="take">The number of contiguous elements to be returned when querying the database.</param>
         /// <param name="orderBy">The key and direction to sort the elements.</param>
         /// <param name="includes">The related entities to be included in the query.</param>
-        /// <param name="noTracking">Informs whether the context should track the objects returned in this query. Inform null to use the repository default value.</param>
+        /// <param name="tracking">The query tracking behavior that defines whether or not the entities returned from the query should be tracked by the database context.</param>
         /// <returns>The paginated list of entities fetched by the query and total number of entities of the given type in the database.</returns>
         (IEnumerable<TEntity> Entities, int Count) Get(
             int skip,
             int take,
             (Expression<Func<TEntity, object>> keySelector, SortDirection direction) orderBy,
             Expression<Func<TEntity, object>>[] includes = null,
-            bool? noTracking = null);
+            QueryTracking tracking = QueryTracking.Default);
 
         /// <summary>
         ///     Gets the entities and total number of elements of the provided type from the database that match the predicate condition. <br />
@@ -157,13 +157,13 @@
         /// <param name="predicate">The predicate with the query condition.</param>
         /// <param name="orderBy">The key and direction to sort the elements.</param>
         /// <param name="includes">The related entities to be included in the query.</param>
-        /// <param name="noTracking">Informs whether the context should track the objects returned in this query. Inform null to use the repository default value.</param>
+        /// <param name="tracking">The query tracking behavior that defines whether or not the entities returned from the query should be tracked by the database context.</param>
         /// <returns>The list of entities fetched by the query.</returns>
         (IEnumerable<TEntity> Entities, int Count) Get(
             Expression<Func<TEntity, bool>> predicate,
             (Expression<Func<TEntity, object>> keySelector, SortDirection direction) orderBy,
             Expression<Func<TEntity, object>>[] includes = null,
-            bool? noTracking = null);
+            QueryTracking tracking = QueryTracking.Default);
 
         /// <summary>
         ///     Gets the entities in a paginated collection and total number of elements of the provided type from the database that match the predicate condition. <br />
@@ -175,7 +175,7 @@
         /// <param name="predicate">The predicate with the query condition.</param>
         /// <param name="orderBy">The key and direction to sort the elements.</param>
         /// <param name="includes">The related entities to be included in the query.</param>
-        /// <param name="noTracking">Informs whether the context should track the objects returned in this query. Inform null to use the repository default value.</param>
+        /// <param name="tracking">The query tracking behavior that defines whether or not the entities returned from the query should be tracked by the database context.</param>
         /// <returns>The paginated list of entities fetched by the query and total number of entities of the given type in the database that match the predicate condition.</returns>
         (IEnumerable<TEntity> Entities, int Count) Get(
             int skip,
@@ -183,18 +183,18 @@
             Expression<Func<TEntity, bool>> predicate,
             (Expression<Func<TEntity, object>> keySelector, SortDirection direction) orderBy,
             Expression<Func<TEntity, object>>[] includes = null,
-            bool? noTracking = null);
+            QueryTracking tracking = QueryTracking.Default);
 
         /// <summary>
         ///     Asynchronously gets the entities and total number of elements of the provided type from the database.
         /// </summary>
         /// <param name="includes">The related entities to be included in the query.</param>
-        /// <param name="noTracking">Informs whether the context should track the objects returned in this query. Inform null to use the repository default value.</param>
+        /// <param name="tracking">The query tracking behavior that defines whether or not the entities returned from the query should be tracked by the database context.</param>
         /// <returns>
         ///     A task that represents the asynchronous get operation.
         ///     The task result contains the list of entities fetched by the query and total number of entities of the given type in the database.
         /// </returns>
-        Task<(IEnumerable<TEntity> Entities, int Count)> GetAsync(Expression<Func<TEntity, object>>[] includes = null, bool? noTracking = null);
+        Task<(IEnumerable<TEntity> Entities, int Count)> GetAsync(Expression<Func<TEntity, object>>[] includes = null, QueryTracking tracking = QueryTracking.Default);
 
         /// <summary>
         ///     Asynchronously gets the entities in a paginated collection and total number of elements of the provided type from the database. <br />
@@ -203,19 +203,19 @@
         /// <param name="skip">The number of contiguous elements to be bypassed when querying the database.</param>
         /// <param name="take">The number of contiguous elements to be returned when querying the database.</param>
         /// <param name="includes">The related entities to be included in the query.</param>
-        /// <param name="noTracking">Informs whether the context should track the objects returned in this query. Inform null to use the repository default value.</param>
+        /// <param name="tracking">The query tracking behavior that defines whether or not the entities returned from the query should be tracked by the database context.</param>
         /// <returns>
         ///     A task that represents the asynchronous get operation.
         ///     The task result contains the paginated list of entities fetched by the query and total number of entities of the given type in the database.
         /// </returns>
-        Task<(IEnumerable<TEntity> Entities, int Count)> GetAsync(int skip, int take, Expression<Func<TEntity, object>>[] includes = null, bool? noTracking = null);
+        Task<(IEnumerable<TEntity> Entities, int Count)> GetAsync(int skip, int take, Expression<Func<TEntity, object>>[] includes = null, QueryTracking tracking = QueryTracking.Default);
 
         /// <summary>
         ///     Asynchronously gets the entities and total number of elements of the provided type from the database that match the predicate condition.
         /// </summary>
         /// <param name="predicate">The predicate with the query condition.</param>
         /// <param name="includes">The related entities to be included in the query.</param>
-        /// <param name="noTracking">Informs whether the context should track the objects returned in this query. Inform null to use the repository default value.</param>
+        /// <param name="tracking">The query tracking behavior that defines whether or not the entities returned from the query should be tracked by the database context.</param>
         /// <returns>
         ///     A task that represents the asynchronous get operation.
         ///     The task result contains the list of entities fetched by the query and total number of entities of the given type in the database that match the predicate condition.
@@ -223,7 +223,7 @@
         Task<(IEnumerable<TEntity> Entities, int Count)> GetAsync(
             Expression<Func<TEntity, bool>> predicate,
             Expression<Func<TEntity, object>>[] includes = null,
-            bool? noTracking = null);
+            QueryTracking tracking = QueryTracking.Default);
 
         /// <summary>
         ///     Asynchronously gets the entities in a paginated collection and total number of elements of the provided type from the database that match the predicate condition. <br />
@@ -233,7 +233,7 @@
         /// <param name="take">The number of contiguous elements to be returned when querying the database.</param>
         /// <param name="predicate">The predicate with the query condition.</param>
         /// <param name="includes">The related entities to be included in the query.</param>
-        /// <param name="noTracking">Informs whether the context should track the objects returned in this query. Inform null to use the repository default value.</param>
+        /// <param name="tracking">The query tracking behavior that defines whether or not the entities returned from the query should be tracked by the database context.</param>
         /// <returns>
         ///     A task that represents the asynchronous get operation.
         ///     The task result contains the paginated list of entities fetched by the query and total number of entities of the given type in the database that match the predicate condition.
@@ -243,7 +243,7 @@
             int take,
             Expression<Func<TEntity, bool>> predicate,
             Expression<Func<TEntity, object>>[] includes = null,
-            bool? noTracking = null);
+            QueryTracking tracking = QueryTracking.Default);
 
         /// <summary>
         ///     Asynchronously gets the entities and total number of elements of the provided type from the database. <br />
@@ -251,7 +251,7 @@
         /// </summary>
         /// <param name="orderBy">The key and direction to sort the elements.</param>
         /// <param name="includes">The related entities to be included in the query.</param>
-        /// <param name="noTracking">Informs whether the context should track the objects returned in this query. Inform null to use the repository default value.</param>
+        /// <param name="tracking">The query tracking behavior that defines whether or not the entities returned from the query should be tracked by the database context.</param>
         /// <returns>
         ///     A task that represents the asynchronous get operation.
         ///     The task result contains the list of entities fetched by the query and total number of entities of the given type in the database.
@@ -259,7 +259,7 @@
         Task<(IEnumerable<TEntity> Entities, int Count)> GetAsync(
             (Expression<Func<TEntity, object>> keySelector, SortDirection direction) orderBy,
             Expression<Func<TEntity, object>>[] includes = null,
-            bool? noTracking = null);
+            QueryTracking tracking = QueryTracking.Default);
 
         /// <summary>
         ///     Asynchronously gets the entities in a paginated collection and total number of elements of the provided type from the database. <br />
@@ -270,7 +270,7 @@
         /// <param name="take">The number of contiguous elements to be returned when querying the database.</param>
         /// <param name="orderBy">The key and direction to sort the elements.</param>
         /// <param name="includes">The related entities to be included in the query.</param>
-        /// <param name="noTracking">Informs whether the context should track the objects returned in this query. Inform null to use the repository default value.</param>
+        /// <param name="tracking">The query tracking behavior that defines whether or not the entities returned from the query should be tracked by the database context.</param>
         /// <returns>
         ///     A task that represents the asynchronous get operation.
         ///     The task result contains the paginated list of entities fetched by the query and total number of entities of the given type in the database.
@@ -280,7 +280,7 @@
             int take,
             (Expression<Func<TEntity, object>> keySelector, SortDirection direction) orderBy,
             Expression<Func<TEntity, object>>[] includes = null,
-            bool? noTracking = null);
+            QueryTracking tracking = QueryTracking.Default);
 
         /// <summary>
         ///     Asynchronously gets the entities and total number of elements of the provided type from the database that match the predicate condition. <br />
@@ -289,7 +289,7 @@
         /// <param name="predicate">The predicate with the query condition.</param>
         /// <param name="orderBy">The key and direction to sort the elements.</param>
         /// <param name="includes">The related entities to be included in the query.</param>
-        /// <param name="noTracking">Informs whether the context should track the objects returned in this query. Inform null to use the repository default value.</param>
+        /// <param name="tracking">The query tracking behavior that defines whether or not the entities returned from the query should be tracked by the database context.</param>
         /// <returns>
         ///     A task that represents the asynchronous get operation.
         ///     The task result contains the list of entities fetched by the query and total number of entities of the given type in the database that match the predicate condition.
@@ -298,7 +298,7 @@
             Expression<Func<TEntity, bool>> predicate,
             (Expression<Func<TEntity, object>> keySelector, SortDirection direction) orderBy,
             Expression<Func<TEntity, object>>[] includes = null,
-            bool? noTracking = null);
+            QueryTracking tracking = QueryTracking.Default);
 
         /// <summary>
         ///     Asynchronously gets the entities in a paginated collection and total number of elements of the provided type from the database that match the predicate condition. <br />
@@ -310,7 +310,7 @@
         /// <param name="predicate">The predicate with the query condition.</param>
         /// <param name="orderBy">The key and direction to sort the elements.</param>
         /// <param name="includes">The related entities to be included in the query.</param>
-        /// <param name="noTracking">Informs whether the context should track the objects returned in this query. Inform null to use the repository default value.</param>
+        /// <param name="tracking">The query tracking behavior that defines whether or not the entities returned from the query should be tracked by the database context.</param>
         /// <returns>
         ///     A task that represents the asynchronous get operation.
         ///     The task result contains the paginated list of entities fetched by the query and total number of entities of the given type in the database that match the predicate condition.
@@ -321,7 +321,7 @@
             Expression<Func<TEntity, bool>> predicate,
             (Expression<Func<TEntity, object>> keySelector, SortDirection direction) orderBy,
             Expression<Func<TEntity, object>>[] includes = null,
-            bool? noTracking = null);
+            QueryTracking tracking = QueryTracking.Default);
 
         /// <summary>
         ///     Updates an entity of the provided type in the database repository.
