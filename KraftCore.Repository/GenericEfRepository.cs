@@ -170,7 +170,10 @@
         /// <param name="includes">The related entities to be included in the query.</param>
         /// <param name="tracking">The query tracking behavior that defines whether or not the entities returned from the query should be tracked by the database context.</param>
         /// <returns>The list of entities fetched by the query and total number of entities of the given type in the database that match the predicate condition.</returns>
-        public (IEnumerable<TEntity> Entities, int Count) Get(Expression<Func<TEntity, bool>> predicate, Expression<Func<TEntity, object>>[] includes = null, QueryTracking tracking = QueryTracking.Default)
+        public (IEnumerable<TEntity> Entities, int Count) Get(
+            Expression<Func<TEntity, bool>> predicate,
+            Expression<Func<TEntity, object>>[] includes = null,
+            QueryTracking tracking = QueryTracking.Default)
         {
             var count = DbSet.Where(predicate).Count();
 
@@ -341,7 +344,11 @@
         ///     A task that represents the asynchronous get operation.
         ///     The task result contains the paginated list of entities fetched by the query and total number of entities of the given type in the database.
         /// </returns>
-        public async Task<(IEnumerable<TEntity> Entities, int Count)> GetAsync(int skip, int take, Expression<Func<TEntity, object>>[] includes = null, QueryTracking tracking = QueryTracking.Default)
+        public async Task<(IEnumerable<TEntity> Entities, int Count)> GetAsync(
+            int skip,
+            int take,
+            Expression<Func<TEntity, object>>[] includes = null,
+            QueryTracking tracking = QueryTracking.Default)
         {
             var count = await DbSet.CountAsync().ConfigureAwait(false);
 
@@ -596,10 +603,20 @@
         /// </returns>
         private IQueryable<TEntity> GetQuery(QueryTracking tracking)
         {
-            if (tracking == QueryTracking.Default)
-                return DbSet.AsQueryable();
+            switch (tracking)
+            {
+                case QueryTracking.Default:
+                    return DbSet.AsQueryable();
 
-            return tracking == QueryTracking.TrackAll ? DbSet.AsTracking() : DbSet.AsNoTracking();
+                case QueryTracking.NoTracking:
+                    return DbSet.AsNoTracking();
+
+                case QueryTracking.TrackAll:
+                    return DbSet.AsTracking();
+
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(tracking), tracking, null);
+            }
         }
 
         /// <summary>
