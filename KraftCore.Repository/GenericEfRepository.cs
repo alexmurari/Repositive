@@ -532,8 +532,7 @@
         /// <param name="entity">The object to be updated.</param>
         public void Update(TEntity entity)
         {
-            if (DbContext.Entry(entity).State == EntityState.Detached)
-                DbSet.Update(entity);
+            DbSet.Update(entity);
         }
 
         /// <summary>
@@ -543,8 +542,7 @@
         /// <returns>A task that represents the asynchronous update operation.</returns>
         public Task UpdateAsync(TEntity entity)
         {
-            if (DbContext.Entry(entity).State == EntityState.Detached)
-                DbSet.Update(entity);
+            DbSet.Update(entity);
 
             return Task.CompletedTask;
         }
@@ -555,7 +553,7 @@
         /// <param name="entityCollection">The collection of objects to be updated.</param>
         public void UpdateRange(IEnumerable<TEntity> entityCollection)
         {
-            DbSet.UpdateRange(entityCollection.Where(t => DbContext.Entry(t).State == EntityState.Detached));
+            DbSet.UpdateRange(entityCollection);
         }
 
         /// <summary>
@@ -565,7 +563,7 @@
         /// <returns>A task that represents the asynchronous update range operation.</returns>
         public Task UpdateRangeAsync(IEnumerable<TEntity> entityCollection)
         {
-            DbSet.UpdateRange(entityCollection.Where(t => DbContext.Entry(t).State == EntityState.Detached));
+            DbSet.UpdateRange(entityCollection);
 
             return Task.CompletedTask;
         }
