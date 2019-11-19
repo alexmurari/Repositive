@@ -10,7 +10,7 @@
         /// <summary>
         ///     Performs the specified action on each element of the <see cref="Array" />.
         /// </summary>
-        /// <param name="array">The <see cref="Array" /> object which the action will be performed.</param>
+        /// <param name="array">The <see cref="Array" /> object to perform the action.</param>
         /// <param name="action">The action to be performed.</param>
         public static void ForEach(this Array array, Action<Array, int[]> action)
         {

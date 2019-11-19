@@ -10,7 +10,7 @@
     using Microsoft.EntityFrameworkCore;
 
     /// <summary>
-    ///     Extension methods for <see cref="IQueryable{T}" /> implementations.
+    ///     Extension methods for <see cref="IQueryable{T}" /> interface.
     /// </summary>
     internal static class QueryableExtensions
     {
@@ -23,29 +23,39 @@
         /// </remarks>
         /// <example>
         ///     Examples of possible include paths are:
-        ///     To include a single reference: <c>query.Include(e => e.Level1Reference)</c>
-        ///     To include a single collection: <c>query.Include(e => e.Level1Collection)</c>
+        ///     To include a single reference:
+        ///         <c>query.Include(e => e.Level1Reference)</c>
+        ///     To include a single collection:
+        ///         <c>query.Include(e => e.Level1Collection)</c>
         ///     To include a reference and then a reference one level down:
-        ///     <c>query.Include(e => e.Level1Reference.Level2Reference)</c>
+        ///         <c>query.Include(e => e.Level1Reference.Level2Reference)</c>
         ///     To include a reference and then a collection one level down:
-        ///     <c>query.Include(e => e.Level1Reference.Level2Collection)</c>
+        ///         <c>query.Include(e => e.Level1Reference.Level2Collection)</c>
         ///     To include a collection and then a reference one level down:
-        ///     <c>query.Include(e => e.Level1Collection.Select(l1 => l1.Level2Reference))</c>
+        ///         <c>query.Include(e => e.Level1Collection.Select(l1 => l1.Level2Reference))</c>
         ///     To include a collection and then a collection one level down:
-        ///     <c>query.Include(e => e.Level1Collection.Select(l1 => l1.Level2Collection))</c>
+        ///         <c>query.Include(e => e.Level1Collection.Select(l1 => l1.Level2Collection))</c>
         ///     To include a collection and then a reference one level down:
-        ///     <c>query.Include(e => e.Level1Collection.Select(l1 => l1.Level2Reference))</c>
+        ///         <c>query.Include(e => e.Level1Collection.Select(l1 => l1.Level2Reference))</c>
         ///     To include a collection and then a collection one level down:
-        ///     <c>query.Include(e => e.Level1Collection.Select(l1 => l1.Level2Collection))</c>
+        ///         <c>query.Include(e => e.Level1Collection.Select(l1 => l1.Level2Collection))</c>
         ///     To include a collection, a reference, and a reference two levels down:
-        ///     <c>query.Include(e => e.Level1Collection.Select(l1 => l1.Level2Reference.Level3Reference))</c>
+        ///         <c>query.Include(e => e.Level1Collection.Select(l1 => l1.Level2Reference.Level3Reference))</c>
         ///     To include a collection, a collection, and a reference two levels down:
-        ///     <c>query.Include(e => e.Level1Collection.Select(l1 => l1.Level2Collection.Select(l2 => l2.Level3Reference)))</c>
+        ///         <c>query.Include(e => e.Level1Collection.Select(l1 => l1.Level2Collection.Select(l2 => l2.Level3Reference)))</c>
         /// </example>
-        /// <typeparam name="T">The type of entity being queried.</typeparam>
-        /// <param name="source">The source <see cref="IQueryable{T}" /> on which to call Include.</param>
-        /// <param name="paths">The lambda expressions representing the paths to include.</param>
-        /// <returns>A new <see cref="IQueryable{T}" /> with the defined query path.</returns>
+        /// <typeparam name="T">
+        ///     The type of entity being queried.
+        /// </typeparam>
+        /// <param name="source">
+        ///     The source <see cref="IQueryable{T}" /> on which to call Include.
+        /// </param>
+        /// <param name="paths">
+        ///     The lambda expressions representing the paths to include.
+        /// </param>
+        /// <returns>
+        ///     A new <see cref="IQueryable{T}" /> with the defined query path.
+        /// </returns>
         internal static IQueryable<T> Include<T>(this IQueryable<T> source, params Expression<Func<T, object>>[] paths) where T : class
         {
             if (paths != null)
@@ -67,7 +77,6 @@
         ///     The type of entity being queried.
         /// </typeparam>
         /// <returns>
-        ///     The <see cref="IQueryable" />.
         ///     A new <see cref="IQueryable{T}" /> with the defined sorting operation.
         /// </returns>
         internal static IQueryable<TEntity> OrderBy<TEntity>(this IQueryable<TEntity> query, (Expression<Func<TEntity, object>> keySelector, SortDirection direction) orderBy)
