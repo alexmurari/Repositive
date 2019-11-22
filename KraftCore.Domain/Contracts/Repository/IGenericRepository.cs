@@ -122,14 +122,13 @@
         Task<int> CountAsync(Expression<Func<TEntity, bool>> predicate);
 
         /// <summary>
-        ///     Deletes the entities of the provided type from the database repository that contemplates the predicate condition.
+        ///     Deletes the entities of the provided type from the database repository that satisfy the predicate condition.
         /// </summary>
         /// <param name="predicate">The predicate with the delete condition.</param>
         void Delete(Expression<Func<TEntity, bool>> predicate);
 
         /// <summary>
-        ///     Asynchronously deletes the entities of the provided type from the database repository that contemplates the
-        ///     predicate condition.
+        ///     Asynchronously deletes the entities of the provided type from the database repository that satisfy the predicate condition.
         /// </summary>
         /// <param name="predicate">The predicate with the delete condition.</param>
         /// <returns>A task that represents the asynchronous delete operation.</returns>
@@ -300,7 +299,7 @@
         /// </param>
         /// <param name="includes">The related entities to be included in the query.</param>
         /// <returns>
-        ///     A task that represents the asynchronous get operation.
+        ///     A task that represents the asynchronous query operation.
         ///     The task result contains the list of entities fetched by the query and total number of entities of the given type in the database.
         /// </returns>
         Task<(IEnumerable<TEntity> Entities, int Count)> GetAsync(QueryTracking tracking = QueryTracking.Default, params Expression<Func<TEntity, object>>[] includes);
@@ -316,7 +315,7 @@
         /// </param>
         /// <param name="includes">The related entities to be included in the query.</param>
         /// <returns>
-        ///     A task that represents the asynchronous get operation.
+        ///     A task that represents the asynchronous query operation.
         ///     The task result contains the paginated list of entities fetched by the query and total number of entities of the given type in the database.
         /// </returns>
         Task<(IEnumerable<TEntity> Entities, int Count)> GetAsync(int skip, int take, QueryTracking tracking = QueryTracking.Default, params Expression<Func<TEntity, object>>[] includes);
@@ -331,7 +330,7 @@
         /// </param>
         /// <param name="includes">The related entities to be included in the query.</param>
         /// <returns>
-        ///     A task that represents the asynchronous get operation.
+        ///     A task that represents the asynchronous query operation.
         ///     The task result contains the list of entities fetched by the query and total number of entities of the given type in the database that match the predicate condition.
         /// </returns>
         Task<(IEnumerable<TEntity> Entities, int Count)> GetAsync(
@@ -351,7 +350,7 @@
         /// </param>
         /// <param name="includes">The related entities to be included in the query.</param>
         /// <returns>
-        ///     A task that represents the asynchronous get operation.
+        ///     A task that represents the asynchronous query operation.
         ///     The task result contains the paginated list of entities fetched by the query and total number of entities of the given type in the database that match the predicate condition.
         /// </returns>
         Task<(IEnumerable<TEntity> Entities, int Count)> GetAsync(
@@ -371,7 +370,7 @@
         /// </param>
         /// <param name="includes">The related entities to be included in the query.</param>
         /// <returns>
-        ///     A task that represents the asynchronous get operation.
+        ///     A task that represents the asynchronous query operation.
         ///     The task result contains the list of entities fetched by the query and total number of entities of the given type in the database.
         /// </returns>
         Task<(IEnumerable<TEntity> Entities, int Count)> GetAsync(
@@ -392,7 +391,7 @@
         /// </param>
         /// <param name="includes">The related entities to be included in the query.</param>
         /// <returns>
-        ///     A task that represents the asynchronous get operation.
+        ///     A task that represents the asynchronous query operation.
         ///     The task result contains the paginated list of entities fetched by the query and total number of entities of the given type in the database.
         /// </returns>
         Task<(IEnumerable<TEntity> Entities, int Count)> GetAsync(
@@ -413,7 +412,7 @@
         /// </param>
         /// <param name="includes">The related entities to be included in the query.</param>
         /// <returns>
-        ///     A task that represents the asynchronous get operation.
+        ///     A task that represents the asynchronous query operation.
         ///     The task result contains the list of entities fetched by the query and total number of entities of the given type in the database that match the predicate condition.
         /// </returns>
         Task<(IEnumerable<TEntity> Entities, int Count)> GetAsync(
@@ -436,7 +435,7 @@
         /// </param>
         /// <param name="includes">The related entities to be included in the query.</param>
         /// <returns>
-        ///     A task that represents the asynchronous get operation.
+        ///     A task that represents the asynchronous query operation.
         ///     The task result contains the paginated list of entities fetched by the query and total number of entities of the given type in the database that match the predicate condition.
         /// </returns>
         Task<(IEnumerable<TEntity> Entities, int Count)> GetAsync(
