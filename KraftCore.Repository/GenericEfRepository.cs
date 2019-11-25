@@ -498,8 +498,7 @@
         /// </summary>
         /// <param name="predicate">The predicate with the query condition.</param>
         /// <param name="tracking">
-        ///     The query tracking behavior that defines whether or not the entities returned from the query
-        ///     should be tracked by the database context.
+        ///     The query tracking behavior that defines whether or not the entities returned from the query should be tracked by the database context.
         /// </param>
         /// <param name="includes">The related entities to be included in the query.</param>
         /// <returns>

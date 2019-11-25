@@ -10,15 +10,18 @@
     /// <typeparam name="TEntity">
     ///     The entity type that this service perform operations.
     /// </typeparam>
-    public abstract class GenericService<TEntity> : IGenericService<TEntity> where TEntity : class
+    /// <typeparam name="TEntityRepository">
+    ///     The repository type that queries and saves instances of <typeparamref name="TEntity"/>.
+    /// </typeparam>
+    public abstract class GenericService<TEntity, TEntityRepository> : IGenericService<TEntity, TEntityRepository> where TEntity : class where TEntityRepository : class, IGenericRepository<TEntity>
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="GenericService{TEntity}" /> class.
+        ///     Initializes a new instance of the <see cref="GenericService{TEntity,TEntityRepository}"/> class. 
         /// </summary>
         /// <param name="repository">
-        ///     The repository for this service to query and save instances of <typeparamref name="TEntity" />.
+        ///     The repository for this service to query and save instances of <typeparamref name="TEntity"/>.
         /// </param>
-        protected GenericService(IGenericRepository<TEntity> repository)
+        protected GenericService(TEntityRepository repository)
         {
             Repository = repository.ThrowIfNull(nameof(repository));
         }
@@ -26,6 +29,6 @@
         /// <summary>
         ///     Gets the repository that queries and saves instances of <typeparamref name="TEntity" />.
         /// </summary>
-        protected IGenericRepository<TEntity> Repository { get; }
+        protected TEntityRepository Repository { get; }
     }
 }

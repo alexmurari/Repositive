@@ -122,13 +122,13 @@
         Task<int> CountAsync(Expression<Func<TEntity, bool>> predicate);
 
         /// <summary>
-        ///     Deletes the entities of the provided type from the database repository that satisfy the predicate condition.
+        ///     Deletes the entities of the provided type from the database repository that match the predicate condition.
         /// </summary>
         /// <param name="predicate">The predicate with the delete condition.</param>
         void Delete(Expression<Func<TEntity, bool>> predicate);
 
         /// <summary>
-        ///     Asynchronously deletes the entities of the provided type from the database repository that satisfy the predicate condition.
+        ///     Asynchronously deletes the entities of the provided type from the database repository that match the predicate condition.
         /// </summary>
         /// <param name="predicate">The predicate with the delete condition.</param>
         /// <returns>A task that represents the asynchronous delete operation.</returns>
@@ -325,8 +325,7 @@
         /// </summary>
         /// <param name="predicate">The predicate with the query condition.</param>
         /// <param name="tracking">
-        ///     The query tracking behavior that defines whether or not the entities returned from the query
-        ///     should be tracked by the database context.
+        ///     The query tracking behavior that defines whether or not the entities returned from the query should be tracked by the database context.
         /// </param>
         /// <param name="includes">The related entities to be included in the query.</param>
         /// <returns>
