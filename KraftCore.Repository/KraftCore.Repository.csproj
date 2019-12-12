@@ -9,7 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="Exprelsior" Version="1.0.0-alpha-2" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.0" />
   </ItemGroup>
 
   <ItemGroup>
