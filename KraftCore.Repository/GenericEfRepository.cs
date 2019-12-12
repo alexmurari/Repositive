@@ -225,9 +225,9 @@
         ///     A task that represents the asynchronous find operation.
         ///     The task result contains the entity with the given primary key value.
         /// </returns>
-        public Task<TEntity> FindAsync(params object[] key)
+        public ValueTask<TEntity> FindAsync(params object[] key)
         {
-            return DbSet.FindAsync();
+            return DbSet.FindAsync(key);
         }
 
         /// <summary>

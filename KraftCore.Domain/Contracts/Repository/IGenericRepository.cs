@@ -149,7 +149,7 @@
         ///     A task that represents the asynchronous find operation.
         ///     The task result contains the entity with the given primary key value.
         /// </returns>
-        Task<TEntity> FindAsync(params object[] key);
+        ValueTask<TEntity> FindAsync(params object[] key);
 
         /// <summary>
         ///     Gets the entities of the provided type from the database.

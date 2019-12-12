@@ -7,4 +7,8 @@
     <Description>Generic domain contracts for service/repository patterns.</Description>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.2" />
+  </ItemGroup>
+
 </Project>
