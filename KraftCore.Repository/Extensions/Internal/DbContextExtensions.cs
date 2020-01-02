@@ -1,4 +1,4 @@
-﻿namespace KraftCore.Repository.Internal
+﻿namespace KraftCore.Repository.Extensions.Internal
 {
     using System.Collections.Generic;
     using Microsoft.EntityFrameworkCore;

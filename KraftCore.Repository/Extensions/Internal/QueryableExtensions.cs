@@ -1,4 +1,4 @@
-﻿namespace KraftCore.Repository.Internal
+﻿namespace KraftCore.Repository.Extensions.Internal
 {
     using System;
     using System.Collections.Generic;
@@ -12,7 +12,7 @@
     /// <summary>
     ///     Extension methods for <see cref="IQueryable{T}" /> interface.
     /// </summary>
-    internal static class QueryableExtensions
+    public static class QueryableExtensions
     {
         /// <summary>
         ///     Specifies related entities to include in the query result.

@@ -7,7 +7,7 @@
     using System.Threading.Tasks;
     using KraftCore.Domain.Contracts;
     using KraftCore.Domain.Contracts.Repository;
-    using KraftCore.Repository.Internal;
+    using KraftCore.Repository.Extensions.Internal;
     using KraftCore.Shared.Extensions;
     using Microsoft.EntityFrameworkCore;
 
@@ -636,6 +636,118 @@
             var query = GetQuery(tracking).Include(includes).Where(predicate).OrderBy(orderBy).Skip(skip).Take(take);
 
             var queryResult = await query.ToListAsync().ConfigureAwait(false);
+
+            return (Entities: queryResult, Count: count);
+        }
+
+        /// <summary>
+        ///     Queries the database for the provided type and projects each element of the result sequence into a new form.
+        /// </summary>
+        /// <typeparam name="TResult">
+        ///     The type of the query result.
+        /// </typeparam>
+        /// <param name="queryBuilder">
+        ///     The function to configure the query.
+        /// </param>
+        /// <param name="tracking">
+        ///     The query tracking behavior that defines whether or not the entities returned from the query should be tracked by the database context.
+        /// </param>
+        /// <param name="includes">
+        ///     The related entities to be included in the query.
+        /// </param>
+        /// <returns>
+        ///     The collection of elements fetched from the database and projected into a new form.
+        /// </returns>
+        public IEnumerable<TResult> Query<TResult>(Func<IQueryable<TEntity>, IQueryable<TResult>> queryBuilder, QueryTracking tracking = QueryTracking.Default, params Expression<Func<TEntity, object>>[] includes)
+        {
+            var query = GetQuery(tracking).Include(includes);
+
+            return queryBuilder(query).ToList();
+        }
+
+        /// <summary>
+        ///     Queries the database for the provided type and returns each element projected into a
+        ///     new form in a paginated collection along the total number of elements in the database.
+        /// </summary>
+        /// <typeparam name="TResult">
+        ///     The type of the query result.
+        /// </typeparam>
+        /// <param name="skip">The number of contiguous elements to be bypassed when querying the database.</param>
+        /// <param name="take">The number of contiguous elements to be returned when querying the database.</param>
+        /// <param name="queryBuilder">
+        ///     The function to configure the query.
+        /// </param>
+        /// <param name="tracking">
+        ///     The query tracking behavior that defines whether or not the entities returned from the query should be tracked by the database context.
+        /// </param>
+        /// <param name="includes">The related entities to be included in the query.</param>
+        /// <returns>
+        ///     A tuple with the paginated collection of elements fetched and projected into a new form and the total number of entities of the provided type in the database.
+        /// </returns>
+        public (IEnumerable<TResult> Entities, int Count) Query<TResult>(int skip, int take, Func<IQueryable<TEntity>, IQueryable<TResult>> queryBuilder, QueryTracking tracking = QueryTracking.Default, params Expression<Func<TEntity, object>>[] includes)
+        {
+            var query = queryBuilder(GetQuery(tracking).Include(includes));
+
+            var count = query.Count();
+
+            var queryResult = query.Skip(skip).Take(take).ToList();
+
+            return (Entities: queryResult, Count: count);
+        }
+
+        /// <summary>
+        ///     Asynchronously queries the database for the provided type and projects each element of the result sequence into a new form.
+        /// </summary>
+        /// <typeparam name="TResult">
+        ///     The type of the query result.
+        /// </typeparam>
+        /// <param name="queryBuilder">
+        ///     The function to configure the query.
+        /// </param>
+        /// <param name="tracking">
+        ///     The query tracking behavior that defines whether or not the entities returned from the query should be tracked by the database context.
+        /// </param>
+        /// <param name="includes">
+        ///     The related entities to be included in the query.
+        /// </param>
+        /// <returns>
+        ///     A task that represents the asynchronous query operation.
+        ///     The task result contains the collection of elements fetched from the database and projected to a new form.
+        /// </returns>
+        public async Task<IEnumerable<TResult>> QueryAsync<TResult>(Func<IQueryable<TEntity>, IQueryable<TResult>> queryBuilder, QueryTracking tracking = QueryTracking.Default, params Expression<Func<TEntity, object>>[] includes)
+        {
+            var query = GetQuery(tracking).Include(includes);
+
+            return await queryBuilder(query).ToListAsync().ConfigureAwait(false);
+        }
+
+        /// <summary>
+        ///     Asynchronously queries the database for the provided type and returns each element projected
+        ///     into a new form in a paginated collection along the total number of elements in the database.
+        /// </summary>
+        /// <typeparam name="TResult">
+        ///     The type of the query result.
+        /// </typeparam>
+        /// <param name="skip">The number of contiguous elements to be bypassed when querying the database.</param>
+        /// <param name="take">The number of contiguous elements to be returned when querying the database.</param>
+        /// <param name="queryBuilder">
+        ///     The function to configure the query.
+        /// </param>
+        /// <param name="tracking">
+        ///     The query tracking behavior that defines whether or not the entities returned from the query should be tracked by the database context.
+        /// </param>
+        /// <param name="includes">The related entities to be included in the query.</param>
+        /// <returns>
+        ///     A task that represents the asynchronous query operation.
+        ///     The task result contains a tuple with the paginated collection of elements fetched and projected into a new form and the total number of entities of the provided type in the database.
+        /// </returns>
+        public async Task<(IEnumerable<TResult> Entities, int Count)> QueryAsync<TResult>(int skip, int take, Func<IQueryable<TEntity>, IQueryable<TResult>> queryBuilder, QueryTracking tracking = QueryTracking.Default, params Expression<Func<TEntity, object>>[] includes)
+        {
+            var query = queryBuilder(GetQuery(tracking).Include(includes));
+
+            var count = await query.CountAsync().ConfigureAwait(false);
+
+            var queryResult = await query.Skip(skip).Take(take).ToListAsync().ConfigureAwait(false);
 
             return (Entities: queryResult, Count: count);
         }
