@@ -2,14 +2,14 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Description>Generic service implementation based on KraftCore.Domain contract.</Description>
+    <Description>Generic service implementation based on Repositive.Domain contract.</Description>
     <GeneratePackageOnBuild Condition=" '$(Configuration)' == 'Release' ">true</GeneratePackageOnBuild>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\KraftCore.Domain\KraftCore.Domain.csproj" />
-    <ProjectReference Include="..\KraftCore.Shared\KraftCore.Shared.csproj" />
+    <ProjectReference Include="..\Repositive.Domain\Repositive.Domain.csproj" />
+    <ProjectReference Include="..\Repositive.Shared\Repositive.Shared.csproj" />
   </ItemGroup>
 
 </Project>

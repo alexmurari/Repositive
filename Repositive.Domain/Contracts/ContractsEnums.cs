@@ -1,4 +1,4 @@
-﻿namespace KraftCore.Domain.Contracts
+﻿namespace Repositive.Domain.Contracts
 {
     /// <summary>
     ///     Directions which elements of a sequence can be sorted.

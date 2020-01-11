@@ -1,4 +1,4 @@
-﻿namespace KraftCore.Shared.Extensions
+﻿namespace Repositive.Shared.Extensions
 {
     using System;
     using System.Linq;

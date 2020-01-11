@@ -1,16 +1,16 @@
-﻿namespace KraftCore.Repository.Extensions.Internal
+﻿namespace Repositive.Repository.Extensions.Internal
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
     using Exprelsior.ExpressionBuilder;
-    using KraftCore.Domain.Contracts;
-    using KraftCore.Shared.Extensions;
     using Microsoft.EntityFrameworkCore;
+    using Repositive.Domain.Contracts;
+    using Repositive.Shared.Extensions;
 
     /// <summary>
-    ///     Extension methods for <see cref="IQueryable{T}" /> interface.
+    ///     Extension methods for <see cref="IQueryable" /> interface.
     /// </summary>
     internal static class QueryableExtensions
     {

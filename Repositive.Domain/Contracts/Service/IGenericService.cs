@@ -1,6 +1,6 @@
-﻿namespace KraftCore.Domain.Contracts.Service
+﻿namespace Repositive.Domain.Contracts.Service
 {
-    using KraftCore.Domain.Contracts.Repository;
+    using Repositive.Domain.Contracts.Repository;
 
     // ReSharper disable once UnusedTypeParameter
 

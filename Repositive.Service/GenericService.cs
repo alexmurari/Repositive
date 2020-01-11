@@ -1,8 +1,8 @@
-﻿namespace KraftCore.Service
+﻿namespace Repositive.Service
 {
-    using KraftCore.Domain.Contracts.Repository;
-    using KraftCore.Domain.Contracts.Service;
-    using KraftCore.Shared.Extensions;
+    using Repositive.Domain.Contracts.Repository;
+    using Repositive.Domain.Contracts.Service;
+    using Repositive.Shared.Extensions;
 
     /// <summary>
     ///     Base class for generic services that operates on instances of <typeparamref name="TEntity" />.
