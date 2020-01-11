@@ -12,7 +12,7 @@
     /// <summary>
     ///     Extension methods for <see cref="IQueryable{T}" /> interface.
     /// </summary>
-    public static class QueryableExtensions
+    internal static class QueryableExtensions
     {
         /// <summary>
         ///     Specifies related entities to include in the query result.

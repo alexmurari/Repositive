@@ -667,7 +667,7 @@
 
         /// <summary>
         ///     Queries the database for the provided type and returns each element projected into a
-        ///     new form in a paginated collection along the total number of elements in the database.
+        ///     new form in a paginated collection along the total number of elements of that type in the database.
         /// </summary>
         /// <typeparam name="TResult">
         ///     The type of the query result.
@@ -723,7 +723,7 @@
 
         /// <summary>
         ///     Asynchronously queries the database for the provided type and returns each element projected
-        ///     into a new form in a paginated collection along the total number of elements in the database.
+        ///     into a new form in a paginated collection along the total number of elements of that type in the database.
         /// </summary>
         /// <typeparam name="TResult">
         ///     The type of the query result.
