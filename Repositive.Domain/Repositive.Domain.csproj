@@ -7,6 +7,7 @@
     <Description>Generic domain contracts for service/repository patterns.</Description>
     <PackageIcon>icon.png</PackageIcon>
     <PackageIconUrl />
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
   </PropertyGroup>
 
   <ItemGroup>

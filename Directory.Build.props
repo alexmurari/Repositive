@@ -7,6 +7,7 @@
     <Company>Alexandre Murari Junior</Company>
     <_CurrentYear>$([System.DateTime]::Now.ToString(yyyy))</_CurrentYear>
     <Copyright>Copyright (c) 2019 - $(_CurrentYear) $(Company)</Copyright>
+    <PackageTags>c# .netstandard repository pattern entityframeworkcore</PackageTags>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/alexmurari/Repositive/</RepositoryUrl>
     <PackageProjectUrl>https://github.com/alexmurari/Repositive/</PackageProjectUrl>
