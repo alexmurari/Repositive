@@ -5,6 +5,13 @@
     <Description>Shared classes, methods and extensions that provides a sort of utilities for project development.</Description>
     <GeneratePackageOnBuild Condition=" '$(Configuration)' == 'Release' ">true</GeneratePackageOnBuild>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <PackageIcon>icon.png</PackageIcon>
+    <PackageIconUrl />
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\icon.png" Pack="true" Visible="false" PackagePath="" />
+    <None Include="..\LICENSE" Pack="true" Visible="false" PackagePath="" />
+  </ItemGroup>
 
 </Project>

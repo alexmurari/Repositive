@@ -5,10 +5,17 @@
     <GeneratePackageOnBuild Condition=" '$(Configuration)' == 'Release' ">true</GeneratePackageOnBuild>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <Description>Generic domain contracts for service/repository patterns.</Description>
+    <PackageIcon>icon.png</PackageIcon>
+    <PackageIconUrl />
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.2" />
+    <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\icon.png" Pack="true" Visible="false" PackagePath="" />
+    <None Include="..\LICENSE" Pack="true" Visible="false" PackagePath="" />
   </ItemGroup>
 
 </Project>

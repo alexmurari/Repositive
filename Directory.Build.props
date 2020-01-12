@@ -11,6 +11,7 @@
     <RepositoryUrl>https://github.com/alexmurari/Repositive/</RepositoryUrl>
     <PackageProjectUrl>https://github.com/alexmurari/Repositive/</PackageProjectUrl>
     <PackageReleaseNotes>
+      - First public release.
     </PackageReleaseNotes>
   </PropertyGroup>
 </Project>

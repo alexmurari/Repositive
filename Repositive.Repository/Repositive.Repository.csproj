@@ -5,6 +5,8 @@
     <Description>Generic repository implementation based on Repositive.Domain contract.</Description>
     <GeneratePackageOnBuild Condition=" '$(Configuration)' == 'Release' ">true</GeneratePackageOnBuild>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <PackageIcon>icon.png</PackageIcon>
+    <PackageIconUrl />
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,6 +17,11 @@
   <ItemGroup>
     <ProjectReference Include="..\Repositive.Domain\Repositive.Domain.csproj" />
     <ProjectReference Include="..\Repositive.Shared\Repositive.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\icon.png" Pack="true" Visible="false" PackagePath="" />
+    <None Include="..\LICENSE" Pack="true" Visible="false" PackagePath="" />
   </ItemGroup>
 
 </Project>
