@@ -240,7 +240,7 @@
         /// <returns>The collection of entities fetched from the database.</returns>
         public IEnumerable<TEntity> Get(QueryTracking tracking = QueryTracking.Default, params Expression<Func<TEntity, object>>[] includes)
         {
-            var query = GetQuery(tracking).Include(includes).OrderBy(GetEntityPrimaryKeyNames());
+            var query = GetQuery(tracking).Include(includes);
 
             var queryResult = query.ToList();
 
@@ -286,7 +286,7 @@
             QueryTracking tracking = QueryTracking.Default,
             params Expression<Func<TEntity, object>>[] includes)
         {
-            var query = GetQuery(tracking).Include(includes).Where(predicate).OrderBy(GetEntityPrimaryKeyNames());
+            var query = GetQuery(tracking).Include(includes).Where(predicate);
 
             var queryResult = query.ToList();
 
@@ -439,7 +439,7 @@
         /// </returns>
         public async Task<IEnumerable<TEntity>> GetAsync(QueryTracking tracking = QueryTracking.Default, params Expression<Func<TEntity, object>>[] includes)
         {
-            var query = GetQuery(tracking).Include(includes).OrderBy(GetEntityPrimaryKeyNames());
+            var query = GetQuery(tracking).Include(includes);
 
             var queryResult = await query.ToListAsync().ConfigureAwait(false);
 
@@ -491,7 +491,7 @@
             QueryTracking tracking = QueryTracking.Default,
             params Expression<Func<TEntity, object>>[] includes)
         {
-            var query = GetQuery(tracking).Include(includes).Where(predicate).OrderBy(GetEntityPrimaryKeyNames());
+            var query = GetQuery(tracking).Include(includes).Where(predicate);
 
             var queryResult = await query.ToListAsync().ConfigureAwait(false);
 
