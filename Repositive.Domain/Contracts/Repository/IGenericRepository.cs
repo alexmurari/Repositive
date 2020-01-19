@@ -187,10 +187,7 @@
         /// <returns>
         ///     The collection of entities fetched from the database.
         /// </returns>
-        IEnumerable<TEntity> Get(
-            Expression<Func<TEntity, bool>> predicate,
-            QueryTracking tracking = QueryTracking.Default,
-            params Expression<Func<TEntity, object>>[] includes);
+        IEnumerable<TEntity> Get(Expression<Func<TEntity, bool>> predicate, QueryTracking tracking = QueryTracking.Default, params Expression<Func<TEntity, object>>[] includes);
 
         /// <summary>
         ///     Gets the entities in a paginated collection and total number of elements of the provided type from the database that match the predicate condition. <br />
@@ -310,7 +307,11 @@
         ///     A task that represents the asynchronous query operation.
         ///     The task result contains a tuple with the paginated collection of entities fetched and total number of entities of the provided type in the database.
         /// </returns>
-        Task<(IEnumerable<TEntity> Entities, int Count)> GetAsync(int skip, int take, QueryTracking tracking = QueryTracking.Default, params Expression<Func<TEntity, object>>[] includes);
+        Task<(IEnumerable<TEntity> Entities, int Count)> GetAsync(
+            int skip,
+            int take,
+            QueryTracking tracking = QueryTracking.Default,
+            params Expression<Func<TEntity, object>>[] includes);
 
         /// <summary>
         ///     Asynchronously gets the entities of the provided type from the database that match the predicate condition.
@@ -448,7 +449,10 @@
         /// <returns>
         ///     The collection of elements fetched from the database and projected into a new form.
         /// </returns>
-        IEnumerable<TResult> Query<TResult>(Func<IQueryable<TEntity>, IQueryable<TResult>> queryBuilder, QueryTracking tracking = QueryTracking.Default, params Expression<Func<TEntity, object>>[] includes);
+        IEnumerable<TResult> Query<TResult>(
+            Func<IQueryable<TEntity>, IQueryable<TResult>> queryBuilder,
+            QueryTracking tracking = QueryTracking.Default,
+            params Expression<Func<TEntity, object>>[] includes);
 
         /// <summary>
         ///     Queries the database for the provided type and returns each element projected into a
@@ -469,7 +473,12 @@
         /// <returns>
         ///     A tuple with the paginated collection of elements fetched and projected into a new form and the total number of entities of the provided type in the database.
         /// </returns>
-        (IEnumerable<TResult> Entities, int Count) Query<TResult>(int skip, int take, Func<IQueryable<TEntity>, IQueryable<TResult>> queryBuilder, QueryTracking tracking = QueryTracking.Default, params Expression<Func<TEntity, object>>[] includes);
+        (IEnumerable<TResult> Entities, int Count) Query<TResult>(
+            int skip,
+            int take,
+            Func<IQueryable<TEntity>, IQueryable<TResult>> queryBuilder,
+            QueryTracking tracking = QueryTracking.Default,
+            params Expression<Func<TEntity, object>>[] includes);
 
         /// <summary>
         ///     Asynchronously queries the database for the provided type and projects each element of the result sequence into a new form.
@@ -490,7 +499,10 @@
         ///     A task that represents the asynchronous query operation.
         ///     The task result contains the collection of elements fetched from the database and projected to a new form.
         /// </returns>
-        Task<IEnumerable<TResult>> QueryAsync<TResult>(Func<IQueryable<TEntity>, IQueryable<TResult>> queryBuilder, QueryTracking tracking = QueryTracking.Default, params Expression<Func<TEntity, object>>[] includes);
+        Task<IEnumerable<TResult>> QueryAsync<TResult>(
+            Func<IQueryable<TEntity>, IQueryable<TResult>> queryBuilder,
+            QueryTracking tracking = QueryTracking.Default,
+            params Expression<Func<TEntity, object>>[] includes);
 
         /// <summary>
         ///     Asynchronously queries the database for the provided type and returns each element projected
@@ -512,7 +524,12 @@
         ///     A task that represents the asynchronous query operation.
         ///     The task result contains a tuple with the paginated collection of elements fetched and projected into a new form and the total number of entities of the provided type in the database.
         /// </returns>
-        Task<(IEnumerable<TResult> Entities, int Count)> QueryAsync<TResult>(int skip, int take, Func<IQueryable<TEntity>, IQueryable<TResult>> queryBuilder, QueryTracking tracking = QueryTracking.Default, params Expression<Func<TEntity, object>>[] includes);
+        Task<(IEnumerable<TResult> Entities, int Count)> QueryAsync<TResult>(
+            int skip,
+            int take,
+            Func<IQueryable<TEntity>, IQueryable<TResult>> queryBuilder,
+            QueryTracking tracking = QueryTracking.Default,
+            params Expression<Func<TEntity, object>>[] includes);
 
         /// <summary>
         ///     Updates an entity of the provided type in the database repository.

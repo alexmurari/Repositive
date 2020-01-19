@@ -259,7 +259,11 @@
         /// <returns>
         ///     A tuple with the paginated collection of entities fetched and total number of entities of the provided type in the database.
         /// </returns>
-        public (IEnumerable<TEntity> Entities, int Count) Get(int skip, int take, QueryTracking tracking = QueryTracking.Default, params Expression<Func<TEntity, object>>[] includes)
+        public (IEnumerable<TEntity> Entities, int Count) Get(
+            int skip,
+            int take,
+            QueryTracking tracking = QueryTracking.Default,
+            params Expression<Func<TEntity, object>>[] includes)
         {
             var count = DbSet.Count();
 
@@ -658,8 +662,13 @@
         /// <returns>
         ///     The collection of elements fetched from the database and projected into a new form.
         /// </returns>
-        public IEnumerable<TResult> Query<TResult>(Func<IQueryable<TEntity>, IQueryable<TResult>> queryBuilder, QueryTracking tracking = QueryTracking.Default, params Expression<Func<TEntity, object>>[] includes)
+        public IEnumerable<TResult> Query<TResult>(
+            Func<IQueryable<TEntity>, IQueryable<TResult>> queryBuilder,
+            QueryTracking tracking = QueryTracking.Default,
+            params Expression<Func<TEntity, object>>[] includes)
         {
+            queryBuilder.ThrowIfNull(nameof(queryBuilder));
+
             var query = GetQuery(tracking).Include(includes);
 
             return queryBuilder(query).ToList();
@@ -684,8 +693,15 @@
         /// <returns>
         ///     A tuple with the paginated collection of elements fetched and projected into a new form and the total number of entities of the provided type in the database.
         /// </returns>
-        public (IEnumerable<TResult> Entities, int Count) Query<TResult>(int skip, int take, Func<IQueryable<TEntity>, IQueryable<TResult>> queryBuilder, QueryTracking tracking = QueryTracking.Default, params Expression<Func<TEntity, object>>[] includes)
+        public (IEnumerable<TResult> Entities, int Count) Query<TResult>(
+            int skip,
+            int take,
+            Func<IQueryable<TEntity>, IQueryable<TResult>> queryBuilder,
+            QueryTracking tracking = QueryTracking.Default,
+            params Expression<Func<TEntity, object>>[] includes)
         {
+            queryBuilder.ThrowIfNull(nameof(queryBuilder));
+
             var query = queryBuilder(GetQuery(tracking).Include(includes));
 
             var count = query.Count();
@@ -714,8 +730,13 @@
         ///     A task that represents the asynchronous query operation.
         ///     The task result contains the collection of elements fetched from the database and projected to a new form.
         /// </returns>
-        public async Task<IEnumerable<TResult>> QueryAsync<TResult>(Func<IQueryable<TEntity>, IQueryable<TResult>> queryBuilder, QueryTracking tracking = QueryTracking.Default, params Expression<Func<TEntity, object>>[] includes)
+        public async Task<IEnumerable<TResult>> QueryAsync<TResult>(
+            Func<IQueryable<TEntity>, IQueryable<TResult>> queryBuilder,
+            QueryTracking tracking = QueryTracking.Default,
+            params Expression<Func<TEntity, object>>[] includes)
         {
+            queryBuilder.ThrowIfNull(nameof(queryBuilder));
+
             var query = GetQuery(tracking).Include(includes);
 
             return await queryBuilder(query).ToListAsync().ConfigureAwait(false);
@@ -741,8 +762,15 @@
         ///     A task that represents the asynchronous query operation.
         ///     The task result contains a tuple with the paginated collection of elements fetched and projected into a new form and the total number of entities of the provided type in the database.
         /// </returns>
-        public async Task<(IEnumerable<TResult> Entities, int Count)> QueryAsync<TResult>(int skip, int take, Func<IQueryable<TEntity>, IQueryable<TResult>> queryBuilder, QueryTracking tracking = QueryTracking.Default, params Expression<Func<TEntity, object>>[] includes)
+        public async Task<(IEnumerable<TResult> Entities, int Count)> QueryAsync<TResult>(
+            int skip,
+            int take,
+            Func<IQueryable<TEntity>, IQueryable<TResult>> queryBuilder,
+            QueryTracking tracking = QueryTracking.Default,
+            params Expression<Func<TEntity, object>>[] includes)
         {
+            queryBuilder.ThrowIfNull(nameof(queryBuilder));
+
             var query = queryBuilder(GetQuery(tracking).Include(includes));
 
             var count = await query.CountAsync().ConfigureAwait(false);

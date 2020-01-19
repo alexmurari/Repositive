@@ -50,16 +50,16 @@
         /// <param name="source">
         ///     The source <see cref="IQueryable{T}" /> on which to call Include.
         /// </param>
-        /// <param name="paths">
-        ///     The lambda expressions representing the paths to include.
+        /// <param name="properties">
+        ///     The property access expressions representing the entities to include.
         /// </param>
         /// <returns>
-        ///     A new <see cref="IQueryable{T}" /> with the defined query path.
+        ///     A new <see cref="IQueryable{T}" /> with the included entities.
         /// </returns>
-        internal static IQueryable<T> Include<T>(this IQueryable<T> source, params Expression<Func<T, object>>[] paths) where T : class
+        internal static IQueryable<T> Include<T>(this IQueryable<T> source, params Expression<Func<T, object>>[] properties) where T : class
         {
-            if (paths != null)
-                source = paths.Aggregate(source, (current, include) => current.Include(include.AsPath()));
+            if (properties != null)
+                source = properties.Aggregate(source, (current, include) => current.Include(include.AsPath()));
 
             return source;
         }
