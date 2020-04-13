@@ -786,10 +786,7 @@
         /// <param name="entity">The object to be updated.</param>
         public void Update(TEntity entity)
         {
-            if (!CheckEntityIsBeingTracked(entity))
-            {
-                DbSet.Update(entity);
-            }
+            DbSet.Update(entity);
         }
 
         /// <summary>
@@ -799,10 +796,7 @@
         /// <returns>A task that represents the asynchronous update operation.</returns>
         public Task UpdateAsync(TEntity entity)
         {
-            if (!CheckEntityIsBeingTracked(entity))
-            {
-                DbSet.Update(entity);
-            }
+            DbSet.Update(entity);
 
             return Task.CompletedTask;
         }
@@ -813,7 +807,7 @@
         /// <param name="entityCollection">The collection of objects to be updated.</param>
         public void UpdateRange(IEnumerable<TEntity> entityCollection)
         {
-            DbSet.UpdateRange(entityCollection.Where(t => !CheckEntityIsBeingTracked(t)));
+            DbSet.UpdateRange(entityCollection);
         }
 
         /// <summary>
@@ -823,7 +817,7 @@
         /// <returns>A task that represents the asynchronous update range operation.</returns>
         public Task UpdateRangeAsync(IEnumerable<TEntity> entityCollection)
         {
-            DbSet.UpdateRange(entityCollection.Where(t => !CheckEntityIsBeingTracked(t)));
+            DbSet.UpdateRange(entityCollection);
 
             return Task.CompletedTask;
         }
@@ -885,16 +879,6 @@
         private IEnumerable<string> GetEntityPrimaryKeyNames()
         {
             return DbContext.GetPrimaryKey<TEntity>().Select(t => t.Name);
-        }
-
-        /// <summary>
-        ///     Returns a value indicating whether the provided entity is being tracked by the database context.
-        /// </summary>
-        /// <param name="entity">The entity to be checked.</param>
-        /// <returns>True if the entity is being tracked; otherwise, false.</returns>
-        private bool CheckEntityIsBeingTracked(TEntity entity)
-        {
-            return DbContext.ChangeTracker.Entries<TEntity>().Any(t => t.Entity == entity);
         }
     }
 }
