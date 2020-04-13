@@ -34,10 +34,10 @@
         /// <returns>True if the parse operation succeeds; otherwise, false.</returns>
         private static bool TryParsePath(Expression expression, out string path)
         {
-            var noConvertExp = RemoveConvertOperations(expression);
+            var cleanExpression = RemoveConvertOperations(expression);
             path = null;
 
-            switch (noConvertExp)
+            switch (cleanExpression)
             {
                 case MemberExpression memberExpression:
                 {
@@ -46,7 +46,8 @@
                     if (!TryParsePath(memberExpression.Expression, out var parentPart))
                         return false;
 
-                    path = string.IsNullOrEmpty(parentPart) ? currentPart : string.Concat(parentPart, ".", currentPart);
+                    path = string.IsNullOrEmpty(parentPart) ? currentPart : ConcatPropertyToParent(parentPart, currentPart);
+
                     break;
                 }
 
@@ -70,7 +71,8 @@
                             if (string.IsNullOrEmpty(parentPart))
                                 return false;
 
-                            path = string.Concat(parentPart, ".", currentPart);
+                            path = ConcatPropertyToParent(parentPart, currentPart);
+
                             return true;
                         }
 
@@ -85,6 +87,11 @@
             }
 
             return true;
+
+            string ConcatPropertyToParent(string parentPart, string currentPart)
+            {
+                return string.Concat(parentPart, ".", currentPart);
+            }
         }
 
         /// <summary>
