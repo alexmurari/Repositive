@@ -248,7 +248,8 @@
         }
 
         /// <summary>
-        ///     Gets the entities in a paginated collection and total number of elements of the provided type from the database. <br />
+        ///     Gets the entities of the provided type from the database. <br />
+        ///     The result sequence is paginated and returned along with the total number of elements of the provided type from the database.
         /// </summary>
         /// <param name="skip">The number of contiguous elements to be bypassed when querying the database.</param>
         /// <param name="take">The number of contiguous elements to be returned when querying the database.</param>
@@ -298,7 +299,8 @@
         }
 
         /// <summary>
-        ///     Gets the entities in a paginated collection and total number of elements of the provided type from the database that match the predicate condition. <br />
+        ///     Gets the entities of the provided type from the database that match the predicate condition. <br />
+        ///     The result sequence is paginated and returned along with the total number of elements of the provided type from the database that match the predicate condition.
         /// </summary>
         /// <param name="skip">The number of contiguous elements to be bypassed when querying the database.</param>
         /// <param name="take">The number of contiguous elements to be returned when querying the database.</param>
@@ -327,7 +329,7 @@
         }
 
         /// <summary>
-        ///     Gets the entities of the provided type from the database in an ordered collection. <br />
+        ///     Gets the entities of the provided type from the database in an ordered collection.
         /// </summary>
         /// <param name="orderBy">The key and direction to sort the elements.</param>
         /// <param name="tracking">
@@ -348,7 +350,8 @@
         }
 
         /// <summary>
-        ///     Gets the entities in a paginated collection and total number of elements of the provided type from the database. <br />
+        ///     Gets the entities of the provided type from the database. <br />
+        ///     The result sequence is ordered, paginated and returned along with the total number of elements of the provided type from the database.
         /// </summary>
         /// <param name="skip">The number of contiguous elements to be bypassed when querying the database.</param>
         /// <param name="take">The number of contiguous elements to be returned when querying the database.</param>
@@ -377,7 +380,7 @@
         }
 
         /// <summary>
-        ///     Gets the entities of the provided type from the database that match the predicate condition and in an ordered collection. <br />
+        ///     Gets the entities of the provided type from the database that match the predicate condition in an ordered result sequence.
         /// </summary>
         /// <param name="predicate">The predicate with the query condition.</param>
         /// <param name="orderBy">The key and direction to sort the elements.</param>
@@ -400,7 +403,8 @@
         }
 
         /// <summary>
-        ///     Gets the entities in a paginated ordered collection and total number of elements of the provided type from the database that match the predicate condition. <br />
+        ///     Gets the entities of the provided type from the database that match the predicate condition. <br />
+        ///     The result sequence is ordered, paginated and returned along with the total number of elements of the provided type from the database that match the predicate condition.
         /// </summary>
         /// <param name="skip">The number of contiguous elements to be bypassed when querying the database.</param>
         /// <param name="take">The number of contiguous elements to be returned when querying the database.</param>
@@ -451,7 +455,8 @@
         }
 
         /// <summary>
-        ///     Asynchronously gets the entities in a paginated collection and total number of elements of the provided type from the database. <br />
+        ///     Asynchronously gets the entities of the provided type from the database. <br />
+        ///     The result sequence is paginated and returned along with the total number of elements of the provided type from the database.
         /// </summary>
         /// <param name="skip">The number of contiguous elements to be bypassed when querying the database.</param>
         /// <param name="take">The number of contiguous elements to be returned when querying the database.</param>
@@ -503,7 +508,8 @@
         }
 
         /// <summary>
-        ///     Asynchronously gets the entities in a paginated collection and total number of elements of the provided type from the database that match the predicate condition. <br />
+        ///     Asynchronously gets the entities of the provided type from the database that match the predicate condition. <br />
+        ///     The result sequence is paginated and returned along with the total number of elements of the provided type from the database that match the predicate condition.
         /// </summary>
         /// <param name="skip">The number of contiguous elements to be bypassed when querying the database.</param>
         /// <param name="take">The number of contiguous elements to be returned when querying the database.</param>
@@ -533,7 +539,7 @@
         }
 
         /// <summary>
-        ///     Asynchronously gets the entities of the provided type from the database in a ordered collection. <br />
+        ///     Asynchronously gets the entities of the provided type from the database in an ordered collection.
         /// </summary>
         /// <param name="orderBy">The key and direction to sort the elements.</param>
         /// <param name="tracking">
@@ -557,7 +563,8 @@
         }
 
         /// <summary>
-        ///     Asynchronously gets the entities in a paginated ordered collection and total number of elements of the provided type from the database. <br />
+        ///     Asynchronously gets the entities of the provided type from the database. <br />
+        ///     The result sequence is ordered, paginated and returned along with the total number of elements of the provided type from the database.
         /// </summary>
         /// <param name="skip">The number of contiguous elements to be bypassed when querying the database.</param>
         /// <param name="take">The number of contiguous elements to be returned when querying the database.</param>
@@ -587,7 +594,7 @@
         }
 
         /// <summary>
-        ///     Asynchronously gets the entities of the provided type from the database that match the predicate condition and in a ordered collection. <br />
+        ///     Asynchronously gets the entities of the provided type from the database that match the predicate condition in an ordered result sequence.
         /// </summary>
         /// <param name="predicate">The predicate with the query condition.</param>
         /// <param name="orderBy">The key and direction to sort the elements.</param>
@@ -613,7 +620,8 @@
         }
 
         /// <summary>
-        ///     Asynchronously gets the entities in a paginated ordered collection and total number of elements of the provided type from the database that match the predicate condition. <br />
+        ///     Asynchronously gets the entities of the provided type from the database that match the predicate condition. <br />
+        ///     The result sequence is ordered, paginated and returned along with the total number of elements of the provided type from the database that match the predicate condition.
         /// </summary>
         /// <param name="skip">The number of contiguous elements to be bypassed when querying the database.</param>
         /// <param name="take">The number of contiguous elements to be returned when querying the database.</param>
@@ -675,8 +683,8 @@
         }
 
         /// <summary>
-        ///     Queries the database for the provided type and returns each element projected into a
-        ///     new form in a paginated collection along the total number of elements of that type in the database.
+        ///     Queries the database for the provided type and projects each element of the result sequence into a new form. <br/>
+        ///     The result sequence is paginated and returned along with the total number of elements of the provided type from the database.
         /// </summary>
         /// <typeparam name="TResult">
         ///     The type of the query result.
@@ -743,8 +751,8 @@
         }
 
         /// <summary>
-        ///     Asynchronously queries the database for the provided type and returns each element projected
-        ///     into a new form in a paginated collection along the total number of elements of that type in the database.
+        ///     Asynchronously queries the database for the provided type and projects each element of the result sequence into a new form. <br/>
+        ///     The result sequence is paginated and returned along with the total number of elements of the provided type from the database.
         /// </summary>
         /// <typeparam name="TResult">
         ///     The type of the query result.
