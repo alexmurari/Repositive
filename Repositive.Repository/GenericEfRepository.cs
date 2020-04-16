@@ -12,8 +12,8 @@
     using Repositive.Shared.Extensions;
 
     /// <summary>
-    ///     Base class for generic repositories that queries and saves instances of <typeparamref name="TEntity" />.
-    ///     This repository uses <see cref="Microsoft.EntityFrameworkCore" /> as the ORM.
+    ///     Provides an <see cref="IGenericRepository{TEntity}"/> implementation for querying and saving instances
+    ///     of <typeparamref name="TEntity"/> that uses <see cref="Microsoft.EntityFrameworkCore"/> as the ORM.
     /// </summary>
     /// <typeparam name="TEntity">
     ///     The entity type that this repository queries and saves.
