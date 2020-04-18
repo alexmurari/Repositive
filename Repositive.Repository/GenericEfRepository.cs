@@ -792,19 +792,27 @@
         ///     Updates an entity of the provided type in the database repository.
         /// </summary>
         /// <param name="entity">The object to be updated.</param>
-        public void Update(TEntity entity)
+        /// <param name="updateRelated">The value that indicates whether or not related entities reachable from the provided entity should be included in the update operation.</param>
+        public void Update(TEntity entity, bool updateRelated = true)
         {
-            DbSet.Update(entity);
+            if (updateRelated)
+                DbSet.Update(entity);
+            else
+                DbContext.Entry(entity).State = EntityState.Modified;
         }
 
         /// <summary>
         ///     Asynchronously updates an entity of the provided type in the database repository.
         /// </summary>
         /// <param name="entity">The object to be updated.</param>
+        /// <param name="updateRelated">The value that indicates whether or not related entities reachable from the provided entity should be included in the update operation.</param>
         /// <returns>A task that represents the asynchronous update operation.</returns>
-        public Task UpdateAsync(TEntity entity)
+        public Task UpdateAsync(TEntity entity, bool updateRelated = true)
         {
-            DbSet.Update(entity);
+            if (updateRelated)
+                DbSet.Update(entity);
+            else
+                DbContext.Entry(entity).State = EntityState.Modified;
 
             return Task.CompletedTask;
         }
@@ -813,19 +821,29 @@
         ///     Updates an collection of entities of the provided type in the database repository.
         /// </summary>
         /// <param name="entityCollection">The collection of objects to be updated.</param>
-        public void UpdateRange(IEnumerable<TEntity> entityCollection)
+        /// <param name="updateRelated">The value that indicates whether or not related entities reachable from the provided entity should be included in the update operation.</param>
+        public void UpdateRange(IEnumerable<TEntity> entityCollection, bool updateRelated = true)
         {
-            DbSet.UpdateRange(entityCollection);
+            if (updateRelated)
+                DbSet.UpdateRange(entityCollection);
+            else
+                foreach (var entity in entityCollection)
+                    DbContext.Entry(entity).State = EntityState.Modified;
         }
 
         /// <summary>
         ///     Asynchronously updates an collection of entities of the provided type in the database repository.
         /// </summary>
         /// <param name="entityCollection">The collection of objects to be updated.</param>
+        /// <param name="updateRelated">The value that indicates whether or not related entities reachable from the provided entity should be included in the update operation.</param>
         /// <returns>A task that represents the asynchronous update range operation.</returns>
-        public Task UpdateRangeAsync(IEnumerable<TEntity> entityCollection)
+        public Task UpdateRangeAsync(IEnumerable<TEntity> entityCollection, bool updateRelated = true)
         {
-            DbSet.UpdateRange(entityCollection);
+            if (updateRelated)
+                DbSet.UpdateRange(entityCollection);
+            else
+                foreach (var entity in entityCollection)
+                    DbContext.Entry(entity).State = EntityState.Modified;
 
             return Task.CompletedTask;
         }
@@ -852,7 +870,7 @@
         }
 
         /// <summary>
-        ///     Returns a new query with an configured change tracker.
+        ///     Returns a new query with a configured change tracker.
         /// </summary>
         /// <param name="tracking">
         ///     The query tracking behavior that defines whether or not the entities returned from the query should be tracked by the database context.

@@ -543,27 +543,31 @@
         ///     Updates an entity of the provided type in the database repository.
         /// </summary>
         /// <param name="entity">The object to be updated.</param>
-        void Update(TEntity entity);
+        /// <param name="updateRelated">The value that indicates whether or not related entities reachable from the provided entity should be included in the update operation.</param>
+        void Update(TEntity entity, bool updateRelated = true);
 
         /// <summary>
         ///     Asynchronously updates an entity of the provided type in the database repository.
         /// </summary>
         /// <param name="entity">The object to be updated.</param>
+        /// <param name="updateRelated">The value that indicates whether or not related entities reachable from the provided entity should be included in the update operation.</param>
         /// <returns>A task that represents the asynchronous update operation.</returns>
-        Task UpdateAsync(TEntity entity);
+        Task UpdateAsync(TEntity entity, bool updateRelated = true);
 
         /// <summary>
         ///     Updates an collection of entities of the provided type in the database repository.
         /// </summary>
         /// <param name="entityCollection">The collection of objects to be updated.</param>
-        void UpdateRange(IEnumerable<TEntity> entityCollection);
+        /// <param name="updateRelated">The value that indicates whether or not related entities reachable from the provided entity should be included in the update operation.</param>
+        void UpdateRange(IEnumerable<TEntity> entityCollection, bool updateRelated = true);
 
         /// <summary>
         ///     Asynchronously updates an collection of entities of the provided type in the database repository.
         /// </summary>
         /// <param name="entityCollection">The collection of objects to be updated.</param>
+        /// <param name="updateRelated">The value that indicates whether or not related entities reachable from the provided entity should be included in the update operation.</param>
         /// <returns>A task that represents the asynchronous update range operation.</returns>
-        Task UpdateRangeAsync(IEnumerable<TEntity> entityCollection);
+        Task UpdateRangeAsync(IEnumerable<TEntity> entityCollection, bool updateRelated = true);
 
         /// <summary>
         ///     Saves all changes made in this context to the underlying database.
