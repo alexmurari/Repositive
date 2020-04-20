@@ -189,12 +189,72 @@
         }
 
         /// <summary>
+        ///     Deletes the entity of the provided type from the database repository.
+        /// </summary>
+        /// <param name="entity">The entity to be deleted.</param>
+        /// <param name="deleteRelated">The value that indicates whether or not related entities reachable from the provided entity should be deleted in the operation.</param>
+        public void Delete(TEntity entity, bool deleteRelated = true)
+        {
+            if (deleteRelated)
+                DbSet.Remove(entity);
+            else
+                DbContext.Entry(entity).State = EntityState.Deleted;
+        }
+
+        /// <summary>
+        ///     Deletes the entities of the provided type from the database repository.
+        /// </summary>
+        /// <param name="entities">The collection of entities to be deleted.</param>
+        /// <param name="deleteRelated">The value that indicates whether or not related entities reachable from the provided entity should be deleted in the operation.</param>
+        public void Delete(IEnumerable<TEntity> entities, bool deleteRelated = true)
+        {
+            if (deleteRelated)
+                DbSet.RemoveRange(entities);
+            else
+                foreach (var entity in entities)
+                    DbContext.Entry(entity).State = EntityState.Deleted;
+        }
+
+        /// <summary>
         ///     Deletes the entities of the provided type from the database repository that match the predicate condition.
         /// </summary>
         /// <param name="predicate">The predicate with the delete condition.</param>
         public void Delete(Expression<Func<TEntity, bool>> predicate)
         {
-            DbSet.RemoveRange(DbSet.Where(predicate));
+            DbSet.RemoveRange(DbSet.AsNoTracking().Where(predicate));
+        }
+
+        /// <summary>
+        ///     Asynchronously deletes the entity of the provided type from the database repository.
+        /// </summary>
+        /// <param name="entity">The entity to be deleted.</param>
+        /// <param name="deleteRelated">The value that indicates whether or not related entities reachable from the provided entity should be deleted in the operation.</param>
+        /// <returns>A task that represents the asynchronous delete operation.</returns>
+        public Task DeleteAsync(TEntity entity, bool deleteRelated = true)
+        {
+            if (deleteRelated)
+                DbSet.Remove(entity);
+            else
+                DbContext.Entry(entity).State = EntityState.Deleted;
+
+            return Task.CompletedTask;
+        }
+
+        /// <summary>
+        ///     Asynchronously deletes the entities of the provided type from the database repository.
+        /// </summary>
+        /// <param name="entities">The collection of entities to be deleted.</param>
+        /// <param name="deleteRelated">The value that indicates whether or not related entities reachable from the provided entity should be deleted in the operation.</param>
+        /// <returns>A task that represents the asynchronous delete operation.</returns>
+        public Task DeleteAsync(IEnumerable<TEntity> entities, bool deleteRelated = true)
+        {
+            if (deleteRelated)
+                DbSet.RemoveRange(entities);
+            else
+                foreach (var entity in entities)
+                    DbContext.Entry(entity).State = EntityState.Deleted;
+
+            return Task.CompletedTask;
         }
 
         /// <summary>
@@ -204,7 +264,7 @@
         /// <returns>A task that represents the asynchronous delete operation.</returns>
         public async Task DeleteAsync(Expression<Func<TEntity, bool>> predicate)
         {
-            DbSet.RemoveRange(await DbSet.Where(predicate).ToListAsync().ConfigureAwait(false));
+            DbSet.RemoveRange(await DbSet.AsNoTracking().Where(predicate).ToListAsync().ConfigureAwait(false));
         }
 
         /// <summary>
@@ -653,6 +713,86 @@
         }
 
         /// <summary>
+        ///     Gets the first ordered entity of the provided type from the database.
+        /// </summary>
+        /// <param name="orderBy">The key and direction to sort the elements.</param>
+        /// <param name="tracking">
+        ///     The query tracking behavior that defines whether or not the entity returned from the query should be tracked by the database context.
+        /// </param>
+        /// <param name="includes">The related entities to be included in the query.</param>
+        /// <returns>The entity fetched from the database.</returns>
+        public TEntity GetSingle((Expression<Func<TEntity, object>> keySelector, SortDirection direction) orderBy, QueryTracking tracking = QueryTracking.Default, params Expression<Func<TEntity, object>>[] includes)
+        {
+            var query = GetQuery(tracking).Include(includes).OrderBy(orderBy);
+
+            var queryResult = query.FirstOrDefault();
+
+            return queryResult;
+        }
+
+        /// <summary>
+        ///     Gets the first ordered entity of the provided type from the database that match the predicate condition.
+        /// </summary>
+        /// <param name="predicate">The predicate with the query condition.</param>
+        /// <param name="orderBy">The key and direction to sort the elements.</param>
+        /// <param name="tracking">
+        ///     The query tracking behavior that defines whether or not the entity returned from the query should be tracked by the database context.
+        /// </param>
+        /// <param name="includes">The related entities to be included in the query.</param>
+        /// <returns>The entity fetched from the database.</returns>
+        public TEntity GetSingle(Expression<Func<TEntity, bool>> predicate, (Expression<Func<TEntity, object>> keySelector, SortDirection direction) orderBy, QueryTracking tracking = QueryTracking.Default, params Expression<Func<TEntity, object>>[] includes)
+        {
+            var query = GetQuery(tracking).Include(includes).Where(predicate).OrderBy(orderBy);
+
+            var queryResult = query.FirstOrDefault();
+
+            return queryResult;
+        }
+
+        /// <summary>
+        ///     Asynchronously gets the first ordered entity of the provided type from the database.
+        /// </summary>
+        /// <param name="orderBy">The key and direction to sort the elements.</param>
+        /// <param name="tracking">
+        ///     The query tracking behavior that defines whether or not the entity returned from the query should be tracked by the database context.
+        /// </param>
+        /// <param name="includes">The related entities to be included in the query.</param>
+        /// <returns>
+        ///     A task that represents the asynchronous query operation.
+        ///     The task result contains the entity fetched from the database.
+        /// </returns>
+        public async Task<TEntity> GetSingleAsync((Expression<Func<TEntity, object>> keySelector, SortDirection direction) orderBy, QueryTracking tracking = QueryTracking.Default, params Expression<Func<TEntity, object>>[] includes)
+        {
+            var query = GetQuery(tracking).Include(includes).OrderBy(orderBy);
+
+            var queryResult = await query.FirstOrDefaultAsync().ConfigureAwait(false);
+
+            return queryResult;
+        }
+
+        /// <summary>
+        ///     Asynchronously gets the first ordered entity of the provided type from the database that match the predicate condition.
+        /// </summary>
+        /// <param name="predicate">The predicate with the query condition.</param>
+        /// <param name="orderBy">The key and direction to sort the elements.</param>
+        /// <param name="tracking">
+        ///     The query tracking behavior that defines whether or not the entity returned from the query should be tracked by the database context.
+        /// </param>
+        /// <param name="includes">The related entities to be included in the query.</param>
+        /// <returns>
+        ///     A task that represents the asynchronous query operation.
+        ///     The task result contains the entity fetched from the database.
+        /// </returns>
+        public async Task<TEntity> GetSingleAsync(Expression<Func<TEntity, bool>> predicate, (Expression<Func<TEntity, object>> keySelector, SortDirection direction) orderBy, QueryTracking tracking = QueryTracking.Default, params Expression<Func<TEntity, object>>[] includes)
+        {
+            var query = GetQuery(tracking).Include(includes).Where(predicate).OrderBy(orderBy);
+
+            var queryResult = await query.FirstOrDefaultAsync().ConfigureAwait(false);
+
+            return queryResult;
+        }
+
+        /// <summary>
         ///     Queries the database for the provided type and projects each element of the result sequence into a new form.
         /// </summary>
         /// <typeparam name="TResult">
@@ -786,6 +926,61 @@
             var queryResult = await query.Skip(skip).Take(take).ToListAsync().ConfigureAwait(false);
 
             return (Entities: queryResult, Count: count);
+        }
+
+        /// <summary>
+        ///     Queries the database for the provided type and projects the first element of the result sequence into a new form.
+        /// </summary>
+        /// <typeparam name="TResult">
+        ///     The type of the query result.
+        /// </typeparam>
+        /// <param name="queryBuilder">
+        ///     The function to configure the query.
+        /// </param>
+        /// <param name="tracking">
+        ///     The query tracking behavior that defines whether or not the entities returned from the query should be tracked by the database context.
+        /// </param>
+        /// <param name="includes">
+        ///     The related entities to be included in the query.
+        /// </param>
+        /// <returns>
+        ///     The entity fetched from the database and projected into a new form.
+        /// </returns>
+        public TResult QuerySingle<TResult>(Func<IQueryable<TEntity>, IQueryable<TResult>> queryBuilder, QueryTracking tracking = QueryTracking.Default, params Expression<Func<TEntity, object>>[] includes)
+        {
+            queryBuilder.ThrowIfNull(nameof(queryBuilder));
+
+            var query = GetQuery(tracking).Include(includes);
+
+            return queryBuilder(query).FirstOrDefault();
+        }
+
+        /// <summary>
+        ///     Asynchronously queries the database for the provided type and projects the first element of the result sequence into a new form.
+        /// </summary>
+        /// <typeparam name="TResult">
+        ///     The type of the query result.
+        /// </typeparam>
+        /// <param name="queryBuilder">
+        ///     The function to configure the query.
+        /// </param>
+        /// <param name="tracking">
+        ///     The query tracking behavior that defines whether or not the entities returned from the query should be tracked by the database context.
+        /// </param>
+        /// <param name="includes">
+        ///     The related entities to be included in the query.
+        /// </param>
+        /// <returns>
+        ///     A task that represents the asynchronous query operation.
+        ///     The task result contains the entity fetched from the database and projected into a new form.
+        /// </returns>
+        public Task<TResult> QuerySingleAsync<TResult>(Func<IQueryable<TEntity>, IQueryable<TResult>> queryBuilder, QueryTracking tracking = QueryTracking.Default, params Expression<Func<TEntity, object>>[] includes)
+        {
+            queryBuilder.ThrowIfNull(nameof(queryBuilder));
+
+            var query = GetQuery(tracking).Include(includes);
+
+            return queryBuilder(query).FirstOrDefaultAsync();
         }
 
         /// <summary>
