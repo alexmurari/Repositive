@@ -7,7 +7,7 @@
     using Repositive.Tests.Utilities.Entities;
 
     /// <summary>
-    ///     Provides methods for inserting fake data into the database for testing purposes.
+    ///     Provides methods for saving and querying fake data from the database for testing purposes.
     /// </summary>
     public class DatabaseHelper
     {
