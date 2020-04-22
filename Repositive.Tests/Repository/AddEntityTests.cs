@@ -49,7 +49,7 @@
         ///     Asserts that the <see cref="IGenericRepository{TEntity}.AddRange"/> is operating correctly.
         /// </summary>
         [Fact]
-        public void Assert_Add_Range_Of_Entities_Is_Successful()
+        public void Assert_Add_Entity_Range_Is_Successful()
         {
             // Arrange
             var personList = DataGenerator.GeneratePersons(50);

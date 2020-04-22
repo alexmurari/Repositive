@@ -59,7 +59,7 @@
         /// </summary>
         /// <returns>The task representing the asynchronous operation.</returns>
         [Fact]
-        public async Task Assert_Update_Range_Of_Entities_Without_Related_Entities_Async_Is_Successful()
+        public async Task Assert_Update_Entity_Range_Without_Related_Entities_Async_Is_Successful()
         {
             // Arrange
             var persons = DataGenerator.PickRandomItemRange(_databaseHelper.GetPersons(), 50);
@@ -95,7 +95,7 @@
         /// </summary>
         /// <returns>The task representing the asynchronous operation.</returns>
         [Fact]
-        public async Task Assert_Update_Range_Of_Entities_With_Related_Entities_Async_Is_Successful()
+        public async Task Assert_Update_Entity_Range_With_Related_Entities_Async_Is_Successful()
         {
             // Arrange
             var persons = DataGenerator.PickRandomItemRange(_databaseHelper.GetPersons(), 50);

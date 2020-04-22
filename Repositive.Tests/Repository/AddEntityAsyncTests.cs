@@ -52,7 +52,7 @@
         /// </summary>
         /// <returns>The task representing the asynchronous operation.</returns>
         [Fact]
-        public async Task Assert_Add_Range_Of_Entities_Async_Is_Successful()
+        public async Task Assert_Add_Entity_Range_Async_Is_Successful()
         {
             // Arrange
             var personList = DataGenerator.GeneratePersons(50);

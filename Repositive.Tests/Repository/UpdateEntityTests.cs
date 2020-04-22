@@ -57,7 +57,7 @@
         ///     Asserts that the <see cref="IGenericRepository{TEntity}.UpdateRange"/> is operating correctly when ignoring related entities.
         /// </summary>
         [Fact]
-        public void Assert_Update_Range_Of_Entities_Without_Related_Entities_Is_Successful()
+        public void Assert_Update_Entity_Range_Without_Related_Entities_Is_Successful()
         {
             // Arrange
             var persons = DataGenerator.PickRandomItemRange(_databaseHelper.GetPersons(), 50);
@@ -91,7 +91,7 @@
         ///     Asserts that the <see cref="IGenericRepository{TEntity}.UpdateRange"/> is operating correctly when considering related entities.
         /// </summary>
         [Fact]
-        public void Assert_Update_Range_Of_Entities_With_Related_Entities_Is_Successful()
+        public void Assert_Update_Entity_Range_With_Related_Entities_Is_Successful()
         {
             // Arrange
             var persons = DataGenerator.PickRandomItemRange(_databaseHelper.GetPersons(), 50);
