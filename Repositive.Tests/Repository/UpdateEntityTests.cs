@@ -1,6 +1,5 @@
 ﻿namespace Repositive.Tests.Repository
 {
-    using System.Linq;
     using Repositive.Domain.Contracts.Repository;
     using Repositive.Tests.Utilities;
     using Repositive.Tests.Utilities.Repositories.Contracts;

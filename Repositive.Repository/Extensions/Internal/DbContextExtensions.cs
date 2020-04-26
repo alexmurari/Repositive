@@ -19,7 +19,7 @@
         ///     The entity to get the primary key from.
         /// </typeparam>
         /// <returns>
-        ///     A collection with the properties that make up <typeparamref name="TEntity"/> the primary key.
+        ///     A collection with the properties that make up <typeparamref name="TEntity"/> primary key.
         /// </returns>
         internal static IReadOnlyList<IProperty> GetPrimaryKey<TEntity>(this DbContext context)
         {
