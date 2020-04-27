@@ -9,7 +9,7 @@
     /// <summary>
     ///     Provides methods for querying and saving instances of <typeparamref name="TEntity" />.
     /// </summary>
-    /// <typeparam name="TEntity">The entity type that this repository queries and saves.</typeparam>
+    /// <typeparam name="TEntity">The entity type that the repository queries and saves.</typeparam>
     public interface IGenericRepository<TEntity> where TEntity : class
     {
         /// <summary>
