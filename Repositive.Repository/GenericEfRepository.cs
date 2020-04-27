@@ -16,17 +16,20 @@
     ///     <typeparamref name="TEntity"/> with <see cref="Microsoft.EntityFrameworkCore"/> as the ORM.
     /// </summary>
     /// <typeparam name="TEntity">
-    ///     The entity type that this repository queries and saves.
+    ///     The entity type that the repository queries and saves.
     /// </typeparam>
-    public abstract class GenericEfRepository<TEntity> : IGenericRepository<TEntity> where TEntity : class
+    /// <typeparam name="TContext">
+    ///     The type that derives from or is of type <see cref="Microsoft.EntityFrameworkCore.DbContext"/> that the repository uses as the database context.
+    /// </typeparam>
+    public abstract class GenericEfRepository<TEntity, TContext> : IGenericRepository<TEntity> where TEntity : class where TContext : DbContext
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="GenericEfRepository{TEntity}" /> class.
+        ///     Initializes a new instance of the <see cref="GenericEfRepository{TEntity, TContext}" /> class.
         /// </summary>
         /// <param name="context">
         ///     The database context.
         /// </param>
-        protected GenericEfRepository(DbContext context)
+        protected GenericEfRepository(TContext context)
         {
             DbContext = context.ThrowIfNull(nameof(context));
             DbSet = context.Set<TEntity>();
@@ -35,7 +38,7 @@
         /// <summary>
         ///     Gets the database context for this repository.
         /// </summary>
-        protected DbContext DbContext { get; }
+        protected TContext DbContext { get; }
 
         /// <summary>
         ///     Gets the database set used to query and save instances of <typeparamref name="TEntity" />.
@@ -193,7 +196,7 @@
         /// </summary>
         /// <param name="entity">The entity to be deleted.</param>
         /// <param name="deleteRelated">The value that indicates whether or not related entities reachable from the provided entity should be deleted in the operation.</param>
-        public void Delete(TEntity entity, bool deleteRelated = true)
+        public void Delete(TEntity entity, bool deleteRelated = false)
         {
             if (deleteRelated)
                 DbSet.Remove(entity);
@@ -206,7 +209,7 @@
         /// </summary>
         /// <param name="entities">The collection of entities to be deleted.</param>
         /// <param name="deleteRelated">The value that indicates whether or not related entities reachable from the provided entity should be deleted in the operation.</param>
-        public void Delete(IEnumerable<TEntity> entities, bool deleteRelated = true)
+        public void Delete(IEnumerable<TEntity> entities, bool deleteRelated = false)
         {
             if (deleteRelated)
                 DbSet.RemoveRange(entities);
@@ -216,21 +219,12 @@
         }
 
         /// <summary>
-        ///     Deletes the entities of the provided type from the database repository that match the predicate condition.
-        /// </summary>
-        /// <param name="predicate">The predicate with the delete condition.</param>
-        public void Delete(Expression<Func<TEntity, bool>> predicate)
-        {
-            DbSet.RemoveRange(DbSet.AsNoTracking().Where(predicate));
-        }
-
-        /// <summary>
         ///     Asynchronously deletes the entity of the provided type from the database repository.
         /// </summary>
         /// <param name="entity">The entity to be deleted.</param>
         /// <param name="deleteRelated">The value that indicates whether or not related entities reachable from the provided entity should be deleted in the operation.</param>
         /// <returns>A task that represents the asynchronous delete operation.</returns>
-        public Task DeleteAsync(TEntity entity, bool deleteRelated = true)
+        public Task DeleteAsync(TEntity entity, bool deleteRelated = false)
         {
             if (deleteRelated)
                 DbSet.Remove(entity);
@@ -246,7 +240,7 @@
         /// <param name="entities">The collection of entities to be deleted.</param>
         /// <param name="deleteRelated">The value that indicates whether or not related entities reachable from the provided entity should be deleted in the operation.</param>
         /// <returns>A task that represents the asynchronous delete operation.</returns>
-        public Task DeleteAsync(IEnumerable<TEntity> entities, bool deleteRelated = true)
+        public Task DeleteAsync(IEnumerable<TEntity> entities, bool deleteRelated = false)
         {
             if (deleteRelated)
                 DbSet.RemoveRange(entities);
@@ -255,16 +249,6 @@
                     DbContext.Entry(entity).State = EntityState.Deleted;
 
             return Task.CompletedTask;
-        }
-
-        /// <summary>
-        ///     Asynchronously deletes the entities of the provided type from the database repository that match the predicate condition.
-        /// </summary>
-        /// <param name="predicate">The predicate with the delete condition.</param>
-        /// <returns>A task that represents the asynchronous delete operation.</returns>
-        public async Task DeleteAsync(Expression<Func<TEntity, bool>> predicate)
-        {
-            DbSet.RemoveRange(await DbSet.AsNoTracking().Where(predicate).ToListAsync().ConfigureAwait(false));
         }
 
         /// <summary>
@@ -988,7 +972,7 @@
         /// </summary>
         /// <param name="entity">The object to be updated.</param>
         /// <param name="updateRelated">The value that indicates whether or not related entities reachable from the provided entity should be included in the update operation.</param>
-        public void Update(TEntity entity, bool updateRelated = true)
+        public void Update(TEntity entity, bool updateRelated = false)
         {
             if (updateRelated)
                 DbSet.Update(entity);
@@ -1002,7 +986,7 @@
         /// <param name="entity">The object to be updated.</param>
         /// <param name="updateRelated">The value that indicates whether or not related entities reachable from the provided entity should be included in the update operation.</param>
         /// <returns>A task that represents the asynchronous update operation.</returns>
-        public Task UpdateAsync(TEntity entity, bool updateRelated = true)
+        public Task UpdateAsync(TEntity entity, bool updateRelated = false)
         {
             if (updateRelated)
                 DbSet.Update(entity);
@@ -1017,7 +1001,7 @@
         /// </summary>
         /// <param name="entityCollection">The collection of objects to be updated.</param>
         /// <param name="updateRelated">The value that indicates whether or not related entities reachable from the provided entity should be included in the update operation.</param>
-        public void UpdateRange(IEnumerable<TEntity> entityCollection, bool updateRelated = true)
+        public void UpdateRange(IEnumerable<TEntity> entityCollection, bool updateRelated = false)
         {
             if (updateRelated)
                 DbSet.UpdateRange(entityCollection);
@@ -1032,7 +1016,7 @@
         /// <param name="entityCollection">The collection of objects to be updated.</param>
         /// <param name="updateRelated">The value that indicates whether or not related entities reachable from the provided entity should be included in the update operation.</param>
         /// <returns>A task that represents the asynchronous update range operation.</returns>
-        public Task UpdateRangeAsync(IEnumerable<TEntity> entityCollection, bool updateRelated = true)
+        public Task UpdateRangeAsync(IEnumerable<TEntity> entityCollection, bool updateRelated = false)
         {
             if (updateRelated)
                 DbSet.UpdateRange(entityCollection);

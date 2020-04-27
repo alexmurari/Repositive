@@ -8,7 +8,7 @@
     /// <summary>
     ///     Provides an <see cref="IPersonRepository"/> implementation for querying and saving instances of <see cref="Person"/>.
     /// </summary>
-    internal class PersonRepository : GenericEfRepository<Person>, IPersonRepository
+    internal class PersonRepository : GenericEfRepository<Person, RepositiveContext>, IPersonRepository
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="PersonRepository"/> class.

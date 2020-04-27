@@ -8,7 +8,7 @@
     /// <summary>
     ///     Provides an <see cref="IVehicleManufacturerRepository"/> implementation for querying and saving instances of <see cref="VehicleManufacturer"/>.
     /// </summary>
-    internal class VehicleManufacturerRepository : GenericEfRepository<VehicleManufacturer>, IVehicleManufacturerRepository
+    internal class VehicleManufacturerRepository : GenericEfRepository<VehicleManufacturer, RepositiveContext>, IVehicleManufacturerRepository
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="VehicleManufacturerRepository"/> class.

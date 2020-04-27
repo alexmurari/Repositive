@@ -50,7 +50,7 @@
             var person = DataGenerator.PickRandomItem(_databaseHelper.GetPersons());
 
             // Act
-            await _personRepository.DeleteAsync(person, false);
+            await _personRepository.DeleteAsync(person);
             var affectedRows = await _personRepository.SaveChangesAsync();
 
             // Assert
@@ -68,7 +68,7 @@
             var persons = DataGenerator.PickRandomItemRange(_databaseHelper.GetPersons(), 10);
 
             // Act
-            await _personRepository.DeleteAsync(persons, false);
+            await _personRepository.DeleteAsync(persons);
             var affectedRows = await _personRepository.SaveChangesAsync();
 
             // Assert
@@ -86,7 +86,7 @@
             var person = DataGenerator.PickRandomItem(_databaseHelper.GetPersons());
 
             // Act
-            await _personRepository.DeleteAsync(person);
+            await _personRepository.DeleteAsync(person, true);
             var affectedRows = await _personRepository.SaveChangesAsync();
 
             // Assert
@@ -104,29 +104,11 @@
             var persons = DataGenerator.PickRandomItemRange(_databaseHelper.GetPersons(), 10);
 
             // Act
-            await _personRepository.DeleteAsync(persons);
+            await _personRepository.DeleteAsync(persons, true);
             var affectedRows = await _personRepository.SaveChangesAsync();
 
             // Assert
             Assert.True(affectedRows > persons.Count);
-        }
-
-        /// <summary>
-        ///     Asserts that the <see cref="IGenericRepository{TEntity}.DeleteAsync(Expression{Func{TEntity, bool}})"/> is operating correctly.
-        /// </summary>
-        /// <returns>The task representing the asynchronous operation.</returns>
-        [Fact]
-        public async Task Assert_Delete_Entity_By_Predicate_Async_Is_Successful()
-        {
-            // Arrange
-            var person = DataGenerator.PickRandomItem(_databaseHelper.GetPersons());
-
-            // Act
-            await _personRepository.DeleteAsync(t => t.Name == person.Name);
-            var affectedRows = await _personRepository.SaveChangesAsync();
-
-            // Assert
-            Assert.True(affectedRows >= 1);
         }
     }
 }

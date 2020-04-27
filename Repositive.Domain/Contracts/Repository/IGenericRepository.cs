@@ -127,20 +127,14 @@
         /// </summary>
         /// <param name="entity">The entity to be deleted.</param>
         /// <param name="deleteRelated">The value that indicates whether or not related entities reachable from the provided entity should be deleted in the operation.</param>
-        void Delete(TEntity entity, bool deleteRelated = true);
+        void Delete(TEntity entity, bool deleteRelated = false);
 
         /// <summary>
         ///     Deletes the entities of the provided type from the database repository.
         /// </summary>
         /// <param name="entities">The collection of entities to be deleted.</param>
         /// <param name="deleteRelated">The value that indicates whether or not related entities reachable from the provided entity should be deleted in the operation.</param>
-        void Delete(IEnumerable<TEntity> entities, bool deleteRelated = true);
-
-        /// <summary>
-        ///     Deletes the entities of the provided type from the database repository that match the predicate condition.
-        /// </summary>
-        /// <param name="predicate">The predicate with the delete condition.</param>
-        void Delete(Expression<Func<TEntity, bool>> predicate);
+        void Delete(IEnumerable<TEntity> entities, bool deleteRelated = false);
 
         /// <summary>
         ///     Asynchronously deletes the entity of the provided type from the database repository.
@@ -148,7 +142,7 @@
         /// <param name="entity">The entity to be deleted.</param>
         /// <param name="deleteRelated">The value that indicates whether or not related entities reachable from the provided entity should be deleted in the operation.</param>
         /// <returns>A task that represents the asynchronous delete operation.</returns>
-        Task DeleteAsync(TEntity entity, bool deleteRelated = true);
+        Task DeleteAsync(TEntity entity, bool deleteRelated = false);
 
         /// <summary>
         ///     Asynchronously deletes the entities of the provided type from the database repository.
@@ -156,14 +150,7 @@
         /// <param name="entities">The collection of entities to be deleted.</param>
         /// <param name="deleteRelated">The value that indicates whether or not related entities reachable from the provided entity should be deleted in the operation.</param>
         /// <returns>A task that represents the asynchronous delete operation.</returns>
-        Task DeleteAsync(IEnumerable<TEntity> entities, bool deleteRelated = true);
-
-        /// <summary>
-        ///     Asynchronously deletes the entities of the provided type from the database repository that match the predicate condition.
-        /// </summary>
-        /// <param name="predicate">The predicate with the delete condition.</param>
-        /// <returns>A task that represents the asynchronous delete operation.</returns>
-        Task DeleteAsync(Expression<Func<TEntity, bool>> predicate);
+        Task DeleteAsync(IEnumerable<TEntity> entities, bool deleteRelated = false);
 
         /// <summary>
         ///     Finds an entity of the provided type with the given primary key value.
@@ -687,7 +674,7 @@
         /// </summary>
         /// <param name="entity">The object to be updated.</param>
         /// <param name="updateRelated">The value that indicates whether or not related entities reachable from the provided entity should be included in the update operation.</param>
-        void Update(TEntity entity, bool updateRelated = true);
+        void Update(TEntity entity, bool updateRelated = false);
 
         /// <summary>
         ///     Asynchronously updates an entity of the provided type in the database repository.
@@ -695,14 +682,14 @@
         /// <param name="entity">The object to be updated.</param>
         /// <param name="updateRelated">The value that indicates whether or not related entities reachable from the provided entity should be included in the update operation.</param>
         /// <returns>A task that represents the asynchronous update operation.</returns>
-        Task UpdateAsync(TEntity entity, bool updateRelated = true);
+        Task UpdateAsync(TEntity entity, bool updateRelated = false);
 
         /// <summary>
         ///     Updates an collection of entities of the provided type in the database repository.
         /// </summary>
         /// <param name="entityCollection">The collection of objects to be updated.</param>
         /// <param name="updateRelated">The value that indicates whether or not related entities reachable from the provided entity should be included in the update operation.</param>
-        void UpdateRange(IEnumerable<TEntity> entityCollection, bool updateRelated = true);
+        void UpdateRange(IEnumerable<TEntity> entityCollection, bool updateRelated = false);
 
         /// <summary>
         ///     Asynchronously updates an collection of entities of the provided type in the database repository.
@@ -710,7 +697,7 @@
         /// <param name="entityCollection">The collection of objects to be updated.</param>
         /// <param name="updateRelated">The value that indicates whether or not related entities reachable from the provided entity should be included in the update operation.</param>
         /// <returns>A task that represents the asynchronous update range operation.</returns>
-        Task UpdateRangeAsync(IEnumerable<TEntity> entityCollection, bool updateRelated = true);
+        Task UpdateRangeAsync(IEnumerable<TEntity> entityCollection, bool updateRelated = false);
 
         /// <summary>
         ///     Saves all changes made in this context to the underlying database.

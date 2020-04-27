@@ -48,7 +48,7 @@
             var person = DataGenerator.PickRandomItem(_databaseHelper.GetPersons());
 
             // Act
-            _personRepository.Delete(person, false);
+            _personRepository.Delete(person);
             var affectedRows = _personRepository.SaveChanges();
 
             // Assert
@@ -65,7 +65,7 @@
             var persons = DataGenerator.PickRandomItemRange(_databaseHelper.GetPersons(), 10);
 
             // Act
-            _personRepository.Delete(persons, false);
+            _personRepository.Delete(persons);
             var affectedRows = _personRepository.SaveChanges();
 
             // Assert
@@ -82,7 +82,7 @@
             var person = DataGenerator.PickRandomItem(_databaseHelper.GetPersons());
 
             // Act
-            _personRepository.Delete(person);
+            _personRepository.Delete(person, true);
             var affectedRows = _personRepository.SaveChanges();
 
             // Assert
@@ -99,28 +99,11 @@
             var persons = DataGenerator.PickRandomItemRange(_databaseHelper.GetPersons(), 10);
 
             // Act
-            _personRepository.Delete(persons);
+            _personRepository.Delete(persons, true);
             var affectedRows = _personRepository.SaveChanges();
 
             // Assert
             Assert.True(affectedRows > persons.Count);
-        }
-
-        /// <summary>
-        ///     Asserts that the <see cref="IGenericRepository{TEntity}.Delete(Expression{Func{TEntity, bool}})"/> is operating correctly.
-        /// </summary>
-        [Fact]
-        public void Assert_Delete_Entity_By_Predicate_Is_Successful()
-        {
-            // Arrange
-            var person = DataGenerator.PickRandomItem(_databaseHelper.GetPersons());
-
-            // Act
-            _personRepository.Delete(t => t.Name == person.Name);
-            var affectedRows = _personRepository.SaveChanges();
-
-            // Assert
-            Assert.True(affectedRows >= 1);
         }
     }
 }

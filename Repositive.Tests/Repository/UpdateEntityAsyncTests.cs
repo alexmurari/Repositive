@@ -47,7 +47,7 @@
             var person = DataGenerator.PickRandomItem(_databaseHelper.GetPersons());
 
             // Act
-            await _personRepository.UpdateAsync(person, false);
+            await _personRepository.UpdateAsync(person);
             var affectedRows = await _personRepository.SaveChangesAsync();
 
             // Assert
@@ -65,7 +65,7 @@
             var persons = DataGenerator.PickRandomItemRange(_databaseHelper.GetPersons(), 50);
 
             // Act
-            await _personRepository.UpdateRangeAsync(persons, false);
+            await _personRepository.UpdateRangeAsync(persons);
             var affectedRows = await _personRepository.SaveChangesAsync();
 
             // Assert
@@ -83,7 +83,7 @@
             var person = DataGenerator.PickRandomItem(_databaseHelper.GetPersons());
 
             // Act
-            await _personRepository.UpdateAsync(person);
+            await _personRepository.UpdateAsync(person, true);
             var affectedRows = await _personRepository.SaveChangesAsync();
 
             // Assert
@@ -101,7 +101,7 @@
             var persons = DataGenerator.PickRandomItemRange(_databaseHelper.GetPersons(), 50);
 
             // Act
-            await _personRepository.UpdateRangeAsync(persons);
+            await _personRepository.UpdateRangeAsync(persons, true);
             var affectedRows = await _personRepository.SaveChangesAsync();
 
             // Assert
