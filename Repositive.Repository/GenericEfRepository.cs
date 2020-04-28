@@ -12,14 +12,15 @@
     using Repositive.Shared.Extensions;
 
     /// <summary>
-    ///     Provides an generic repository implementation for querying and saving instances of
+    ///     Provides a generic repository implementation for querying and saving instances of
     ///     <typeparamref name="TEntity"/> with <see cref="Microsoft.EntityFrameworkCore"/> as the ORM.
     /// </summary>
     /// <typeparam name="TEntity">
     ///     The entity type that the repository queries and saves.
     /// </typeparam>
     /// <typeparam name="TContext">
-    ///     The type that derives from or is of type <see cref="Microsoft.EntityFrameworkCore.DbContext"/> that the repository uses as the database context.
+    ///     The type that the repository uses as the database context.
+    ///     Must be of <see cref="Microsoft.EntityFrameworkCore.DbContext"/> type or derive from it.
     /// </typeparam>
     public abstract class GenericEfRepository<TEntity, TContext> : IGenericRepository<TEntity> where TEntity : class where TContext : DbContext
     {
@@ -705,7 +706,10 @@
         /// </param>
         /// <param name="includes">The related entities to be included in the query.</param>
         /// <returns>The entity fetched from the database.</returns>
-        public TEntity GetSingle((Expression<Func<TEntity, object>> keySelector, SortDirection direction) orderBy, QueryTracking tracking = QueryTracking.Default, params Expression<Func<TEntity, object>>[] includes)
+        public TEntity GetSingle(
+            (Expression<Func<TEntity, object>> keySelector, SortDirection direction) orderBy,
+            QueryTracking tracking = QueryTracking.Default,
+            params Expression<Func<TEntity, object>>[] includes)
         {
             var query = GetQuery(tracking).Include(includes).OrderBy(orderBy);
 
@@ -724,7 +728,11 @@
         /// </param>
         /// <param name="includes">The related entities to be included in the query.</param>
         /// <returns>The entity fetched from the database.</returns>
-        public TEntity GetSingle(Expression<Func<TEntity, bool>> predicate, (Expression<Func<TEntity, object>> keySelector, SortDirection direction) orderBy, QueryTracking tracking = QueryTracking.Default, params Expression<Func<TEntity, object>>[] includes)
+        public TEntity GetSingle(
+            Expression<Func<TEntity, bool>> predicate,
+            (Expression<Func<TEntity, object>> keySelector, SortDirection direction) orderBy,
+            QueryTracking tracking = QueryTracking.Default,
+            params Expression<Func<TEntity, object>>[] includes)
         {
             var query = GetQuery(tracking).Include(includes).Where(predicate).OrderBy(orderBy);
 
@@ -745,7 +753,10 @@
         ///     A task that represents the asynchronous query operation.
         ///     The task result contains the entity fetched from the database.
         /// </returns>
-        public async Task<TEntity> GetSingleAsync((Expression<Func<TEntity, object>> keySelector, SortDirection direction) orderBy, QueryTracking tracking = QueryTracking.Default, params Expression<Func<TEntity, object>>[] includes)
+        public async Task<TEntity> GetSingleAsync(
+            (Expression<Func<TEntity, object>> keySelector, SortDirection direction) orderBy,
+            QueryTracking tracking = QueryTracking.Default,
+            params Expression<Func<TEntity, object>>[] includes)
         {
             var query = GetQuery(tracking).Include(includes).OrderBy(orderBy);
 
@@ -767,7 +778,11 @@
         ///     A task that represents the asynchronous query operation.
         ///     The task result contains the entity fetched from the database.
         /// </returns>
-        public async Task<TEntity> GetSingleAsync(Expression<Func<TEntity, bool>> predicate, (Expression<Func<TEntity, object>> keySelector, SortDirection direction) orderBy, QueryTracking tracking = QueryTracking.Default, params Expression<Func<TEntity, object>>[] includes)
+        public async Task<TEntity> GetSingleAsync(
+            Expression<Func<TEntity, bool>> predicate,
+            (Expression<Func<TEntity, object>> keySelector, SortDirection direction) orderBy,
+            QueryTracking tracking = QueryTracking.Default,
+            params Expression<Func<TEntity, object>>[] includes)
         {
             var query = GetQuery(tracking).Include(includes).Where(predicate).OrderBy(orderBy);
 
@@ -930,7 +945,10 @@
         /// <returns>
         ///     The entity fetched from the database and projected into a new form.
         /// </returns>
-        public TResult QuerySingle<TResult>(Func<IQueryable<TEntity>, IQueryable<TResult>> queryBuilder, QueryTracking tracking = QueryTracking.Default, params Expression<Func<TEntity, object>>[] includes)
+        public TResult QuerySingle<TResult>(
+            Func<IQueryable<TEntity>, IQueryable<TResult>> queryBuilder,
+            QueryTracking tracking = QueryTracking.Default,
+            params Expression<Func<TEntity, object>>[] includes)
         {
             queryBuilder.ThrowIfNull(nameof(queryBuilder));
 
@@ -958,7 +976,10 @@
         ///     A task that represents the asynchronous query operation.
         ///     The task result contains the entity fetched from the database and projected into a new form.
         /// </returns>
-        public Task<TResult> QuerySingleAsync<TResult>(Func<IQueryable<TEntity>, IQueryable<TResult>> queryBuilder, QueryTracking tracking = QueryTracking.Default, params Expression<Func<TEntity, object>>[] includes)
+        public Task<TResult> QuerySingleAsync<TResult>(
+            Func<IQueryable<TEntity>, IQueryable<TResult>> queryBuilder,
+            QueryTracking tracking = QueryTracking.Default,
+            params Expression<Func<TEntity, object>>[] includes)
         {
             queryBuilder.ThrowIfNull(nameof(queryBuilder));
 
