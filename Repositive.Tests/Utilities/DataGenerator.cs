@@ -16,7 +16,7 @@
         /// </summary>
         private static readonly Faker<Person> PersonFaker = new Faker<Person>()
             .RuleFor(t => t.Name, t => t.Name.FirstName())
-            .RuleFor(t => t.Vehicles, t => VehicleFaker.Generate(t.Random.Int(1, 3)));
+            .RuleFor(t => t.Vehicles, t => VehicleFaker.Generate(t.Random.Int(2, 10)));
 
         /// <summary>
         ///     The vehicle faker. Generates fake <see cref="Vehicle"/> objects.
@@ -29,7 +29,14 @@
         ///     The vehicle manufacturer faker. Generates fake <see cref="VehicleManufacturer"/> objects.
         /// </summary>
         private static readonly Faker<VehicleManufacturer> VehicleManufacturerFaker = new Faker<VehicleManufacturer>()
-            .RuleFor(t => t.Name, t => t.Company.CompanyName());
+            .RuleFor(t => t.Name, t => t.Company.CompanyName())
+            .RuleFor(t => t.Subsidiaries, t => ManufacturerSubsidiaryFaker.Generate(t.Random.Int(1, 3)));
+
+        /// <summary>
+        ///     The manufacturer subsidiary faker. Generates fake <see cref="ManufacturerSubsidiary"/> objects.
+        /// </summary>
+        private static readonly Faker<ManufacturerSubsidiary> ManufacturerSubsidiaryFaker = new Faker<ManufacturerSubsidiary>()
+            .RuleFor(t => t.City, t => t.Address.City());
 
         /// <summary>
         ///     The random generator.

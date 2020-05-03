@@ -21,5 +21,10 @@
         ///     Gets or sets the vehicles.
         /// </summary>
         public ICollection<Vehicle> Vehicles { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the subsidiaries.
+        /// </summary>
+        public ICollection<ManufacturerSubsidiary> Subsidiaries { get; set; }
     }
 }

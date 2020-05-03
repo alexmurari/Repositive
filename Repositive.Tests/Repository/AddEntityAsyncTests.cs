@@ -43,7 +43,7 @@
             var affectedRows = await _personRepository.SaveChangesAsync();
 
             // Assert
-            Assert.Equal(1 + person.Vehicles.Count + person.Vehicles.Sum(t => t.Manufacturer != null ? 1 : 0), affectedRows);
+            Assert.Equal(1 + person.Vehicles.Count + person.Vehicles.Sum(t => t.Manufacturer != null ? 1 : 0) + person.Vehicles.Sum(t => t.Manufacturer.Subsidiaries.Count), affectedRows);
             Assert.False(person.Id == default || person.Vehicles.Any(t => t.Id == default || t.Manufacturer.Id == default));
         }
 
@@ -62,7 +62,7 @@
             var affectedRows = await _personRepository.SaveChangesAsync();
 
             // Assert
-            Assert.True(affectedRows == personList.Count + personList.Sum(t => t.Vehicles.Count + t.Vehicles.Sum(x => x.Manufacturer != null ? 1 : 0)));
+            Assert.Equal(personList.Count + personList.Sum(t => t.Vehicles.Count + t.Vehicles.Sum(x => x.Manufacturer != null ? 1 : 0) + t.Vehicles.Sum(x => x.Manufacturer.Subsidiaries.Count)), affectedRows);
             Assert.DoesNotContain(personList, t => t.Id == default || t.Vehicles.Any(x => x.Id == default || x.Manufacturer.Id == default));
         }
     }

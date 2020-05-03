@@ -6,6 +6,7 @@
     using System.Linq.Expressions;
     using System.Threading.Tasks;
     using Microsoft.EntityFrameworkCore;
+    using Microsoft.EntityFrameworkCore.ChangeTracking;
     using Repositive.Domain.Contracts;
     using Repositive.Domain.Contracts.Repository;
     using Repositive.Repository.Extensions.Internal;
@@ -792,6 +793,238 @@
         }
 
         /// <summary>
+        ///     Loads the entity's specified navigation property with the related entity.
+        /// </summary>
+        /// <param name="entity">
+        ///     The entity with the navigation property reference.
+        /// </param>
+        /// <param name="propertyToLoad">
+        ///     The navigation property to load.
+        /// </param>
+        /// <param name="includes">The related entities from the navigation property to be included in the query.</param>
+        /// <typeparam name="TProperty">
+        ///     The entity type referenced by the navigation property.
+        /// </typeparam>
+        /// <returns>
+        ///     The entity with the loaded navigation property.
+        /// </returns>
+        public TEntity LoadRelated<TProperty>(TEntity entity, Expression<Func<TEntity, TProperty>> propertyToLoad, params Expression<Func<TProperty, object>>[] includes) where TProperty : class
+        {
+            var entry = GetEntityEntry(entity);
+
+            BeginEntityTracking(entity);
+
+            entry.Reference(propertyToLoad).Query().Include(includes).Load();
+
+            return entry.Entity;
+        }
+
+        /// <summary>
+        ///     Loads the entity's specified navigation property with the related entity that match the predicate condition.
+        /// </summary>
+        /// <param name="entity">
+        ///     The entity with the navigation property reference.
+        /// </param>
+        /// <param name="propertyToLoad">
+        ///     The navigation property to load.
+        /// </param>
+        /// <param name="predicate">
+        ///     The predicate with the query condition.
+        /// </param>
+        /// <param name="includes">The related entities from the navigation property to be included in the query.</param>
+        /// <typeparam name="TProperty">
+        ///     The entity type referenced by the navigation property.
+        /// </typeparam>
+        /// <returns>
+        ///     The entity with the loaded navigation property.
+        /// </returns>
+        public TEntity LoadRelated<TProperty>(TEntity entity, Expression<Func<TEntity, TProperty>> propertyToLoad, Expression<Func<TProperty, bool>> predicate, params Expression<Func<TProperty, object>>[] includes) where TProperty : class
+        {
+            var entry = GetEntityEntry(entity);
+
+            BeginEntityTracking(entity);
+
+            entry.Reference(propertyToLoad).Query().Include(includes).Where(predicate).Load();
+
+            return entry.Entity;
+        }
+
+        /// <summary>
+        ///     Asynchronously loads the entity's specified navigation property with the related entity.
+        /// </summary>
+        /// <param name="entity">
+        ///     The entity with the navigation property reference.
+        /// </param>
+        /// <param name="propertyToLoad">
+        ///     The navigation property to load.
+        /// </param>
+        /// <param name="includes">The related entities from the navigation property to be included in the query.</param>
+        /// <typeparam name="TProperty">
+        ///     The entity type referenced by the navigation property.
+        /// </typeparam>
+        /// <returns>
+        ///     The task that represents the asynchronous query operation.
+        ///     The task result contains the entity with the loaded navigation property.
+        /// </returns>
+        public async Task<TEntity> LoadRelatedAsync<TProperty>(TEntity entity, Expression<Func<TEntity, TProperty>> propertyToLoad, params Expression<Func<TProperty, object>>[] includes) where TProperty : class
+        {
+            var entry = GetEntityEntry(entity);
+
+            BeginEntityTracking(entity);
+
+            await entry.Reference(propertyToLoad).Query().Include(includes).LoadAsync();
+
+            return entry.Entity;
+        }
+
+        /// <summary>
+        ///     Asynchronously loads the entity's specified navigation property with the related entity that match the predicate condition.
+        /// </summary>
+        /// <param name="entity">
+        ///     The entity with the navigation property reference.
+        /// </param>
+        /// <param name="propertyToLoad">
+        ///     The navigation property to load.
+        /// </param>
+        /// <param name="predicate">
+        ///     The predicate with the query condition.
+        /// </param>
+        /// <param name="includes">The related entities from the navigation property to be included in the query.</param>
+        /// <typeparam name="TProperty">
+        ///     The entity type referenced by the navigation property.
+        /// </typeparam>
+        /// <returns>
+        ///     The task that represents the asynchronous query operation.
+        ///     The task result contains the entity with the loaded navigation property.
+        /// </returns>
+        public async Task<TEntity> LoadRelatedAsync<TProperty>(TEntity entity, Expression<Func<TEntity, TProperty>> propertyToLoad, Expression<Func<TProperty, bool>> predicate, params Expression<Func<TProperty, object>>[] includes) where TProperty : class
+        {
+            var entry = GetEntityEntry(entity);
+
+            BeginEntityTracking(entity);
+
+            await entry.Reference(propertyToLoad).Query().Include(includes).Where(predicate).LoadAsync();
+
+            return entry.Entity;
+        }
+
+        /// <summary>
+        ///     Loads the entity's specified navigation property with the related collection of entities.
+        /// </summary>
+        /// <param name="entity">
+        ///     The entity with the navigation property reference.
+        /// </param>
+        /// <param name="propertyToLoad">
+        ///     The navigation property to be loaded.
+        /// </param>
+        /// <param name="includes">The related entities from the navigation property to be included in the query.</param>
+        /// <typeparam name="TProperty">
+        ///     The entity type referenced by the navigation property.
+        /// </typeparam>
+        /// <returns>
+        ///     The entity with the loaded navigation property.
+        /// </returns>
+        public TEntity LoadRelatedCollection<TProperty>(TEntity entity, Expression<Func<TEntity, IEnumerable<TProperty>>> propertyToLoad, params Expression<Func<TProperty, object>>[] includes) where TProperty : class
+        {
+            var entry = GetEntityEntry(entity);
+
+            BeginEntityTracking(entity);
+
+            entry.Collection(propertyToLoad).Query().Include(includes).Load();
+
+            return entry.Entity;
+        }
+
+        /// <summary>
+        ///     Loads the entity's specified navigation property with the related collection of entities that match the predicate condition.
+        /// </summary>
+        /// <param name="entity">
+        ///     The entity with the navigation property reference.
+        /// </param>
+        /// <param name="propertyToLoad">
+        ///     The navigation property to be loaded.
+        /// </param>
+        /// <param name="predicate">
+        ///     The predicate with the query condition.
+        /// </param>
+        /// <param name="includes">The related entities from the navigation property to be included in the query.</param>
+        /// <typeparam name="TProperty">
+        ///     The entity type referenced by the navigation property.
+        /// </typeparam>
+        /// <returns>
+        ///     The entity with the loaded navigation property.
+        /// </returns>
+        public TEntity LoadRelatedCollection<TProperty>(TEntity entity, Expression<Func<TEntity, IEnumerable<TProperty>>> propertyToLoad, Expression<Func<TProperty, bool>> predicate, params Expression<Func<TProperty, object>>[] includes) where TProperty : class
+        {
+            var entry = GetEntityEntry(entity);
+
+            BeginEntityTracking(entity);
+
+            entry.Collection(propertyToLoad).Query().Include(includes).Where(predicate).Load();
+
+            return entry.Entity;
+        }
+
+        /// <summary>
+        ///     Asynchronously loads the entity's specified navigation property with the related collection of entities.
+        /// </summary>
+        /// <param name="entity">
+        ///     The entity with the navigation property reference.
+        /// </param>
+        /// <param name="propertyToLoad">
+        ///     The navigation property to load.
+        /// </param>
+        /// <param name="includes">The related entities from the navigation property to be included in the query.</param>
+        /// <typeparam name="TProperty">
+        ///     The entity type referenced by the navigation property.
+        /// </typeparam>
+        /// <returns>
+        ///     The task that represents the asynchronous query operation.
+        ///     The task result contains the entity with the loaded navigation property.
+        /// </returns>
+        public async Task<TEntity> LoadRelatedCollectionAsync<TProperty>(TEntity entity, Expression<Func<TEntity, IEnumerable<TProperty>>> propertyToLoad, params Expression<Func<TProperty, object>>[] includes) where TProperty : class
+        {
+            var entry = GetEntityEntry(entity);
+
+            BeginEntityTracking(entity);
+
+            await entry.Collection(propertyToLoad).Query().Include(includes).LoadAsync();
+
+            return entry.Entity;
+        }
+
+        /// <summary>
+        ///     Asynchronously loads the entity's specified navigation property with the related collection of entities that match the predicate condition.
+        /// </summary>
+        /// <param name="entity">
+        ///     The entity with the navigation property reference.
+        /// </param>
+        /// <param name="propertyToLoad">
+        ///     The navigation property to load.
+        /// </param>
+        /// <param name="predicate">
+        ///     The predicate with the query condition.
+        /// </param>
+        /// <param name="includes">The related entities from the navigation property to be included in the query.</param>
+        /// <typeparam name="TProperty">
+        ///     The entity type referenced by the navigation property.
+        /// </typeparam>
+        /// <returns>
+        ///     The task that represents the asynchronous query operation.
+        ///     The task result contains the entity with the loaded navigation property.
+        /// </returns>
+        public async Task<TEntity> LoadRelatedCollectionAsync<TProperty>(TEntity entity, Expression<Func<TEntity, IEnumerable<TProperty>>> propertyToLoad, Expression<Func<TProperty, bool>> predicate, params Expression<Func<TProperty, object>>[] includes) where TProperty : class
+        {
+            var entry = GetEntityEntry(entity);
+
+            BeginEntityTracking(entity);
+
+            await entry.Collection(propertyToLoad).Query().Include(includes).Where(predicate).LoadAsync();
+
+            return entry.Entity;
+        }
+
+        /// <summary>
         ///     Queries the database for the provided type and projects each element of the result sequence into a new form.
         /// </summary>
         /// <typeparam name="TResult">
@@ -1097,6 +1330,20 @@
         }
 
         /// <summary>
+        ///     Gets the context entry for the provided entity.
+        /// </summary>
+        /// <param name="entity">
+        ///     The entity to get the context entry.
+        /// </param>
+        /// <returns>
+        ///     The context's entry of the provided entry.
+        /// </returns>
+        private EntityEntry<TEntity> GetEntityEntry(TEntity entity)
+        {
+            return DbContext.Entry(entity);
+        }
+
+        /// <summary>
         ///     Gets the names of the properties that make up <typeparamref name="TEntity" /> primary key.
         /// </summary>
         /// <returns>
@@ -1105,6 +1352,20 @@
         private IEnumerable<string> GetEntityPrimaryKeyNames()
         {
             return DbContext.GetPrimaryKey<TEntity>().Select(t => t.Name);
+        }
+
+        /// <summary>
+        ///     Begins tracking the provided entity, if not already being tracked.
+        /// </summary>
+        /// <param name="entity">
+        ///     The entity to be tracked by the context.
+        /// </param>
+        private void BeginEntityTracking(TEntity entity)
+        {
+            var entry = GetEntityEntry(entity);
+
+            if (entry.State == EntityState.Detached)
+                entry.State = EntityState.Unchanged;
         }
     }
 }
