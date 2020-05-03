@@ -109,7 +109,7 @@
         [Fact]
         public void Assert_Load_Collection_Of_Related_Entities_Is_Successful()
         {
-            // arrange
+            // Arrange
             var person = DataGenerator.PickRandomItem(_databaseHelper.GetPersonsWithoutRelated());
 
             // Act
@@ -127,7 +127,7 @@
         [Fact]
         public void Assert_Load_Collection_Of_Related_Entities_With_Include_Is_Successful()
         {
-            // arrange
+            // Arrange
             var person = DataGenerator.PickRandomItem(_databaseHelper.GetPersonsWithoutRelated());
 
             // Act
@@ -146,7 +146,7 @@
         [Fact]
         public void Assert_Load_Collection_Of_Related_Entities_With_Predicate_Is_Successful()
         {
-            // arrange
+            // Arrange
             var person = DataGenerator.PickRandomItem(_databaseHelper.GetPersonsWithoutRelated(t => t.Vehicles.Any(x => x.Type == VehicleType.Motorcycle)));
 
             // Act

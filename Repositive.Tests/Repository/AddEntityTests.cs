@@ -3,6 +3,7 @@
     using System.Linq;
     using Domain.Contracts.Repository;
     using Repositive.Tests.Utilities;
+    using Repositive.Tests.Utilities.Extensions;
     using Repositive.Tests.Utilities.Repositories.Contracts;
     using Xunit;
 
@@ -41,8 +42,11 @@
             var affectedRows = _personRepository.SaveChanges();
 
             // Assert
-            Assert.Equal(1 + person.Vehicles.Count + person.Vehicles.Sum(t => t.Manufacturer != null ? 1 : 0) + person.Vehicles.Sum(t => t.Manufacturer.Subsidiaries.Count), affectedRows);
-            Assert.False(person.Id == default || person.Vehicles.Any(t => t.Id == default || t.Manufacturer.Id == default));
+            Assert.Equal(person.CountRelatedEntities() + 1, affectedRows);
+            Assert.False(person.Id == default);
+            Assert.DoesNotContain(person.Vehicles, t => t.Id == default);
+            Assert.DoesNotContain(person.Vehicles, t => t.ManufacturerId == default);
+            Assert.DoesNotContain(person.Vehicles.SelectMany(t => t.Manufacturer.Subsidiaries), t => t.Id == default);
         }
 
         /// <summary>
@@ -52,15 +56,18 @@
         public void Assert_Add_Entity_Range_Is_Successful()
         {
             // Arrange
-            var personList = DataGenerator.GeneratePersons(50);
+            var personList = DataGenerator.GeneratePersons(10);
 
             // Act
             _personRepository.AddRange(personList);
             var affectedRows = _personRepository.SaveChanges();
 
             // Assert
-            Assert.True(affectedRows == personList.Count + personList.Sum(t => t.Vehicles.Count + t.Vehicles.Sum(x => x.Manufacturer != null ? 1 : 0) + t.Vehicles.Sum(x => x.Manufacturer.Subsidiaries.Count)));
-            Assert.DoesNotContain(personList, t => t.Id == default || t.Vehicles.Any(x => x.Id == default || x.Manufacturer.Id == default));
+            Assert.Equal(personList.Sum(t => t.CountRelatedEntities() + 1), affectedRows);
+            Assert.DoesNotContain(personList, t => t.Id == default);
+            Assert.DoesNotContain(personList.SelectMany(t => t.Vehicles), t => t.Id == default);
+            Assert.DoesNotContain(personList.SelectMany(t => t.Vehicles), t => t.ManufacturerId == default);
+            Assert.DoesNotContain(personList.SelectMany(t => t.Vehicles).SelectMany(t => t.Manufacturer.Subsidiaries), t => t.Id == default);
         }
     }
 }

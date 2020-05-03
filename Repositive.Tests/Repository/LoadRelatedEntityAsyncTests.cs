@@ -12,7 +12,7 @@
     using Xunit;
 
     /// <summary>
-    ///     Tests the repository methods responsible for explicitly loading related entities.
+    ///     Tests the asynchronous repository methods responsible for explicitly loading related entities.
     /// </summary>
     public class LoadRelatedEntityAsyncTests
     {
@@ -114,7 +114,7 @@
         [Fact]
         public async Task Assert_Load_Collection_Of_Related_Entities_Is_Successful()
         {
-            // arrange
+            // Arrange
             var person = DataGenerator.PickRandomItem(_databaseHelper.GetPersonsWithoutRelated());
 
             // Act
@@ -133,7 +133,7 @@
         [Fact]
         public async Task Assert_Load_Collection_Of_Related_Entities_With_Include_Is_Successful()
         {
-            // arrange
+            // Arrange
             var person = DataGenerator.PickRandomItem(_databaseHelper.GetPersonsWithoutRelated());
 
             // Act
@@ -153,7 +153,7 @@
         [Fact]
         public async Task Assert_Load_Collection_Of_Related_Entities_With_Predicate_Is_Successful()
         {
-            // arrange
+            // Arrange
             var person = DataGenerator.PickRandomItem(_databaseHelper.GetPersonsWithoutRelated(t => t.Vehicles.Any(x => x.Type == VehicleType.Motorcycle)));
 
             // Act

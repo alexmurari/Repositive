@@ -16,7 +16,7 @@
         /// </summary>
         private static readonly Faker<Person> PersonFaker = new Faker<Person>()
             .RuleFor(t => t.Name, t => t.Name.FirstName())
-            .RuleFor(t => t.Vehicles, t => VehicleFaker.Generate(t.Random.Int(2, 10)));
+            .RuleFor(t => t.Vehicles, t => VehicleFaker.Generate(t.Random.Int(2, 5)));
 
         /// <summary>
         ///     The vehicle faker. Generates fake <see cref="Vehicle"/> objects.

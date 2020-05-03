@@ -1,8 +1,7 @@
 ﻿namespace Repositive.Tests.Repository
 {
-    using System;
     using System.Collections.Generic;
-    using System.Linq.Expressions;
+    using System.Linq;
     using System.Threading.Tasks;
     using Repositive.Domain.Contracts.Repository;
     using Repositive.Tests.Utilities;
@@ -90,7 +89,7 @@
             var affectedRows = await _personRepository.SaveChangesAsync();
 
             // Assert
-            Assert.True(affectedRows > 1);
+            Assert.Equal(person.Vehicles.Count + 1, affectedRows);
         }
 
         /// <summary>
@@ -108,7 +107,7 @@
             var affectedRows = await _personRepository.SaveChangesAsync();
 
             // Assert
-            Assert.True(affectedRows > persons.Count);
+            Assert.Equal(persons.Sum(t => t.Vehicles.Count + 1), affectedRows);
         }
     }
 }
