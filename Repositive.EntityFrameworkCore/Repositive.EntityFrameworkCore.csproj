@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Description>Advanced repository pattern implementation for Entity Framework Core.</Description>
+    <Description>Provides advanced repository pattern implementations for Entity Framework Core based on Repositive.Contracts interfaces.</Description>
     <GeneratePackageOnBuild Condition=" '$(Configuration)' == 'Release' ">true</GeneratePackageOnBuild>
     <GenerateDocumentationFile Condition=" '$(Configuration)' == 'Release' ">true</GenerateDocumentationFile>
     <PackageIcon>icon.png</PackageIcon>

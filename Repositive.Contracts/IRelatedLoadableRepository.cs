@@ -32,7 +32,7 @@
         TEntity LoadRelated<TProperty>(TEntity entity, Expression<Func<TEntity, TProperty>> navigationProperty, params Expression<Func<TProperty, object>>[] includes) where TProperty : class;
 
         /// <summary>
-        ///    Loads the entity referenced by the specified navigation property that match the predicate condition.
+        ///    Loads the entity referenced by the specified navigation property if it matches the predicate condition.
         /// </summary>
         /// <param name="entity">
         ///     The entity instance with the navigation property reference.
@@ -72,7 +72,7 @@
         Task<TEntity> LoadRelatedAsync<TProperty>(TEntity entity, Expression<Func<TEntity, TProperty>> navigationProperty, params Expression<Func<TProperty, object>>[] includes) where TProperty : class;
 
         /// <summary>
-        ///     Asynchronously loads the entity referenced by the specified navigation property that match the predicate condition.
+        ///     Asynchronously loads the entity referenced by the specified navigation property if it matches the predicate condition.
         /// </summary>
         /// <param name="entity">
         ///     The entity instance with the navigation property reference.
