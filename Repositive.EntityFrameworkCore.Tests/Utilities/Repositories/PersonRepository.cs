@@ -1,6 +1,5 @@
 ﻿namespace Repositive.EntityFrameworkCore.Tests.Utilities.Repositories
 {
-    using Repositive.EntityFrameworkCore;
     using Repositive.EntityFrameworkCore.Tests.Utilities.Context;
     using Repositive.EntityFrameworkCore.Tests.Utilities.Entities;
     using Repositive.EntityFrameworkCore.Tests.Utilities.Repositories.Contracts;
