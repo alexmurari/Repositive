@@ -54,8 +54,10 @@
             if (!(unitOfWork is UnitOfWork<TContext> unitOfWorkImpl))
                 throw new InvalidOperationException($"The provided {nameof(IUnitOfWork)} instance doesn't match the required instance of {nameof(UnitOfWork<TContext>)} with context of type {typeof(TContext).Name}.");
 
-            DbContext = unitOfWorkImpl.Context;
-            DbSet = unitOfWorkImpl.Context.Set<TEntity>();
+            var context = unitOfWorkImpl.Context.ThrowIfNull(nameof(UnitOfWork<TContext>.Context));
+
+            DbContext = context;
+            DbSet = context.Set<TEntity>();
 
             _useUnitOfWork = true;
         }

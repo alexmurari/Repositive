@@ -12,8 +12,8 @@
     ///         the commit operation between different repositories and, therefore, no commit should be made directly from a repository.
     ///     </para>
     ///     <para>
-    ///         Caution is advised when using this interface, as the database context may be shared between different repositories, changes
-    ///         from other repositories may be committed when saving changes from a specific repository, leading to unexpected and/or unintended behavior.
+    ///         Caution is advised when using this interface, as the database context may be shared between different repositories, changes from
+    ///         other repositories may be committed when saving changes from a specific repository, leading to unexpected and/or unintended behavior.
     ///         For these scenarios, the unit of work pattern (<see cref="IUnitOfWork"/> interface) is the recommended approach.
     ///     </para>
     /// </remarks>
