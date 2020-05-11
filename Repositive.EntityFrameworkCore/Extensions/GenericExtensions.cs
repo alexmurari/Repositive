@@ -59,7 +59,7 @@
         ///     The value being checked.
         /// </returns>
         /// <exception cref="ArgumentException">
-        ///     The exception when the value is the default value for the type.
+        ///     Thrown when the value is the default value for the type.
         /// </exception>
         internal static T ThrowIfDefault<T>(this T value, string paramName) where T : struct
         {
@@ -85,7 +85,7 @@
         ///     The value being checked.
         /// </returns>
         /// <exception cref="ArgumentNullException">
-        ///     The exception when the value is null.
+        ///     Thrown when the value is null.
         /// </exception>
         internal static T ThrowIfNull<T>(this T value, string paramName) where T : class
         {

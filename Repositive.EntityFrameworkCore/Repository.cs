@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
+    using System.Threading;
     using System.Threading.Tasks;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -20,8 +21,13 @@
     ///     The type that the repository uses as the database context.
     ///     Must be of <see cref="Microsoft.EntityFrameworkCore.DbContext"/> type or derive from it.
     /// </typeparam>
-    public abstract class Repository<TEntity, TContext> : IRepository<TEntity>, IQueryableRepository<TEntity>, IRelatedLoadableRepository<TEntity> where TEntity : class where TContext : DbContext
+    public abstract class Repository<TEntity, TContext> : IRepository<TEntity>, IQueryableRepository<TEntity>, IRelatedLoadableRepository<TEntity>, ISaveableRepository where TEntity : class where TContext : DbContext
     {
+        /// <summary>
+        ///     Indicates whether or not this repository uses unit of work for commit synchronization.
+        /// </summary>
+        private readonly bool _useUnitOfWork;
+
         /// <summary>
         ///     Initializes a new instance of the <see cref="Repository{TEntity,TContext}" /> class.
         /// </summary>
@@ -32,6 +38,26 @@
         {
             DbContext = context.ThrowIfNull(nameof(context));
             DbSet = context.Set<TEntity>();
+        }
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="Repository{TEntity,TContext}"/> class with the provided <see cref="IUnitOfWork"/> instance providing commit synchronization between repositories.
+        /// </summary>
+        /// <param name="unitOfWork">
+        ///     The unit of work that provides commit synchronization between repositories.
+        /// </param>
+        /// <exception cref="InvalidOperationException">Thrown when an invalid <see cref="IUnitOfWork"/> instance is provided as the parameter.</exception>
+        protected Repository(IUnitOfWork unitOfWork)
+        {
+            unitOfWork.ThrowIfNull(nameof(unitOfWork));
+
+            if (!(unitOfWork is UnitOfWork<TContext> unitOfWorkImpl))
+                throw new InvalidOperationException($"The provided {nameof(IUnitOfWork)} instance doesn't match the required instance of {nameof(UnitOfWork<TContext>)} with context of type {typeof(TContext).Name}.");
+
+            DbContext = unitOfWorkImpl.Context;
+            DbSet = unitOfWorkImpl.Context.Set<TEntity>();
+
+            _useUnitOfWork = true;
         }
 
         /// <summary>
@@ -805,7 +831,8 @@
         /// <returns>
         ///     The entity with the loaded navigation property.
         /// </returns>
-        public TEntity LoadRelated<TProperty>(TEntity entity, Expression<Func<TEntity, TProperty>> navigationProperty, params Expression<Func<TProperty, object>>[] includes) where TProperty : class
+        public TEntity LoadRelated<TProperty>(TEntity entity, Expression<Func<TEntity, TProperty>> navigationProperty, params Expression<Func<TProperty, object>>[] includes)
+            where TProperty : class
         {
             var entry = GetEntityEntry(entity);
 
@@ -835,7 +862,11 @@
         /// <returns>
         ///     The entity with the loaded navigation property.
         /// </returns>
-        public TEntity LoadRelated<TProperty>(TEntity entity, Expression<Func<TEntity, TProperty>> navigationProperty, Expression<Func<TProperty, bool>> predicate, params Expression<Func<TProperty, object>>[] includes) where TProperty : class
+        public TEntity LoadRelated<TProperty>(
+            TEntity entity,
+            Expression<Func<TEntity, TProperty>> navigationProperty,
+            Expression<Func<TProperty, bool>> predicate,
+            params Expression<Func<TProperty, object>>[] includes) where TProperty : class
         {
             var entry = GetEntityEntry(entity);
 
@@ -863,7 +894,10 @@
         ///     The task that represents the asynchronous query operation.
         ///     The task result contains the entity with the loaded navigation property.
         /// </returns>
-        public async Task<TEntity> LoadRelatedAsync<TProperty>(TEntity entity, Expression<Func<TEntity, TProperty>> navigationProperty, params Expression<Func<TProperty, object>>[] includes) where TProperty : class
+        public async Task<TEntity> LoadRelatedAsync<TProperty>(
+            TEntity entity,
+            Expression<Func<TEntity, TProperty>> navigationProperty,
+            params Expression<Func<TProperty, object>>[] includes) where TProperty : class
         {
             var entry = GetEntityEntry(entity);
 
@@ -894,7 +928,11 @@
         ///     The task that represents the asynchronous query operation.
         ///     The task result contains the entity with the loaded navigation property.
         /// </returns>
-        public async Task<TEntity> LoadRelatedAsync<TProperty>(TEntity entity, Expression<Func<TEntity, TProperty>> navigationProperty, Expression<Func<TProperty, bool>> predicate, params Expression<Func<TProperty, object>>[] includes) where TProperty : class
+        public async Task<TEntity> LoadRelatedAsync<TProperty>(
+            TEntity entity,
+            Expression<Func<TEntity, TProperty>> navigationProperty,
+            Expression<Func<TProperty, bool>> predicate,
+            params Expression<Func<TProperty, object>>[] includes) where TProperty : class
         {
             var entry = GetEntityEntry(entity);
 
@@ -921,7 +959,10 @@
         /// <returns>
         ///     The entity with the loaded navigation property.
         /// </returns>
-        public TEntity LoadRelatedCollection<TProperty>(TEntity entity, Expression<Func<TEntity, IEnumerable<TProperty>>> navigationProperty, params Expression<Func<TProperty, object>>[] includes) where TProperty : class
+        public TEntity LoadRelatedCollection<TProperty>(
+            TEntity entity,
+            Expression<Func<TEntity, IEnumerable<TProperty>>> navigationProperty,
+            params Expression<Func<TProperty, object>>[] includes) where TProperty : class
         {
             var entry = GetEntityEntry(entity);
 
@@ -951,7 +992,11 @@
         /// <returns>
         ///     The entity with the loaded navigation property.
         /// </returns>
-        public TEntity LoadRelatedCollection<TProperty>(TEntity entity, Expression<Func<TEntity, IEnumerable<TProperty>>> navigationProperty, Expression<Func<TProperty, bool>> predicate, params Expression<Func<TProperty, object>>[] includes) where TProperty : class
+        public TEntity LoadRelatedCollection<TProperty>(
+            TEntity entity,
+            Expression<Func<TEntity, IEnumerable<TProperty>>> navigationProperty,
+            Expression<Func<TProperty, bool>> predicate,
+            params Expression<Func<TProperty, object>>[] includes) where TProperty : class
         {
             var entry = GetEntityEntry(entity);
 
@@ -979,7 +1024,10 @@
         ///     The task that represents the asynchronous query operation.
         ///     The task result contains the entity with the loaded navigation property.
         /// </returns>
-        public async Task<TEntity> LoadRelatedCollectionAsync<TProperty>(TEntity entity, Expression<Func<TEntity, IEnumerable<TProperty>>> navigationProperty, params Expression<Func<TProperty, object>>[] includes) where TProperty : class
+        public async Task<TEntity> LoadRelatedCollectionAsync<TProperty>(
+            TEntity entity,
+            Expression<Func<TEntity, IEnumerable<TProperty>>> navigationProperty,
+            params Expression<Func<TProperty, object>>[] includes) where TProperty : class
         {
             var entry = GetEntityEntry(entity);
 
@@ -1010,7 +1058,11 @@
         ///     The task that represents the asynchronous query operation.
         ///     The task result contains the entity with the loaded navigation property.
         /// </returns>
-        public async Task<TEntity> LoadRelatedCollectionAsync<TProperty>(TEntity entity, Expression<Func<TEntity, IEnumerable<TProperty>>> navigationProperty, Expression<Func<TProperty, bool>> predicate, params Expression<Func<TProperty, object>>[] includes) where TProperty : class
+        public async Task<TEntity> LoadRelatedCollectionAsync<TProperty>(
+            TEntity entity,
+            Expression<Func<TEntity, IEnumerable<TProperty>>> navigationProperty,
+            Expression<Func<TProperty, bool>> predicate,
+            params Expression<Func<TProperty, object>>[] includes) where TProperty : class
         {
             var entry = GetEntityEntry(entity);
 
@@ -1279,24 +1331,35 @@
         }
 
         /// <summary>
-        ///     Saves all changes made in this context to the underlying database.
+        ///     Saves all changes made in this repository to the database.
         /// </summary>
         /// <returns>The number of affected rows in the database.</returns>
         public int SaveChanges()
         {
+            if (_useUnitOfWork)
+                throw new InvalidOperationException(
+                    $"Cannot commit changes directly from repositories that use unit of work. Use the associated {nameof(IUnitOfWork)} instance for commiting changes.");
+
             return DbContext.SaveChanges();
         }
 
         /// <summary>
-        ///     Asynchronously saves all changes made in this context to the underlying database.
+        ///     Asynchronously saves all changes made in this repository to the database.
         /// </summary>
+        /// <param name="cancellationToken">
+        ///     The token that propagates a cancellation request to interrupt the operation.
+        /// </param>
         /// <returns>
         ///     A task that represents the asynchronous save operation.
         ///     The task result contains the number of affected rows in the database.
         /// </returns>
-        public Task<int> SaveChangesAsync()
+        public Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
-            return DbContext.SaveChangesAsync();
+            if (_useUnitOfWork)
+                throw new InvalidOperationException(
+                    $"Cannot commit changes directly from repositories that use unit of work. Use the associated {nameof(IUnitOfWork)} instance for commiting changes.");
+
+            return DbContext.SaveChangesAsync(cancellationToken);
         }
 
         /// <summary>
@@ -1308,6 +1371,7 @@
         /// <returns>
         ///     A new <see cref="IQueryable{T}" /> with the configured change tracker behavior.
         /// </returns>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when the argument passed as the tracking behavior is invalid/out of range.</exception>
         private IQueryable<TEntity> GetQuery(QueryTracking tracking)
         {
             switch (tracking)

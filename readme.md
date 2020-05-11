@@ -3,7 +3,7 @@
     <img alt="Exprelsior" width="400" src="https://user-images.githubusercontent.com/11204378/81116400-aab2c700-8efb-11ea-8f8f-2fc3908ea7d7.png">
   </a>
   <p>
-    <strong>A .NET Standard advanced repository pattern.</strong>
+    <strong>A .NET Standard advanced repository pattern implementation.</strong>
   </p>
 </div>
 
@@ -23,9 +23,11 @@ All methods have it's asynchronous counterparts.
 
 1. [Overview](#1-overview)
 
+---
+
 ## 1. Overview
 
-The objective os this library is to provide plug-and-play repository interfaces and implementations:
+The objective of this library is to provide plug-and-play repository interfaces and implementations:
 
 **Example:**
 

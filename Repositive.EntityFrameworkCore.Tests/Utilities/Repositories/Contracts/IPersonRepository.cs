@@ -6,7 +6,7 @@
     /// <summary>
     ///     Provides methods for querying and saving instances of <see cref="Person"/>.
     /// </summary>
-    public interface IPersonRepository : IRepository<Person>, IRelatedLoadableRepository<Person>
+    public interface IPersonRepository : IRepository<Person>, IRelatedLoadableRepository<Person>, ISaveableRepository
     {
     }
 }
