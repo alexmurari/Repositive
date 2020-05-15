@@ -5,7 +5,7 @@
     using Repositive.EntityFrameworkCore.Tests.Utilities.Repositories.Contracts;
 
     /// <summary>
-    ///     Provides an <see cref="IPersonRepository"/> implementation for querying and saving instances of <see cref="Person"/>.
+    ///     Provides a repository pattern implementation for querying and saving <see cref="Person"/> instances.
     /// </summary>
     internal class PersonRepository : Repository<Person, RepositiveContext>, IPersonRepository
     {

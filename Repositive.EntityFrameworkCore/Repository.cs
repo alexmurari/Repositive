@@ -54,7 +54,7 @@
             if (!(unitOfWork is UnitOfWork<TContext> unitOfWorkImpl))
                 throw new InvalidOperationException($"The provided {nameof(IUnitOfWork)} instance doesn't match the required instance of {nameof(UnitOfWork<TContext>)} with context of type {typeof(TContext).Name}.");
 
-            var context = unitOfWorkImpl.Context.ThrowIfNull(nameof(UnitOfWork<TContext>.Context));
+            var context = unitOfWorkImpl.GetDbContext();
 
             DbContext = context;
             DbSet = context.Set<TEntity>();
@@ -77,7 +77,7 @@
         /// </summary>
         /// <param name="entity">The object to be added.</param>
         /// <returns>The added object.</returns>
-        public TEntity Add(TEntity entity)
+        public virtual TEntity Add(TEntity entity)
         {
             return DbSet.Add(entity).Entity;
         }
@@ -90,7 +90,7 @@
         ///     A task that represents the asynchronous add operation.
         ///     The task result contains the added object.
         /// </returns>
-        public async Task<TEntity> AddAsync(TEntity entity)
+        public virtual async Task<TEntity> AddAsync(TEntity entity)
         {
             return (await DbSet.AddAsync(entity).ConfigureAwait(false)).Entity;
         }
@@ -99,7 +99,7 @@
         ///     Adds an collection of entities of the provided type to the database repository.
         /// </summary>
         /// <param name="entityCollection">The collection of objects to be added.</param>
-        public void AddRange(IEnumerable<TEntity> entityCollection)
+        public virtual void AddRange(IEnumerable<TEntity> entityCollection)
         {
             DbSet.AddRange(entityCollection);
         }
@@ -109,7 +109,7 @@
         /// </summary>
         /// <param name="entityCollection">The collection of objects to be added.</param>
         /// <returns>A task that represents the asynchronous add range operation.</returns>
-        public Task AddRangeAsync(IEnumerable<TEntity> entityCollection)
+        public virtual Task AddRangeAsync(IEnumerable<TEntity> entityCollection)
         {
             return DbSet.AddRangeAsync(entityCollection);
         }
@@ -120,7 +120,7 @@
         /// <returns>
         ///     True if the database repository contains any entities; otherwise, false.
         /// </returns>
-        public bool Any()
+        public virtual bool Any()
         {
             return DbSet.Any();
         }
@@ -134,7 +134,7 @@
         /// <returns>
         ///     True if the database repository contains any entities that match the predicate condition; otherwise, false.
         /// </returns>
-        public bool Any(Expression<Func<TEntity, bool>> predicate)
+        public virtual bool Any(Expression<Func<TEntity, bool>> predicate)
         {
             return DbSet.Any(predicate);
         }
@@ -146,7 +146,7 @@
         ///     A task that represents the asynchronous query operation.
         ///     The task result contains the value indicating whether database repository contains any entities.
         /// </returns>
-        public Task<bool> AnyAsync()
+        public virtual Task<bool> AnyAsync()
         {
             return DbSet.AnyAsync();
         }
@@ -161,7 +161,7 @@
         ///     A task that represents the asynchronous query operation.
         ///     The task result contains the value indicating whether database repository contains any entities that match the predicate condition.
         /// </returns>
-        public Task<bool> AnyAsync(Expression<Func<TEntity, bool>> predicate)
+        public virtual Task<bool> AnyAsync(Expression<Func<TEntity, bool>> predicate)
         {
             return DbSet.AnyAsync(predicate);
         }
@@ -172,7 +172,7 @@
         /// <returns>
         ///     The number of entities in the database repository.
         /// </returns>
-        public int Count()
+        public virtual int Count()
         {
             return DbSet.Count();
         }
@@ -186,7 +186,7 @@
         /// <returns>
         ///     The number of entities in the database repository that match the predicate condition.
         /// </returns>
-        public int Count(Expression<Func<TEntity, bool>> predicate)
+        public virtual int Count(Expression<Func<TEntity, bool>> predicate)
         {
             return DbSet.Count(predicate);
         }
@@ -198,7 +198,7 @@
         ///     A task that represents the asynchronous query operation.
         ///     The task result contains the number of entities in the database repository.
         /// </returns>
-        public Task<int> CountAsync()
+        public virtual Task<int> CountAsync()
         {
             return DbSet.CountAsync();
         }
@@ -213,7 +213,7 @@
         ///     A task that represents the asynchronous query operation.
         ///     The task result contains the number of entities in the database repository that match the predicate condition.
         /// </returns>
-        public Task<int> CountAsync(Expression<Func<TEntity, bool>> predicate)
+        public virtual Task<int> CountAsync(Expression<Func<TEntity, bool>> predicate)
         {
             return DbSet.CountAsync(predicate);
         }
@@ -223,7 +223,7 @@
         /// </summary>
         /// <param name="entity">The entity to be deleted.</param>
         /// <param name="deleteRelated">The value that indicates whether or not related entities reachable from the provided entity should be deleted in the operation.</param>
-        public void Delete(TEntity entity, bool deleteRelated = false)
+        public virtual void Delete(TEntity entity, bool deleteRelated = false)
         {
             if (deleteRelated)
                 DbSet.Remove(entity);
@@ -236,7 +236,7 @@
         /// </summary>
         /// <param name="entities">The collection of entities to be deleted.</param>
         /// <param name="deleteRelated">The value that indicates whether or not related entities reachable from the provided entity should be deleted in the operation.</param>
-        public void Delete(IEnumerable<TEntity> entities, bool deleteRelated = false)
+        public virtual void Delete(IEnumerable<TEntity> entities, bool deleteRelated = false)
         {
             if (deleteRelated)
                 DbSet.RemoveRange(entities);
@@ -251,7 +251,7 @@
         /// <param name="entity">The entity to be deleted.</param>
         /// <param name="deleteRelated">The value that indicates whether or not related entities reachable from the provided entity should be deleted in the operation.</param>
         /// <returns>A task that represents the asynchronous delete operation.</returns>
-        public Task DeleteAsync(TEntity entity, bool deleteRelated = false)
+        public virtual Task DeleteAsync(TEntity entity, bool deleteRelated = false)
         {
             if (deleteRelated)
                 DbSet.Remove(entity);
@@ -267,7 +267,7 @@
         /// <param name="entities">The collection of entities to be deleted.</param>
         /// <param name="deleteRelated">The value that indicates whether or not related entities reachable from the provided entity should be deleted in the operation.</param>
         /// <returns>A task that represents the asynchronous delete operation.</returns>
-        public Task DeleteAsync(IEnumerable<TEntity> entities, bool deleteRelated = false)
+        public virtual Task DeleteAsync(IEnumerable<TEntity> entities, bool deleteRelated = false)
         {
             if (deleteRelated)
                 DbSet.RemoveRange(entities);
@@ -283,7 +283,7 @@
         /// </summary>
         /// <param name="key">The primary key.</param>
         /// <returns>The entity with the given primary key value.</returns>
-        public TEntity Find(params object[] key)
+        public virtual TEntity Find(params object[] key)
         {
             return DbSet.Find(key);
         }
@@ -296,7 +296,7 @@
         ///     A task that represents the asynchronous find operation.
         ///     The task result contains the entity with the given primary key value.
         /// </returns>
-        public ValueTask<TEntity> FindAsync(params object[] key)
+        public virtual ValueTask<TEntity> FindAsync(params object[] key)
         {
             return DbSet.FindAsync(key);
         }
@@ -309,7 +309,7 @@
         /// </param>
         /// <param name="includes">The related entities to be included in the query.</param>
         /// <returns>The collection of entities fetched from the database.</returns>
-        public IEnumerable<TEntity> Get(QueryTracking tracking = QueryTracking.Default, params Expression<Func<TEntity, object>>[] includes)
+        public virtual IEnumerable<TEntity> Get(QueryTracking tracking = QueryTracking.Default, params Expression<Func<TEntity, object>>[] includes)
         {
             var query = GetQuery(tracking).Include(includes);
 
@@ -331,7 +331,7 @@
         /// <returns>
         ///     A tuple with the paginated collection of entities fetched and total number of entities of the provided type in the database.
         /// </returns>
-        public (IEnumerable<TEntity> Entities, int Count) Get(
+        public virtual (IEnumerable<TEntity> Entities, int Count) Get(
             int skip,
             int take,
             QueryTracking tracking = QueryTracking.Default,
@@ -357,7 +357,7 @@
         /// <returns>
         ///     The collection of entities fetched from the database.
         /// </returns>
-        public IEnumerable<TEntity> Get(
+        public virtual IEnumerable<TEntity> Get(
             Expression<Func<TEntity, bool>> predicate,
             QueryTracking tracking = QueryTracking.Default,
             params Expression<Func<TEntity, object>>[] includes)
@@ -383,7 +383,7 @@
         /// <returns>
         ///     A tuple with the paginated collection of entities fetched and total number of entities of the provided type in the database.
         /// </returns>
-        public (IEnumerable<TEntity> Entities, int Count) Get(
+        public virtual (IEnumerable<TEntity> Entities, int Count) Get(
             int skip,
             int take,
             Expression<Func<TEntity, bool>> predicate,
@@ -408,7 +408,7 @@
         /// </param>
         /// <param name="includes">The related entities to be included in the query.</param>
         /// <returns>The collection of entities fetched from the database.</returns>
-        public IEnumerable<TEntity> Get(
+        public virtual IEnumerable<TEntity> Get(
             (Expression<Func<TEntity, object>> keySelector, SortDirection direction) orderBy,
             QueryTracking tracking = QueryTracking.Default,
             params Expression<Func<TEntity, object>>[] includes)
@@ -434,7 +434,7 @@
         /// <returns>
         ///     A tuple with the paginated collection of entities fetched and total number of entities of the provided type in the database.
         /// </returns>
-        public (IEnumerable<TEntity> Entities, int Count) Get(
+        public virtual (IEnumerable<TEntity> Entities, int Count) Get(
             int skip,
             int take,
             (Expression<Func<TEntity, object>> keySelector, SortDirection direction) orderBy,
@@ -460,7 +460,7 @@
         /// </param>
         /// <param name="includes">The related entities to be included in the query.</param>
         /// <returns>The collection of entities fetched from the database.</returns>
-        public IEnumerable<TEntity> Get(
+        public virtual IEnumerable<TEntity> Get(
             Expression<Func<TEntity, bool>> predicate,
             (Expression<Func<TEntity, object>> keySelector, SortDirection direction) orderBy,
             QueryTracking tracking = QueryTracking.Default,
@@ -488,7 +488,7 @@
         /// <returns>
         ///     A tuple with the paginated collection of entities fetched and total number of entities of the provided type in the database.
         /// </returns>
-        public (IEnumerable<TEntity> Entities, int Count) Get(
+        public virtual (IEnumerable<TEntity> Entities, int Count) Get(
             int skip,
             int take,
             Expression<Func<TEntity, bool>> predicate,
@@ -516,7 +516,7 @@
         ///     A task that represents the asynchronous query operation.
         ///     The task result contains the collection of entities fetched from the database.
         /// </returns>
-        public async Task<IEnumerable<TEntity>> GetAsync(QueryTracking tracking = QueryTracking.Default, params Expression<Func<TEntity, object>>[] includes)
+        public virtual async Task<IEnumerable<TEntity>> GetAsync(QueryTracking tracking = QueryTracking.Default, params Expression<Func<TEntity, object>>[] includes)
         {
             var query = GetQuery(tracking).Include(includes);
 
@@ -539,7 +539,7 @@
         ///     A task that represents the asynchronous query operation.
         ///     The task result contains a tuple with the paginated collection of entities fetched and total number of entities of the provided type in the database.
         /// </returns>
-        public async Task<(IEnumerable<TEntity> Entities, int Count)> GetAsync(
+        public virtual async Task<(IEnumerable<TEntity> Entities, int Count)> GetAsync(
             int skip,
             int take,
             QueryTracking tracking = QueryTracking.Default,
@@ -566,7 +566,7 @@
         ///     A task that represents the asynchronous query operation.
         ///     The task result contains the collection of entities fetched from the database.
         /// </returns>
-        public async Task<IEnumerable<TEntity>> GetAsync(
+        public virtual async Task<IEnumerable<TEntity>> GetAsync(
             Expression<Func<TEntity, bool>> predicate,
             QueryTracking tracking = QueryTracking.Default,
             params Expression<Func<TEntity, object>>[] includes)
@@ -593,7 +593,7 @@
         ///     A task that represents the asynchronous query operation.
         ///     The task result contains a tuple with the paginated collection of entities fetched and total number of entities of the provided type in the database.
         /// </returns>
-        public async Task<(IEnumerable<TEntity> Entities, int Count)> GetAsync(
+        public virtual async Task<(IEnumerable<TEntity> Entities, int Count)> GetAsync(
             int skip,
             int take,
             Expression<Func<TEntity, bool>> predicate,
@@ -621,7 +621,7 @@
         ///     A task that represents the asynchronous query operation.
         ///     The task result contains the collection of entities fetched from the database.
         /// </returns>
-        public async Task<IEnumerable<TEntity>> GetAsync(
+        public virtual async Task<IEnumerable<TEntity>> GetAsync(
             (Expression<Func<TEntity, object>> keySelector, SortDirection direction) orderBy,
             QueryTracking tracking = QueryTracking.Default,
             params Expression<Func<TEntity, object>>[] includes)
@@ -648,7 +648,7 @@
         ///     A task that represents the asynchronous query operation.
         ///     The task result contains a tuple with the paginated collection of entities fetched and total number of entities of the provided type in the database.
         /// </returns>
-        public async Task<(IEnumerable<TEntity> Entities, int Count)> GetAsync(
+        public virtual async Task<(IEnumerable<TEntity> Entities, int Count)> GetAsync(
             int skip,
             int take,
             (Expression<Func<TEntity, object>> keySelector, SortDirection direction) orderBy,
@@ -677,7 +677,7 @@
         ///     A task that represents the asynchronous query operation.
         ///     The task result contains the collection of entities fetched from the database.
         /// </returns>
-        public async Task<IEnumerable<TEntity>> GetAsync(
+        public virtual async Task<IEnumerable<TEntity>> GetAsync(
             Expression<Func<TEntity, bool>> predicate,
             (Expression<Func<TEntity, object>> keySelector, SortDirection direction) orderBy,
             QueryTracking tracking = QueryTracking.Default,
@@ -706,7 +706,7 @@
         ///     A task that represents the asynchronous query operation.
         ///     The task result contains a tuple with the paginated collection of entities fetched and total number of entities of the provided type in the database.
         /// </returns>
-        public async Task<(IEnumerable<TEntity> Entities, int Count)> GetAsync(
+        public virtual async Task<(IEnumerable<TEntity> Entities, int Count)> GetAsync(
             int skip,
             int take,
             Expression<Func<TEntity, bool>> predicate,
@@ -732,7 +732,7 @@
         /// </param>
         /// <param name="includes">The related entities to be included in the query.</param>
         /// <returns>The entity fetched from the database.</returns>
-        public TEntity GetSingle(
+        public virtual TEntity GetSingle(
             (Expression<Func<TEntity, object>> keySelector, SortDirection direction) orderBy,
             QueryTracking tracking = QueryTracking.Default,
             params Expression<Func<TEntity, object>>[] includes)
@@ -754,7 +754,7 @@
         /// </param>
         /// <param name="includes">The related entities to be included in the query.</param>
         /// <returns>The entity fetched from the database.</returns>
-        public TEntity GetSingle(
+        public virtual TEntity GetSingle(
             Expression<Func<TEntity, bool>> predicate,
             (Expression<Func<TEntity, object>> keySelector, SortDirection direction) orderBy,
             QueryTracking tracking = QueryTracking.Default,
@@ -779,7 +779,7 @@
         ///     A task that represents the asynchronous query operation.
         ///     The task result contains the entity fetched from the database.
         /// </returns>
-        public async Task<TEntity> GetSingleAsync(
+        public virtual async Task<TEntity> GetSingleAsync(
             (Expression<Func<TEntity, object>> keySelector, SortDirection direction) orderBy,
             QueryTracking tracking = QueryTracking.Default,
             params Expression<Func<TEntity, object>>[] includes)
@@ -804,7 +804,7 @@
         ///     A task that represents the asynchronous query operation.
         ///     The task result contains the entity fetched from the database.
         /// </returns>
-        public async Task<TEntity> GetSingleAsync(
+        public virtual async Task<TEntity> GetSingleAsync(
             Expression<Func<TEntity, bool>> predicate,
             (Expression<Func<TEntity, object>> keySelector, SortDirection direction) orderBy,
             QueryTracking tracking = QueryTracking.Default,
@@ -833,7 +833,7 @@
         /// <returns>
         ///     The entity with the loaded navigation property.
         /// </returns>
-        public TEntity LoadRelated<TProperty>(TEntity entity, Expression<Func<TEntity, TProperty>> navigationProperty, params Expression<Func<TProperty, object>>[] includes)
+        public virtual TEntity LoadRelated<TProperty>(TEntity entity, Expression<Func<TEntity, TProperty>> navigationProperty, params Expression<Func<TProperty, object>>[] includes)
             where TProperty : class
         {
             var entry = GetEntityEntry(entity);
@@ -864,7 +864,7 @@
         /// <returns>
         ///     The entity with the loaded navigation property.
         /// </returns>
-        public TEntity LoadRelated<TProperty>(
+        public virtual TEntity LoadRelated<TProperty>(
             TEntity entity,
             Expression<Func<TEntity, TProperty>> navigationProperty,
             Expression<Func<TProperty, bool>> predicate,
@@ -896,7 +896,7 @@
         ///     The task that represents the asynchronous query operation.
         ///     The task result contains the entity with the loaded navigation property.
         /// </returns>
-        public async Task<TEntity> LoadRelatedAsync<TProperty>(
+        public virtual async Task<TEntity> LoadRelatedAsync<TProperty>(
             TEntity entity,
             Expression<Func<TEntity, TProperty>> navigationProperty,
             params Expression<Func<TProperty, object>>[] includes) where TProperty : class
@@ -930,7 +930,7 @@
         ///     The task that represents the asynchronous query operation.
         ///     The task result contains the entity with the loaded navigation property.
         /// </returns>
-        public async Task<TEntity> LoadRelatedAsync<TProperty>(
+        public virtual async Task<TEntity> LoadRelatedAsync<TProperty>(
             TEntity entity,
             Expression<Func<TEntity, TProperty>> navigationProperty,
             Expression<Func<TProperty, bool>> predicate,
@@ -961,7 +961,7 @@
         /// <returns>
         ///     The entity with the loaded navigation property.
         /// </returns>
-        public TEntity LoadRelatedCollection<TProperty>(
+        public virtual TEntity LoadRelatedCollection<TProperty>(
             TEntity entity,
             Expression<Func<TEntity, IEnumerable<TProperty>>> navigationProperty,
             params Expression<Func<TProperty, object>>[] includes) where TProperty : class
@@ -994,7 +994,7 @@
         /// <returns>
         ///     The entity with the loaded navigation property.
         /// </returns>
-        public TEntity LoadRelatedCollection<TProperty>(
+        public virtual TEntity LoadRelatedCollection<TProperty>(
             TEntity entity,
             Expression<Func<TEntity, IEnumerable<TProperty>>> navigationProperty,
             Expression<Func<TProperty, bool>> predicate,
@@ -1026,7 +1026,7 @@
         ///     The task that represents the asynchronous query operation.
         ///     The task result contains the entity with the loaded navigation property.
         /// </returns>
-        public async Task<TEntity> LoadRelatedCollectionAsync<TProperty>(
+        public virtual async Task<TEntity> LoadRelatedCollectionAsync<TProperty>(
             TEntity entity,
             Expression<Func<TEntity, IEnumerable<TProperty>>> navigationProperty,
             params Expression<Func<TProperty, object>>[] includes) where TProperty : class
@@ -1060,7 +1060,7 @@
         ///     The task that represents the asynchronous query operation.
         ///     The task result contains the entity with the loaded navigation property.
         /// </returns>
-        public async Task<TEntity> LoadRelatedCollectionAsync<TProperty>(
+        public virtual async Task<TEntity> LoadRelatedCollectionAsync<TProperty>(
             TEntity entity,
             Expression<Func<TEntity, IEnumerable<TProperty>>> navigationProperty,
             Expression<Func<TProperty, bool>> predicate,
@@ -1093,7 +1093,7 @@
         /// <returns>
         ///     The collection of elements fetched from the database and projected into a new form.
         /// </returns>
-        public IEnumerable<TResult> Query<TResult>(
+        public virtual IEnumerable<TResult> Query<TResult>(
             Func<IQueryable<TEntity>, IQueryable<TResult>> queryBuilder,
             QueryTracking tracking = QueryTracking.Default,
             params Expression<Func<TEntity, object>>[] includes)
@@ -1124,7 +1124,7 @@
         /// <returns>
         ///     A tuple with the paginated collection of elements fetched and projected into a new form and the total number of entities of the provided type in the database.
         /// </returns>
-        public (IEnumerable<TResult> Entities, int Count) Query<TResult>(
+        public virtual (IEnumerable<TResult> Entities, int Count) Query<TResult>(
             int skip,
             int take,
             Func<IQueryable<TEntity>, IQueryable<TResult>> queryBuilder,
@@ -1161,7 +1161,7 @@
         ///     A task that represents the asynchronous query operation.
         ///     The task result contains the collection of elements fetched from the database and projected to a new form.
         /// </returns>
-        public async Task<IEnumerable<TResult>> QueryAsync<TResult>(
+        public virtual async Task<IEnumerable<TResult>> QueryAsync<TResult>(
             Func<IQueryable<TEntity>, IQueryable<TResult>> queryBuilder,
             QueryTracking tracking = QueryTracking.Default,
             params Expression<Func<TEntity, object>>[] includes)
@@ -1193,7 +1193,7 @@
         ///     A task that represents the asynchronous query operation.
         ///     The task result contains a tuple with the paginated collection of elements fetched and projected into a new form and the total number of entities of the provided type in the database.
         /// </returns>
-        public async Task<(IEnumerable<TResult> Entities, int Count)> QueryAsync<TResult>(
+        public virtual async Task<(IEnumerable<TResult> Entities, int Count)> QueryAsync<TResult>(
             int skip,
             int take,
             Func<IQueryable<TEntity>, IQueryable<TResult>> queryBuilder,
@@ -1229,7 +1229,7 @@
         /// <returns>
         ///     The entity fetched from the database and projected into a new form.
         /// </returns>
-        public TResult QuerySingle<TResult>(
+        public virtual TResult QuerySingle<TResult>(
             Func<IQueryable<TEntity>, IQueryable<TResult>> queryBuilder,
             QueryTracking tracking = QueryTracking.Default,
             params Expression<Func<TEntity, object>>[] includes)
@@ -1260,7 +1260,7 @@
         ///     A task that represents the asynchronous query operation.
         ///     The task result contains the entity fetched from the database and projected into a new form.
         /// </returns>
-        public Task<TResult> QuerySingleAsync<TResult>(
+        public virtual Task<TResult> QuerySingleAsync<TResult>(
             Func<IQueryable<TEntity>, IQueryable<TResult>> queryBuilder,
             QueryTracking tracking = QueryTracking.Default,
             params Expression<Func<TEntity, object>>[] includes)
@@ -1277,7 +1277,7 @@
         /// </summary>
         /// <param name="entity">The object to be updated.</param>
         /// <param name="updateRelated">The value that indicates whether or not related entities reachable from the provided entity should be included in the update operation.</param>
-        public void Update(TEntity entity, bool updateRelated = false)
+        public virtual void Update(TEntity entity, bool updateRelated = false)
         {
             if (updateRelated)
                 DbSet.Update(entity);
@@ -1291,7 +1291,7 @@
         /// <param name="entity">The object to be updated.</param>
         /// <param name="updateRelated">The value that indicates whether or not related entities reachable from the provided entity should be included in the update operation.</param>
         /// <returns>A task that represents the asynchronous update operation.</returns>
-        public Task UpdateAsync(TEntity entity, bool updateRelated = false)
+        public virtual Task UpdateAsync(TEntity entity, bool updateRelated = false)
         {
             if (updateRelated)
                 DbSet.Update(entity);
@@ -1306,7 +1306,7 @@
         /// </summary>
         /// <param name="entityCollection">The collection of objects to be updated.</param>
         /// <param name="updateRelated">The value that indicates whether or not related entities reachable from the provided entity should be included in the update operation.</param>
-        public void UpdateRange(IEnumerable<TEntity> entityCollection, bool updateRelated = false)
+        public virtual void UpdateRange(IEnumerable<TEntity> entityCollection, bool updateRelated = false)
         {
             if (updateRelated)
                 DbSet.UpdateRange(entityCollection);
@@ -1321,7 +1321,7 @@
         /// <param name="entityCollection">The collection of objects to be updated.</param>
         /// <param name="updateRelated">The value that indicates whether or not related entities reachable from the provided entity should be included in the update operation.</param>
         /// <returns>A task that represents the asynchronous update range operation.</returns>
-        public Task UpdateRangeAsync(IEnumerable<TEntity> entityCollection, bool updateRelated = false)
+        public virtual Task UpdateRangeAsync(IEnumerable<TEntity> entityCollection, bool updateRelated = false)
         {
             if (updateRelated)
                 DbSet.UpdateRange(entityCollection);
@@ -1336,7 +1336,7 @@
         ///     Saves all changes made in this repository to the database.
         /// </summary>
         /// <returns>The number of affected rows in the database.</returns>
-        public int SaveChanges()
+        public virtual int SaveChanges()
         {
             if (_useUnitOfWork)
                 throw new InvalidOperationException(
@@ -1355,7 +1355,7 @@
         ///     A task that represents the asynchronous save operation.
         ///     The task result contains the number of affected rows in the database.
         /// </returns>
-        public Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        public virtual Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             if (_useUnitOfWork)
                 throw new InvalidOperationException(

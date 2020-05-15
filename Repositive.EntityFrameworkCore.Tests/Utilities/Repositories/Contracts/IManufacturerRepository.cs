@@ -4,7 +4,7 @@
     using Repositive.EntityFrameworkCore.Tests.Utilities.Entities;
 
     /// <summary>
-    ///     Provides methods for querying and saving instances of <see cref="Manufacturer"/>.
+    ///     Provides repository methods for instances of <see cref="Manufacturer"/>.
     /// </summary>
     public interface IManufacturerRepository : IRepository<Manufacturer>, IRelatedLoadableRepository<Manufacturer>
     {

@@ -5,7 +5,7 @@
     using Repositive.EntityFrameworkCore.Tests.Utilities.Repositories.Contracts;
 
     /// <summary>
-    ///     Provides an <see cref="IVehicleRepository"/> implementation for querying and saving instances of <see cref="Vehicle"/>.
+    ///     Provides a repository pattern implementation for querying and saving <see cref="Vehicle"/> instances.
     /// </summary>
     internal class VehicleRepository : Repository<Vehicle, RepositiveContext>, IVehicleRepository
     {

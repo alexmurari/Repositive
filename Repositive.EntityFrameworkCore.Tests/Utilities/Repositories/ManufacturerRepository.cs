@@ -5,7 +5,7 @@
     using Repositive.EntityFrameworkCore.Tests.Utilities.Repositories.Contracts;
 
     /// <summary>
-    ///     Provides an <see cref="IManufacturerRepository"/> implementation for querying and saving instances of <see cref="Manufacturer"/>.
+    ///     Provides a repository pattern implementation for querying and saving <see cref="Manufacturer"/> instances.
     /// </summary>
     internal class ManufacturerRepository : Repository<Manufacturer, RepositiveContext>, IManufacturerRepository
     {
