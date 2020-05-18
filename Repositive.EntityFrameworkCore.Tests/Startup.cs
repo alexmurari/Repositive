@@ -10,7 +10,6 @@ namespace Repositive.EntityFrameworkCore.Tests
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
-    using Repositive.Contracts;
     using Repositive.EntityFrameworkCore.Tests.Utilities;
     using Repositive.EntityFrameworkCore.Tests.Utilities.Context;
     using Repositive.EntityFrameworkCore.Tests.Utilities.Repositories;
@@ -45,7 +44,6 @@ namespace Repositive.EntityFrameworkCore.Tests
         protected void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<RepositiveContext>(t => t.UseInMemoryDatabase(DatabaseName));
-            services.AddScoped<IUnitOfWork, UnitOfWork<RepositiveContext>>();
             services.AddScoped<IPersonRepository, PersonRepository>();
             services.AddScoped<IVehicleRepository, VehicleRepository>();
             services.AddScoped<IManufacturerRepository, ManufacturerRepository>();

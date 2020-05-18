@@ -1,10 +1,12 @@
 ﻿namespace Repositive.EntityFrameworkCore
 {
+    using System;
+    using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
+    using Exprelsior.Shared.Extensions;
     using Microsoft.EntityFrameworkCore;
     using Repositive.Contracts;
-    using Repositive.EntityFrameworkCore.Extensions;
 
     /// <summary>
     ///     Implements the unit of work pattern and provides commit coordination between repositories.
@@ -16,6 +18,11 @@
     public class UnitOfWork<TContext> : IUnitOfWork where TContext : DbContext
     {
         /// <summary>
+        ///     The names of the repositories registered in this unit of work instance.
+        /// </summary>
+        private readonly HashSet<string> _registeredRepositories;
+
+        /// <summary>
         ///     Initializes a new instance of the <see cref="UnitOfWork{TContext}"/> class.
         /// </summary>
         /// <param name="context">
@@ -24,7 +31,18 @@
         public UnitOfWork(TContext context)
         {
             Context = context.ThrowIfNull(nameof(context));
+            _registeredRepositories = new HashSet<string>();
         }
+
+        /// <summary>
+        ///     Occurs when the commit operation is started.
+        /// </summary>
+        public event EventHandler<UnitOfWorkCommittingEventArgs> Committing;
+
+        /// <summary>
+        ///     Occurs when the commit operation is finished.
+        /// </summary>
+        public event EventHandler<UnitOfWorkCommittedEventArgs> Committed;
 
         /// <summary>
         ///     Gets the database context.
@@ -37,7 +55,13 @@
         /// <returns>The number of affected rows in the database.</returns>
         public virtual int Commit()
         {
-            return Context.SaveChanges();
+            Committing?.Invoke(this, new UnitOfWorkCommittingEventArgs(_registeredRepositories));
+
+            var affectedRows = Context.SaveChanges();
+
+            Committed?.Invoke(this, new UnitOfWorkCommittedEventArgs(affectedRows, _registeredRepositories));
+
+            return affectedRows;
         }
 
         /// <summary>
@@ -50,9 +74,15 @@
         ///     A task that represents the asynchronous commit operation.
         ///     The task result contains the number of affected rows in the database.
         /// </returns>
-        public virtual Task<int> CommitAsync(CancellationToken cancellationToken = default)
+        public virtual async Task<int> CommitAsync(CancellationToken cancellationToken = default)
         {
-            return Context.SaveChangesAsync(cancellationToken);
+            Committing?.Invoke(this, new UnitOfWorkCommittingEventArgs(_registeredRepositories));
+
+            var affectedRows = await Context.SaveChangesAsync(cancellationToken);
+
+            Committed?.Invoke(this, new UnitOfWorkCommittedEventArgs(affectedRows, _registeredRepositories));
+
+            return affectedRows;
         }
 
         /// <summary>
@@ -64,6 +94,28 @@
         internal TContext GetDbContext()
         {
             return Context;
+        }
+
+        /// <summary>
+        ///     Registers a repository in this unit of work instance, if not already registered.
+        /// </summary>
+        /// <param name="repositoryName">
+        ///     The name of the repository.
+        /// </param>
+        internal void AddRepository(string repositoryName)
+        {
+            _registeredRepositories.Add(repositoryName.ThrowIfNullOrWhitespace(nameof(repositoryName)));
+        }
+
+        /// <summary>
+        ///     Removes a repository register from this unit of work instance.
+        /// </summary>
+        /// <param name="repositoryName">
+        ///     The name of the repository.
+        /// </param>
+        internal void RemoveRepository(string repositoryName)
+        {
+            _registeredRepositories.Remove(repositoryName.ThrowIfNullOrWhitespace(nameof(repositoryName)));
         }
     }
 }

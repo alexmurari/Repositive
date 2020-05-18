@@ -24,9 +24,9 @@
     public abstract class Repository<TEntity, TContext> : IRepository<TEntity>, IQueryableRepository<TEntity>, IRelatedLoadableRepository<TEntity>, ISaveableRepository where TEntity : class where TContext : DbContext
     {
         /// <summary>
-        ///     Indicates whether or not this repository uses unit of work for commit synchronization.
+        ///     The unit of work. Provides commit synchronization for this and other repositories.
         /// </summary>
-        private readonly bool _useUnitOfWork;
+        private readonly UnitOfWork<TContext> _unitOfWork;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="Repository{TEntity,TContext}" /> class.
@@ -51,15 +51,26 @@
         {
             unitOfWork.ThrowIfNull(nameof(unitOfWork));
 
-            if (!(unitOfWork is UnitOfWork<TContext> unitOfWorkImpl))
+            if (!(unitOfWork is UnitOfWork<TContext> uow))
                 throw new InvalidOperationException($"The provided {nameof(IUnitOfWork)} instance doesn't match the required instance of {nameof(UnitOfWork<TContext>)} with context of type {typeof(TContext).Name}.");
 
-            var context = unitOfWorkImpl.GetDbContext();
+            var context = uow.GetDbContext();
 
             DbContext = context;
             DbSet = context.Set<TEntity>();
 
-            _useUnitOfWork = true;
+            uow.AddRepository(GetType().Name);
+
+            _unitOfWork = uow;
+        }
+
+        /// <summary>
+        ///     Finalizes an instance of the <see cref="Repository{TEntity,TContext}"/> class. 
+        /// </summary>
+        ~Repository()
+        {
+            if (IsUsingUnitOfWork())
+                _unitOfWork.RemoveRepository(GetType().Name);
         }
 
         /// <summary>
@@ -1338,7 +1349,7 @@
         /// <returns>The number of affected rows in the database.</returns>
         public virtual int SaveChanges()
         {
-            if (_useUnitOfWork)
+            if (IsUsingUnitOfWork())
                 throw new InvalidOperationException(
                     $"Cannot commit changes directly from repositories that use unit of work. Use the associated {nameof(IUnitOfWork)} instance for commiting changes.");
 
@@ -1357,7 +1368,7 @@
         /// </returns>
         public virtual Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
-            if (_useUnitOfWork)
+            if (IsUsingUnitOfWork())
                 throw new InvalidOperationException(
                     $"Cannot commit changes directly from repositories that use unit of work. Use the associated {nameof(IUnitOfWork)} instance for commiting changes.");
 
@@ -1430,5 +1441,13 @@
             if (entry.State == EntityState.Detached)
                 entry.State = EntityState.Unchanged;
         }
+
+        /// <summary>
+        ///     Gets whether this repository is using unit of work for commit synchronization.
+        /// </summary>
+        /// <returns>
+        ///     True if this repository is using unit of work; otherwise, false.
+        /// </returns>
+        private bool IsUsingUnitOfWork() => _unitOfWork != null;
     }
 }

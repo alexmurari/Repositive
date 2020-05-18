@@ -1,5 +1,6 @@
 ﻿namespace Repositive.Contracts
 {
+    using System;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -19,6 +20,16 @@
     /// </remarks>
     public interface IUnitOfWork
     {
+        /// <summary>
+        ///     Occurs when the commit operation is started.
+        /// </summary>
+        event EventHandler<UnitOfWorkCommittingEventArgs> Committing;
+
+        /// <summary>
+        ///     Occurs when the commit operation is finished.
+        /// </summary>
+        event EventHandler<UnitOfWorkCommittedEventArgs> Committed;
+
         /// <summary>
         ///     Commits all changes made in this unit of work context to the database.
         /// </summary>
