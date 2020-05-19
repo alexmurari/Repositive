@@ -70,7 +70,7 @@
         ~Repository()
         {
             if (IsUsingUnitOfWork())
-                _unitOfWork.RemoveRepository(GetType().Name);
+                _unitOfWork?.RemoveRepository(GetType().Name);
         }
 
         /// <summary>

@@ -6,7 +6,7 @@
     using System.Threading.Tasks;
 
     /// <summary>
-    ///     Provides repository methods for reading entities of type <typeparamref name="TEntity"/>.
+    ///     Defines a repository contract for reading entities of type <typeparamref name="TEntity"/>.
     /// </summary>
     /// <typeparam name="TEntity">
     ///     The entity type that the repository reads.

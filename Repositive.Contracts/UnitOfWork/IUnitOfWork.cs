@@ -5,7 +5,7 @@
     using System.Threading.Tasks;
 
     /// <summary>
-    ///     Provides methods for coordinately committing changes between repositories.
+    ///     Defines a contract for coordinately committing changes between repositories.
     /// </summary>
     /// <remarks>
     ///     <para>

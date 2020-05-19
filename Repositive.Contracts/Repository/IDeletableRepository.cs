@@ -4,7 +4,7 @@
     using System.Threading.Tasks;
 
     /// <summary>
-    ///     Provides repository methods for deleting entities of type <typeparamref name="TEntity"/>.
+    ///     Defines a repository contract for deleting entities of type <typeparamref name="TEntity"/>.
     /// </summary>
     /// <typeparam name="TEntity">
     ///     The entity type that the repository deletes.

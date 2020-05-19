@@ -4,7 +4,7 @@
     using System.Threading.Tasks;
 
     /// <summary>
-    ///     Provides repository methods for updating entities of type <typeparamref name="TEntity"/>.
+    ///     Defines a repository contract for updating entities of type <typeparamref name="TEntity"/>.
     /// </summary>
     /// <typeparam name="TEntity">
     ///     The entity type that the repository updates.

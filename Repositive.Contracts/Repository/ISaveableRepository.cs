@@ -4,7 +4,7 @@
     using System.Threading.Tasks;
 
     /// <summary>
-    ///     Provides methods for saving changes made in a repository to the underlying database.
+    ///     Defines a contract for saving changes made in a repository to the underlying database.
     /// </summary>
     /// <remarks>
     ///     <para>

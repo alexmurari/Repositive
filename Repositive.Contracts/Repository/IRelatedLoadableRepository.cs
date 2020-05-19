@@ -6,7 +6,7 @@
     using System.Threading.Tasks;
 
     /// <summary>
-    ///     Provides repository methods for explicitly loading related entities referenced by navigation properties in instances of <typeparamref name="TEntity"/>.
+    ///    Defines a repository contract for explicitly loading related entities referenced by navigation properties in instances of <typeparamref name="TEntity"/>.
     /// </summary>
     /// <typeparam name="TEntity">
     ///     The entity type that has the navigation property references.

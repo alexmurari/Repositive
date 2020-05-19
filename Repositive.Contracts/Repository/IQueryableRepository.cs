@@ -7,7 +7,7 @@
     using System.Threading.Tasks;
 
     /// <summary>
-    ///     Provides repository methods for querying instances of <typeparamref name="TEntity"/> using the <see cref="IQueryable{T}"/> interface.
+    ///    Defines a repository contract for querying instances of <typeparamref name="TEntity"/> using the <see cref="IQueryable{T}"/> interface.
     /// </summary>
     /// <typeparam name="TEntity">
     ///     The entity type that the repository queries.

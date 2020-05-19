@@ -1,7 +1,7 @@
 ﻿namespace Repositive.Contracts
 {
     /// <summary>
-    ///     Provides repository methods for creating, reading, updating and deleting instances of <typeparamref name="TEntity" />.
+    ///     Defines a repository contract for creating, reading, updating and deleting instances of <typeparamref name="TEntity" />.
     /// </summary>
     /// <typeparam name="TEntity">
     ///     The entity type that the repository creates, reads, updates and deletes.
