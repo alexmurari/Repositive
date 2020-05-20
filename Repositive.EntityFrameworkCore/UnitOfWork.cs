@@ -98,7 +98,7 @@
 
         /// <summary>
         ///     Registers a repository in this unit of work instance, if not already registered.
-        ///     The registration is only used for informational purposes and does not affect the class operation.
+        ///     The registration is only used for informational/logging purposes and does not affect the unit of work operation.
         /// </summary>
         /// <param name="repositoryName">
         ///     The name of the repository.
@@ -110,7 +110,7 @@
 
         /// <summary>
         ///     Removes a repository register from this unit of work instance.
-        ///     The registration is only used for informational purposes and does not affect the class operation.
+        ///     The registration is only used for informational/logging purposes and does not affect the unit of work operation.
         /// </summary>
         /// <param name="repositoryName">
         ///     The name of the repository.
