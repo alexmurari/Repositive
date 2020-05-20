@@ -12,7 +12,7 @@
     using Repositive.EntityFrameworkCore.Extensions;
 
     /// <summary>
-    ///     Provides a generic repository for querying and saving instances of <typeparamref name="TEntity"/> with <see cref="Microsoft.EntityFrameworkCore"/> as the ORM.
+    ///     Provides a repository pattern implementation for querying and saving instances of <typeparamref name="TEntity"/> with <see cref="Microsoft.EntityFrameworkCore"/> as the ORM.
     /// </summary>
     /// <typeparam name="TEntity">
     ///     The entity type that the repository queries and saves.
