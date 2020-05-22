@@ -52,7 +52,7 @@
         /// <summary>
         ///     Commits all changes made in this unit of work context to the database.
         /// </summary>
-        /// <returns>The number of affected rows in the database.</returns>
+        /// <returns>The number of affected entries in the database.</returns>
         public virtual int Commit()
         {
             Committing?.Invoke(this, new UnitOfWorkCommittingEventArgs(_registeredRepositories));
@@ -72,7 +72,7 @@
         /// </param>
         /// <returns>
         ///     A task that represents the asynchronous commit operation.
-        ///     The task result contains the number of affected rows in the database.
+        ///     The task result contains the number of affected entries in the database.
         /// </returns>
         public virtual async Task<int> CommitAsync(CancellationToken cancellationToken = default)
         {

@@ -22,7 +22,7 @@
         /// <summary>
         ///     Saves all changes made in this repository to the database.
         /// </summary>
-        /// <returns>The number of affected rows in the database.</returns>
+        /// <returns>The number of affected entries in the database.</returns>
         int SaveChanges();
 
         /// <summary>
@@ -33,7 +33,7 @@
         /// </param>
         /// <returns>
         ///     A task that represents the asynchronous save operation.
-        ///     The task result contains the number of affected rows in the database.
+        ///     The task result contains the number of affected entries in the database.
         /// </returns>
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
     }

@@ -5,15 +5,15 @@
     /// <summary>
     ///     Represents a database context.
     /// </summary>
-    public class RepositiveContext : DbContext
+    public class RepositiveUoWContext : DbContext
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="RepositiveContext"/> class.
+        ///     Initializes a new instance of the <see cref="RepositiveUoWContext"/> class.
         /// </summary>
         /// <param name="options">
         ///     The options to configure the database context instance.
         /// </param>
-        public RepositiveContext(DbContextOptions<RepositiveContext> options) : base(options)
+        public RepositiveUoWContext(DbContextOptions<RepositiveUoWContext> options) : base(options)
         {
         }
 

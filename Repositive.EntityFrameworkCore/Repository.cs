@@ -1346,7 +1346,7 @@
         /// <summary>
         ///     Saves all changes made in this repository to the database.
         /// </summary>
-        /// <returns>The number of affected rows in the database.</returns>
+        /// <returns>The number of affected entries in the database.</returns>
         /// <exception cref="InvalidOperationException">Thrown when invoking this method when the repository is configured to use unit of work.</exception>
         public virtual int SaveChanges()
         {
@@ -1365,7 +1365,7 @@
         /// </param>
         /// <returns>
         ///     A task that represents the asynchronous save operation.
-        ///     The task result contains the number of affected rows in the database.
+        ///     The task result contains the number of affected entries in the database.
         /// </returns>
         /// <exception cref="InvalidOperationException">Thrown when invoking this method when the repository is configured use with unit of work.</exception>
         public virtual Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

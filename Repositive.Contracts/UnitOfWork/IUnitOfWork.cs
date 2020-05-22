@@ -33,7 +33,7 @@
         /// <summary>
         ///     Commits all changes made in this unit of work context to the database.
         /// </summary>
-        /// <returns>The number of affected rows in the database.</returns>
+        /// <returns>The number of affected entries in the database.</returns>
         int Commit();
 
         /// <summary>
@@ -44,7 +44,7 @@
         /// </param>
         /// <returns>
         ///     A task that represents the asynchronous commit operation.
-        ///     The task result contains the number of affected rows in the database.
+        ///     The task result contains the number of affected entries in the database.
         /// </returns>
         Task<int> CommitAsync(CancellationToken cancellationToken = default);
     }
