@@ -53,15 +53,17 @@
         ///     Commits all changes made in this unit of work context to the database.
         /// </summary>
         /// <returns>The number of affected entries in the database.</returns>
+        /// <exception cref="DbUpdateException">Thrown when an error is encountered while saving to the database.</exception>
+        /// <exception cref="DbUpdateConcurrencyException">Thrown when a concurrency violation is encountered while saving to the database.</exception>
         public virtual int Commit()
         {
             Committing?.Invoke(this, new UnitOfWorkCommittingEventArgs(_registeredRepositories));
 
-            var affectedRows = Context.SaveChanges();
+            var affectedEntries = Context.SaveChanges();
 
-            Committed?.Invoke(this, new UnitOfWorkCommittedEventArgs(affectedRows, _registeredRepositories));
+            Committed?.Invoke(this, new UnitOfWorkCommittedEventArgs(affectedEntries, _registeredRepositories));
 
-            return affectedRows;
+            return affectedEntries;
         }
 
         /// <summary>
@@ -74,15 +76,17 @@
         ///     A task that represents the asynchronous commit operation.
         ///     The task result contains the number of affected entries in the database.
         /// </returns>
+        /// <exception cref="DbUpdateException">Thrown when an error is encountered while saving to the database.</exception>
+        /// <exception cref="DbUpdateConcurrencyException">Thrown when a concurrency violation is encountered while saving to the database.</exception>
         public virtual async Task<int> CommitAsync(CancellationToken cancellationToken = default)
         {
             Committing?.Invoke(this, new UnitOfWorkCommittingEventArgs(_registeredRepositories));
 
-            var affectedRows = await Context.SaveChangesAsync(cancellationToken);
+            var affectedEntries = await Context.SaveChangesAsync(cancellationToken);
 
-            Committed?.Invoke(this, new UnitOfWorkCommittedEventArgs(affectedRows, _registeredRepositories));
+            Committed?.Invoke(this, new UnitOfWorkCommittedEventArgs(affectedEntries, _registeredRepositories));
 
-            return affectedRows;
+            return affectedEntries;
         }
 
         /// <summary>
