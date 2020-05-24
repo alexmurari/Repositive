@@ -10,7 +10,7 @@
     using Xunit;
 
     /// <summary>
-    ///     Tests the unit of work operation.
+    ///     Tests the unit of work asynchronous operation.
     /// </summary>
     public class UnitOfWorkAsyncTests
     {
@@ -114,7 +114,24 @@
             var commitAction = new Func<CancellationToken, Task<int>>(_unitOfWork.CommitAsync);
 
             // Assert
-            Assert.Raises<UnitOfWorkCommittedEventArgs>(e => _unitOfWork.Committed += e, e => _unitOfWork.Committed -= e, () => commitAction(default));
+            await Assert.RaisesAsync<UnitOfWorkCommittedEventArgs>(e => _unitOfWork.Committed += e, e => _unitOfWork.Committed -= e, () => commitAction(default)).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        ///     Asserts that invoking <see cref="ISaveableRepository.CommitAsync"/> in a repository configured to use unit of work throws <see cref="InvalidOperationException"/>.
+        /// </summary>
+        /// <returns>The task representing the asynchronous operation.</returns>
+        [Fact]
+        public async Task Assert_Committing_Directly_From_Repository_Throws_When_Using_Unit_Of_Work()
+        {
+            // Arrange
+            await _personUoWRepository.AddAsync(new Person { Name = "Foo" });
+
+            // Act
+            var commitAction = new Func<CancellationToken, Task<int>>(_personUoWRepository.CommitAsync);
+
+            // Assert
+            await Assert.ThrowsAsync<InvalidOperationException>(() => commitAction(default)).ConfigureAwait(false);
         }
     }
 }

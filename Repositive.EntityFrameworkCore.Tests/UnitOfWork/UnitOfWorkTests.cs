@@ -111,5 +111,21 @@
             // Assert
             Assert.Raises<UnitOfWorkCommittedEventArgs>(e => _unitOfWork.Committed += e, e => _unitOfWork.Committed -= e, () => commitAction());
         }
+
+        /// <summary>
+        ///     Asserts that invoking <see cref="ISaveableRepository.Commit"/> in a repository configured to use unit of work throws <see cref="InvalidOperationException"/>.
+        /// </summary>
+        [Fact]
+        public void Assert_Committing_Directly_From_Repository_Throws_When_Using_Unit_Of_Work()
+        {
+            // Arrange
+            _personUoWRepository.Add(new Person { Name = "Foo" });
+
+            // Act
+            var commitAction = new Func<int>(_personUoWRepository.Commit);
+
+            // Assert
+            Assert.Throws<InvalidOperationException>(() => commitAction());
+        }
     }
 }

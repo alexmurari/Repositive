@@ -48,7 +48,7 @@
 
             // Act
             _personRepository.Update(person);
-            var affectedRows = _personRepository.SaveChanges();
+            var affectedRows = _personRepository.Commit();
 
             // Assert
             Assert.Equal(1, affectedRows);
@@ -65,7 +65,7 @@
 
             // Act
             _personRepository.UpdateRange(persons);
-            var affectedRows = _personRepository.SaveChanges();
+            var affectedRows = _personRepository.Commit();
 
             // Assert
             Assert.Equal(persons.Count, affectedRows);
@@ -82,7 +82,7 @@
 
             // Act
             _personRepository.Update(person, true);
-            var affectedRows = _personRepository.SaveChanges();
+            var affectedRows = _personRepository.Commit();
 
             // Assert
             Assert.Equal(person.CountRelatedEntities() + 1, affectedRows);
@@ -99,7 +99,7 @@
 
             // Act
             _personRepository.UpdateRange(persons, true);
-            var affectedRows = _personRepository.SaveChanges();
+            var affectedRows = _personRepository.Commit();
 
             // Assert
             Assert.Equal(persons.Sum(t => t.CountRelatedEntities() + 1), affectedRows);

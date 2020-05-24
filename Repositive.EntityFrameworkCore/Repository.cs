@@ -1344,13 +1344,13 @@
         }
 
         /// <summary>
-        ///     Saves all changes made in this repository to the database.
+        ///     Commits all changes made in this repository to the database.
         /// </summary>
         /// <returns>The number of affected entries in the database.</returns>
         /// <exception cref="InvalidOperationException">Thrown when invoking this method when the repository is configured to use unit of work.</exception>
         /// <exception cref="DbUpdateException">Thrown when an error is encountered while saving to the database.</exception>
         /// <exception cref="DbUpdateConcurrencyException">Thrown when a concurrency violation is encountered while saving to the database.</exception>
-        public virtual int SaveChanges()
+        public virtual int Commit()
         {
             if (IsUsingUnitOfWork())
                 throw new InvalidOperationException(
@@ -1360,7 +1360,7 @@
         }
 
         /// <summary>
-        ///     Asynchronously saves all changes made in this repository to the database.
+        ///     Asynchronously commits all changes made in this repository to the database.
         /// </summary>
         /// <param name="cancellationToken">
         ///     The token that propagates a cancellation request to interrupt the operation.
@@ -1372,7 +1372,7 @@
         /// <exception cref="InvalidOperationException">Thrown when invoking this method when the repository is configured to use unit of work.</exception>
         /// <exception cref="DbUpdateException">Thrown when an error is encountered while saving to the database.</exception>
         /// <exception cref="DbUpdateConcurrencyException">Thrown when a concurrency violation is encountered while saving to the database.</exception>
-        public virtual Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        public virtual Task<int> CommitAsync(CancellationToken cancellationToken = default)
         {
             if (IsUsingUnitOfWork())
                 throw new InvalidOperationException(
@@ -1449,7 +1449,7 @@
         }
 
         /// <summary>
-        ///     Gets whether this repository is using unit of work for commit synchronization.
+        ///     Gets a value indicating whether this repository is using unit of work for commit synchronization.
         /// </summary>
         /// <returns>
         ///     True if this repository is using unit of work; otherwise, false.

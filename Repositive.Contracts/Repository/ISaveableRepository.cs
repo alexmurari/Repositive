@@ -20,13 +20,13 @@
     public interface ISaveableRepository
     {
         /// <summary>
-        ///     Saves all changes made in this repository to the database.
+        ///     Commits all changes made in this repository to the database.
         /// </summary>
         /// <returns>The number of affected entries in the database.</returns>
-        int SaveChanges();
+        int Commit();
 
         /// <summary>
-        ///     Asynchronously saves all changes made in this repository to the database.
+        ///     Asynchronously commits all changes made in this repository to the database.
         /// </summary>
         /// <param name="cancellationToken">
         ///     The token that propagates a cancellation request to interrupt the operation.
@@ -35,6 +35,6 @@
         ///     A task that represents the asynchronous save operation.
         ///     The task result contains the number of affected entries in the database.
         /// </returns>
-        Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
+        Task<int> CommitAsync(CancellationToken cancellationToken = default);
     }
 }

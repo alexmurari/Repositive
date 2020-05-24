@@ -48,7 +48,7 @@
 
             // Act
             _personRepository.Delete(person);
-            var affectedRows = _personRepository.SaveChanges();
+            var affectedRows = _personRepository.Commit();
 
             // Assert
             Assert.Equal(1, affectedRows);
@@ -65,7 +65,7 @@
 
             // Act
             _personRepository.Delete(persons);
-            var affectedRows = _personRepository.SaveChanges();
+            var affectedRows = _personRepository.Commit();
 
             // Assert
             Assert.Equal(persons.Count, affectedRows);
@@ -82,7 +82,7 @@
 
             // Act
             _personRepository.Delete(person, true);
-            var affectedRows = _personRepository.SaveChanges();
+            var affectedRows = _personRepository.Commit();
 
             // Assert
             Assert.Equal(person.Vehicles.Count + 1, affectedRows);
@@ -99,7 +99,7 @@
 
             // Act
             _personRepository.Delete(persons, true);
-            var affectedRows = _personRepository.SaveChanges();
+            var affectedRows = _personRepository.Commit();
 
             // Assert
             Assert.Equal(persons.Sum(t => t.Vehicles.Count + 1), affectedRows);

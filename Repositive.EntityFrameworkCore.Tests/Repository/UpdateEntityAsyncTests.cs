@@ -50,7 +50,7 @@
 
             // Act
             await _personRepository.UpdateAsync(person);
-            var affectedRows = await _personRepository.SaveChangesAsync();
+            var affectedRows = await _personRepository.CommitAsync();
 
             // Assert
             Assert.Equal(1, affectedRows);
@@ -68,7 +68,7 @@
 
             // Act
             await _personRepository.UpdateRangeAsync(persons);
-            var affectedRows = await _personRepository.SaveChangesAsync();
+            var affectedRows = await _personRepository.CommitAsync();
 
             // Assert
             Assert.Equal(persons.Count, affectedRows);
@@ -86,7 +86,7 @@
 
             // Act
             await _personRepository.UpdateAsync(person, true);
-            var affectedRows = await _personRepository.SaveChangesAsync();
+            var affectedRows = await _personRepository.CommitAsync();
 
             // Assert
             Assert.Equal(person.CountRelatedEntities() + 1, affectedRows);
@@ -104,7 +104,7 @@
 
             // Act
             await _personRepository.UpdateRangeAsync(persons, true);
-            var affectedRows = await _personRepository.SaveChangesAsync();
+            var affectedRows = await _personRepository.CommitAsync();
 
             // Assert
             Assert.Equal(persons.Sum(t => t.CountRelatedEntities() + 1), affectedRows);
