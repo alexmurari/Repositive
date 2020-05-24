@@ -247,7 +247,7 @@
         /// </summary>
         /// <param name="entities">The collection of entities to be deleted.</param>
         /// <param name="deleteRelated">The value that indicates whether or not related entities reachable from the provided entity should be deleted in the operation.</param>
-        public virtual void Delete(IEnumerable<TEntity> entities, bool deleteRelated = false)
+        public virtual void DeleteRange(IEnumerable<TEntity> entities, bool deleteRelated = false)
         {
             if (deleteRelated)
                 DbSet.RemoveRange(entities);
@@ -278,7 +278,7 @@
         /// <param name="entities">The collection of entities to be deleted.</param>
         /// <param name="deleteRelated">The value that indicates whether or not related entities reachable from the provided entity should be deleted in the operation.</param>
         /// <returns>A task that represents the asynchronous delete operation.</returns>
-        public virtual Task DeleteAsync(IEnumerable<TEntity> entities, bool deleteRelated = false)
+        public virtual Task DeleteRangeAsync(IEnumerable<TEntity> entities, bool deleteRelated = false)
         {
             if (deleteRelated)
                 DbSet.RemoveRange(entities);

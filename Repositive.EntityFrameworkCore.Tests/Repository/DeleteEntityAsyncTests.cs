@@ -1,6 +1,5 @@
 ﻿namespace Repositive.EntityFrameworkCore.Tests.Repository
 {
-    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
     using Repositive.Contracts;
@@ -49,15 +48,15 @@
             var person = DataGenerator.PickRandomItem(_databaseHelper.GetPersons());
 
             // Act
-            await _personRepository.DeleteAsync(person);
-            var affectedRows = await _personRepository.CommitAsync();
+            await _personRepository.DeleteAsync(person).ConfigureAwait(false);
+            var affectedRows = await _personRepository.CommitAsync().ConfigureAwait(false);
 
             // Assert
             Assert.Equal(1, affectedRows);
         }
 
         /// <summary>
-        ///     Asserts that the <see cref="IRepository{TEntity}.DeleteAsync(IEnumerable{TEntity}, bool)"/> is operating correctly when ignoring related entities.
+        ///     Asserts that the <see cref="IDeletableRepository{TEntity}.DeleteRangeAsync"/> is operating correctly when ignoring related entities.
         /// </summary>
         /// <returns>The task representing the asynchronous operation.</returns>
         [Fact]
@@ -67,8 +66,8 @@
             var persons = DataGenerator.PickRandomItemRange(_databaseHelper.GetPersons(), 10);
 
             // Act
-            await _personRepository.DeleteAsync(persons);
-            var affectedRows = await _personRepository.CommitAsync();
+            await _personRepository.DeleteRangeAsync(persons).ConfigureAwait(false);
+            var affectedRows = await _personRepository.CommitAsync().ConfigureAwait(false);
 
             // Assert
             Assert.Equal(persons.Count, affectedRows);
@@ -85,15 +84,15 @@
             var person = DataGenerator.PickRandomItem(_databaseHelper.GetPersons());
 
             // Act
-            await _personRepository.DeleteAsync(person, true);
-            var affectedRows = await _personRepository.CommitAsync();
+            await _personRepository.DeleteAsync(person, true).ConfigureAwait(false);
+            var affectedRows = await _personRepository.CommitAsync().ConfigureAwait(false);
 
             // Assert
             Assert.Equal(person.Vehicles.Count + 1, affectedRows);
         }
 
         /// <summary>
-        ///     Asserts that the <see cref="IRepository{TEntity}.DeleteAsync(IEnumerable{TEntity}, bool)"/> is operating correctly when considering related entities.
+        ///     Asserts that the <see cref="IDeletableRepository{TEntity}.DeleteRangeAsync"/> is operating correctly when considering related entities.
         /// </summary>
         /// <returns>The task representing the asynchronous operation.</returns>
         [Fact]
@@ -103,8 +102,8 @@
             var persons = DataGenerator.PickRandomItemRange(_databaseHelper.GetPersons(), 10);
 
             // Act
-            await _personRepository.DeleteAsync(persons, true);
-            var affectedRows = await _personRepository.CommitAsync();
+            await _personRepository.DeleteRangeAsync(persons, true).ConfigureAwait(false);
+            var affectedRows = await _personRepository.CommitAsync().ConfigureAwait(false);
 
             // Assert
             Assert.Equal(persons.Sum(t => t.Vehicles.Count + 1), affectedRows);

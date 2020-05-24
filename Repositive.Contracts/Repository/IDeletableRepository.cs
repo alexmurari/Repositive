@@ -23,7 +23,7 @@
         /// </summary>
         /// <param name="entities">The collection of entities to be deleted.</param>
         /// <param name="deleteRelated">The value that indicates whether or not related entities reachable from the provided entity should be deleted in the operation.</param>
-        void Delete(IEnumerable<TEntity> entities, bool deleteRelated = false);
+        void DeleteRange(IEnumerable<TEntity> entities, bool deleteRelated = false);
 
         /// <summary>
         ///     Asynchronously deletes the entity of the provided type from the database repository.
@@ -39,6 +39,6 @@
         /// <param name="entities">The collection of entities to be deleted.</param>
         /// <param name="deleteRelated">The value that indicates whether or not related entities reachable from the provided entity should be deleted in the operation.</param>
         /// <returns>A task that represents the asynchronous delete operation.</returns>
-        Task DeleteAsync(IEnumerable<TEntity> entities, bool deleteRelated = false);
+        Task DeleteRangeAsync(IEnumerable<TEntity> entities, bool deleteRelated = false);
     }
 }

@@ -49,8 +49,8 @@
             var person = DataGenerator.PickRandomItem(_databaseHelper.GetPersons());
 
             // Act
-            await _personRepository.UpdateAsync(person);
-            var affectedRows = await _personRepository.CommitAsync();
+            await _personRepository.UpdateAsync(person).ConfigureAwait(false);
+            var affectedRows = await _personRepository.CommitAsync().ConfigureAwait(false);
 
             // Assert
             Assert.Equal(1, affectedRows);
@@ -67,8 +67,8 @@
             var persons = DataGenerator.PickRandomItemRange(_databaseHelper.GetPersons(), 50);
 
             // Act
-            await _personRepository.UpdateRangeAsync(persons);
-            var affectedRows = await _personRepository.CommitAsync();
+            await _personRepository.UpdateRangeAsync(persons).ConfigureAwait(false);
+            var affectedRows = await _personRepository.CommitAsync().ConfigureAwait(false);
 
             // Assert
             Assert.Equal(persons.Count, affectedRows);
@@ -85,8 +85,8 @@
             var person = DataGenerator.PickRandomItem(_databaseHelper.GetPersons());
 
             // Act
-            await _personRepository.UpdateAsync(person, true);
-            var affectedRows = await _personRepository.CommitAsync();
+            await _personRepository.UpdateAsync(person, true).ConfigureAwait(false);
+            var affectedRows = await _personRepository.CommitAsync().ConfigureAwait(false);
 
             // Assert
             Assert.Equal(person.CountRelatedEntities() + 1, affectedRows);
@@ -103,8 +103,8 @@
             var persons = DataGenerator.PickRandomItemRange(_databaseHelper.GetPersons(), 50);
 
             // Act
-            await _personRepository.UpdateRangeAsync(persons, true);
-            var affectedRows = await _personRepository.CommitAsync();
+            await _personRepository.UpdateRangeAsync(persons, true).ConfigureAwait(false);
+            var affectedRows = await _personRepository.CommitAsync().ConfigureAwait(false);
 
             // Assert
             Assert.Equal(persons.Sum(t => t.CountRelatedEntities() + 1), affectedRows);

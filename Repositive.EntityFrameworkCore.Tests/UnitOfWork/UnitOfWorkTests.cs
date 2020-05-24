@@ -116,7 +116,7 @@
         ///     Asserts that invoking <see cref="ISaveableRepository.Commit"/> in a repository configured to use unit of work throws <see cref="InvalidOperationException"/>.
         /// </summary>
         [Fact]
-        public void Assert_Committing_Directly_From_Repository_Throws_When_Using_Unit_Of_Work()
+        public void Assert_Repository_Configured_To_Use_Unit_Of_Work_Throws_On_Direct_Commit()
         {
             // Arrange
             _personUoWRepository.Add(new Person { Name = "Foo" });

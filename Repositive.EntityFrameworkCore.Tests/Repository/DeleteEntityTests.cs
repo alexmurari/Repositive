@@ -55,7 +55,7 @@
         }
 
         /// <summary>
-        ///     Asserts that the <see cref="IRepository{TEntity}.Delete(IEnumerable{TEntity}, bool)"/> is operating correctly when ignoring related entities.
+        ///     Asserts that the <see cref="IRepository{TEntity}.DeleteRange(IEnumerable{TEntity}, bool)"/> is operating correctly when ignoring related entities.
         /// </summary>
         [Fact]
         public void Assert_Delete_Entity_Range_Without_Related_Entities_Is_Successful()
@@ -64,7 +64,7 @@
             var persons = DataGenerator.PickRandomItemRange(_databaseHelper.GetPersons(), 10);
 
             // Act
-            _personRepository.Delete(persons);
+            _personRepository.DeleteRange(persons);
             var affectedRows = _personRepository.Commit();
 
             // Assert
@@ -89,7 +89,7 @@
         }
 
         /// <summary>
-        ///     Asserts that the <see cref="IRepository{TEntity}.Delete(IEnumerable{TEntity}, bool)"/> is operating correctly when considering related entities.
+        ///     Asserts that the <see cref="IRepository{TEntity}.DeleteRange(IEnumerable{TEntity}, bool)"/> is operating correctly when considering related entities.
         /// </summary>
         [Fact]
         public void Assert_Delete_Entity_Range_With_Related_Entities_Is_Successful()
@@ -98,7 +98,7 @@
             var persons = DataGenerator.PickRandomItemRange(_databaseHelper.GetPersons(), 10);
 
             // Act
-            _personRepository.Delete(persons, true);
+            _personRepository.DeleteRange(persons, true);
             var affectedRows = _personRepository.Commit();
 
             // Assert

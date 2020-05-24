@@ -40,8 +40,8 @@
             var person = DataGenerator.GeneratePersons(1)[0];
 
             // Act
-            await _personRepository.AddAsync(person);
-            var affectedRows = await _personRepository.CommitAsync();
+            await _personRepository.AddAsync(person).ConfigureAwait(false);
+            var affectedRows = await _personRepository.CommitAsync().ConfigureAwait(false);
 
             // Assert
             Assert.Equal(person.CountRelatedEntities() + 1, affectedRows);
@@ -62,8 +62,8 @@
             var personList = DataGenerator.GeneratePersons(50);
 
             // Act
-            await _personRepository.AddRangeAsync(personList);
-            var affectedRows = await _personRepository.CommitAsync();
+            await _personRepository.AddRangeAsync(personList).ConfigureAwait(false);
+            var affectedRows = await _personRepository.CommitAsync().ConfigureAwait(false);
 
             // Assert
             Assert.Equal(personList.Sum(t => t.CountRelatedEntities() + 1), affectedRows);

@@ -65,12 +65,12 @@
         public async Task Assert_Commit_Changes_Async_Is_Successful()
         {
             // Arrange
-            var person = await _personUoWRepository.AddAsync(new Person { Name = "Foo" });
-            var vehicle = await _vehicleUoWRepository.AddAsync(new Vehicle { Type = VehicleType.Car });
-            var manufacturer = await _manufacturerUoWRepository.AddAsync(new Manufacturer { Name = "Bar" });
+            var person = await _personUoWRepository.AddAsync(new Person { Name = "Foo" }).ConfigureAwait(false);
+            var vehicle = await _vehicleUoWRepository.AddAsync(new Vehicle { Type = VehicleType.Car }).ConfigureAwait(false);
+            var manufacturer = await _manufacturerUoWRepository.AddAsync(new Manufacturer { Name = "Bar" }).ConfigureAwait(false);
 
             // Act
-            var affectedRows = await _unitOfWork.CommitAsync();
+            var affectedRows = await _unitOfWork.CommitAsync().ConfigureAwait(false);
 
             // Assert
             Assert.Equal(3, affectedRows);
@@ -87,15 +87,15 @@
         public async Task Assert_Committing_Event_Is_Invoked_On_Commit_Async()
         {
             // Arrange
-            await _personUoWRepository.AddAsync(new Person { Name = "Foo" });
-            await _vehicleUoWRepository.AddAsync(new Vehicle { Type = VehicleType.Car });
-            await _manufacturerUoWRepository.AddAsync(new Manufacturer { Name = "Bar" });
+            await _personUoWRepository.AddAsync(new Person { Name = "Foo" }).ConfigureAwait(false);
+            await _vehicleUoWRepository.AddAsync(new Vehicle { Type = VehicleType.Car }).ConfigureAwait(false);
+            await _manufacturerUoWRepository.AddAsync(new Manufacturer { Name = "Bar" }).ConfigureAwait(false);
 
             // Act
             var commitAction = new Func<CancellationToken, Task<int>>(_unitOfWork.CommitAsync);
 
             // Assert
-            Assert.Raises<UnitOfWorkCommittingEventArgs>(e => _unitOfWork.Committing += e, e => _unitOfWork.Committing -= e, () => commitAction(default));
+            await Assert.RaisesAsync<UnitOfWorkCommittingEventArgs>(e => _unitOfWork.Committing += e, e => _unitOfWork.Committing -= e, () => commitAction(default)).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -106,9 +106,9 @@
         public async Task Assert_Committed_Event_Is_Invoked_On_Commit_Async()
         {
             // Arrange
-            await _personUoWRepository.AddAsync(new Person { Name = "Foo" });
-            await _vehicleUoWRepository.AddAsync(new Vehicle { Type = VehicleType.Car });
-            await _manufacturerUoWRepository.AddAsync(new Manufacturer { Name = "Bar" });
+            await _personUoWRepository.AddAsync(new Person { Name = "Foo" }).ConfigureAwait(false);
+            await _vehicleUoWRepository.AddAsync(new Vehicle { Type = VehicleType.Car }).ConfigureAwait(false);
+            await _manufacturerUoWRepository.AddAsync(new Manufacturer { Name = "Bar" }).ConfigureAwait(false);
 
             // Act
             var commitAction = new Func<CancellationToken, Task<int>>(_unitOfWork.CommitAsync);
@@ -122,10 +122,10 @@
         /// </summary>
         /// <returns>The task representing the asynchronous operation.</returns>
         [Fact]
-        public async Task Assert_Committing_Directly_From_Repository_Throws_When_Using_Unit_Of_Work()
+        public async Task Assert_Repository_Configured_To_Use_Unit_Of_Work_Throws_On_Direct_Commit_Async()
         {
             // Arrange
-            await _personUoWRepository.AddAsync(new Person { Name = "Foo" });
+            await _personUoWRepository.AddAsync(new Person { Name = "Foo" }).ConfigureAwait(false);
 
             // Act
             var commitAction = new Func<CancellationToken, Task<int>>(_personUoWRepository.CommitAsync);
