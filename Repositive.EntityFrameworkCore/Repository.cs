@@ -844,8 +844,7 @@
         /// <returns>
         ///     The entity with the loaded navigation property.
         /// </returns>
-        public virtual TEntity LoadRelated<TProperty>(TEntity entity, Expression<Func<TEntity, TProperty>> navigationProperty, params Expression<Func<TProperty, object>>[] includes)
-            where TProperty : class
+        public virtual TEntity LoadRelated<TProperty>(TEntity entity, Expression<Func<TEntity, TProperty>> navigationProperty, params Expression<Func<TProperty, object>>[] includes) where TProperty : class
         {
             var entry = GetEntityEntry(entity);
 
