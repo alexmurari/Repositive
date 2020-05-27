@@ -31,7 +31,7 @@
         /// </summary>
         /// <param name="expression">The expression tree to parse.</param>
         /// <param name="path">The extracted textual representation of the expression's path.</param>
-        /// <returns>True if the parse operation succeeds; otherwise, false.</returns>
+        /// <returns><see langword="true"/> if the parse operation succeeds; otherwise, <see langword="false"/>.</returns>
         private static bool TryParsePath(Expression expression, out string path)
         {
             var cleanExpression = RemoveConvertOperations(expression);

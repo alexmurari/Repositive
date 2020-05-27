@@ -18,8 +18,7 @@
         ///     The type of the value being checked.
         /// </typeparam>
         /// <returns>
-        ///     The <see cref="bool" />.
-        ///     True if default; otherwise, false.
+        ///     <see langword="true"/> if default; otherwise, <see langword="false"/>.
         /// </returns>
         internal static bool CheckIfDefault<T>(this T value) where T : struct
         {
@@ -36,7 +35,7 @@
         ///     The type of the value being checked.
         /// </typeparam>
         /// <returns>
-        ///     True if null; otherwise, false.
+        ///     <see langword="true"/> if null; otherwise, <see langword="false"/>.
         /// </returns>
         internal static bool CheckIfNull<T>(this T value) where T : class
         {

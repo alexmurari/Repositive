@@ -17,7 +17,7 @@
         ///     Determines whether the database repository contains any entities of the provided type.
         /// </summary>
         /// <returns>
-        ///     True if the database repository contains any entities; otherwise, false.
+        ///     <see langword="true"/> if the database repository contains any entities; otherwise, <see langword="false"/>.
         /// </returns>
         bool Any();
 
@@ -28,7 +28,7 @@
         ///     The predicate with the query condition.
         /// </param>
         /// <returns>
-        ///     True if the database repository contains any entities that match the predicate condition; otherwise, false.
+        ///     <see langword="true"/> if the database repository contains any entities that match the predicate condition; otherwise, <see langword="false"/>.
         /// </returns>
         bool Any(Expression<Func<TEntity, bool>> predicate);
 

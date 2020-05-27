@@ -59,7 +59,7 @@
             DbContext = context;
             DbSet = context.Set<TEntity>();
 
-            uow.AddRepository(GetType().Name);
+            uow.AddRepository(GetInstanceName());
 
             _unitOfWork = uow;
         }
@@ -70,7 +70,7 @@
         ~Repository()
         {
             if (IsUsingUnitOfWork())
-                _unitOfWork?.RemoveRepository(GetType().Name);
+                _unitOfWork?.RemoveRepository(GetInstanceName());
         }
 
         /// <summary>
@@ -129,7 +129,7 @@
         ///     Determines whether the database repository contains any entities of the provided type.
         /// </summary>
         /// <returns>
-        ///     True if the database repository contains any entities; otherwise, false.
+        ///     <see langword="true"/> if the database repository contains any entities; otherwise, <see langword="false"/>.
         /// </returns>
         public virtual bool Any()
         {
@@ -143,7 +143,7 @@
         ///     The predicate with the query condition.
         /// </param>
         /// <returns>
-        ///     True if the database repository contains any entities that match the predicate condition; otherwise, false.
+        ///     <see langword="true"/> if the database repository contains any entities that match the predicate condition; otherwise, <see langword="false"/>.
         /// </returns>
         public virtual bool Any(Expression<Func<TEntity, bool>> predicate)
         {
@@ -1451,8 +1451,20 @@
         ///     Gets a value indicating whether this repository is using unit of work for commit synchronization.
         /// </summary>
         /// <returns>
-        ///     True if this repository is using unit of work; otherwise, false.
+        ///     <see langword="true"/> if this repository is using unit of work; otherwise, <see langword="false"/>.
         /// </returns>
         private bool IsUsingUnitOfWork() => _unitOfWork != null;
+
+        /// <summary>
+        ///     Gets the name of the current instance's type.
+        /// </summary>
+        /// <returns>
+        ///     The name of the type.
+        /// </returns>
+        /// <remarks>
+        ///     This method gets the name of the absolute instance of this class, i.e.,
+        ///     if it is an abstract class, gets the name of the current derived instance.
+        /// </remarks>
+        private string GetInstanceName() => GetType().Name;
     }
 }

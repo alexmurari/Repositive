@@ -83,8 +83,8 @@ public class CarService : ICarService
 
 ## 2. Contracts
 
-###### All interfaces are in the ```Repositive.Contracts``` interface.
-###### All methods' asynchronous counterparts have the ```Async``` suffix in the name. Ex.: ```GetSingleAsync```.
+###### All interfaces are in the ```Repositive.Contracts``` namespace.
+###### All methods' asynchronous counterparts names have the ```Async``` suffix. Ex.: ```GetSingleAsync```.
 
 #### ```IRepository<T>```
 
@@ -142,11 +142,16 @@ using the ```IQueryable<T>``` interface and projecting the results to ```TResult
 
 ## 3. Implementations
 
-#### ```Repositive.EntityFrameworkCore.Repository<T>```
-- Provides a repository pattern implementation for querying and saving instances of ```T``` with ```Microsoft.EntityFrameworkCore``` as the ORM.
-- Implements ```IRepository<T>```, ```IQueryableRepository<T>```, ```IRelatedLoadableRepository<T>```, ```ISaveableRepository``` interfaces.
+#### ```Repositive.EntityFrameworkCore.Repository<TEntity, TContext>```
+- Provides a repository pattern implementation for querying and saving instances of ```TEntity``` with ```Microsoft.EntityFrameworkCore``` as the ORM.
+- The database context type is defined by ```TContext```. It must derive from or be of ```Microsoft.EntityFramework.DbContext``` type.
+- Implements ```IRepository<TTEntity>```, ```IQueryableRepository<TTEntity>```, ```IRelatedLoadableRepository<TTEntity>```, ```ISaveableRepository``` interfaces.
+- Constructor: ```(TContext)``` or ```(IUnitOfWork)```. 
 
-#### ```Repositive.EntityFrameworkCore.UnitOfWork```
+#### ```Repositive.EntityFrameworkCore.UnitOfWork<TContext>```
 - Implements the unit of work pattern and provides commit coordination between repositories.
+- The database context type is defined by ```TContext```. It must derive from or be of ```Microsoft.EntityFramework.DbContext``` type.
 - Implements the ```IUnitOfWork``` interface.
-- Centralizes the ```Micosoft.EntityFrameworkCore.DbContext``` instance and shares it between repositories.
+- Centralizes the ```Micosoft.EntityFrameworkCore.DbContext``` instance and shares it between repositories, so changes from multiple repositories
+  are contained in a single database context instance.
+- Constructor: ```(TContext)```. 
