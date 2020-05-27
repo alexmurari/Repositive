@@ -49,10 +49,10 @@
 
             // Act
             await _personRepository.DeleteAsync(person).ConfigureAwait(false);
-            var affectedRows = await _personRepository.CommitAsync().ConfigureAwait(false);
+            var affectedEntries = await _personRepository.CommitAsync().ConfigureAwait(false);
 
             // Assert
-            Assert.Equal(1, affectedRows);
+            Assert.Equal(1, affectedEntries);
         }
 
         /// <summary>
@@ -67,10 +67,10 @@
 
             // Act
             await _personRepository.DeleteRangeAsync(persons).ConfigureAwait(false);
-            var affectedRows = await _personRepository.CommitAsync().ConfigureAwait(false);
+            var affectedEntries = await _personRepository.CommitAsync().ConfigureAwait(false);
 
             // Assert
-            Assert.Equal(persons.Count, affectedRows);
+            Assert.Equal(persons.Count, affectedEntries);
         }
 
         /// <summary>
@@ -85,10 +85,10 @@
 
             // Act
             await _personRepository.DeleteAsync(person, true).ConfigureAwait(false);
-            var affectedRows = await _personRepository.CommitAsync().ConfigureAwait(false);
+            var affectedEntries = await _personRepository.CommitAsync().ConfigureAwait(false);
 
             // Assert
-            Assert.Equal(person.Vehicles.Count + 1, affectedRows);
+            Assert.Equal(person.Vehicles.Count + 1, affectedEntries);
         }
 
         /// <summary>
@@ -103,10 +103,10 @@
 
             // Act
             await _personRepository.DeleteRangeAsync(persons, true).ConfigureAwait(false);
-            var affectedRows = await _personRepository.CommitAsync().ConfigureAwait(false);
+            var affectedEntries = await _personRepository.CommitAsync().ConfigureAwait(false);
 
             // Assert
-            Assert.Equal(persons.Sum(t => t.Vehicles.Count + 1), affectedRows);
+            Assert.Equal(persons.Sum(t => t.Vehicles.Count + 1), affectedEntries);
         }
     }
 }

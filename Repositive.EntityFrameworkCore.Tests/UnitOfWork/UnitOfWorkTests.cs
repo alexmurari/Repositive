@@ -59,7 +59,7 @@
         ///     Asserts that the <see cref="IUnitOfWork.Commit"/> is operating correctly by committing changes made to multiple repositories that use unit of work.
         /// </summary>
         [Fact]
-        public void Assert_Commit_Changes_Is_Successful()
+        public void Assert_Commit_Is_Successful()
         {
             // Arrange
             var person = _personUoWRepository.Add(new Person { Name = "Foo" });
@@ -67,10 +67,10 @@
             var manufacturer = _manufacturerUoWRepository.Add(new Manufacturer { Name = "Bar" });
 
             // Act
-            var affectedRows = _unitOfWork.Commit();
+            var affectedEntries = _unitOfWork.Commit();
 
             // Assert
-            Assert.Equal(3, affectedRows);
+            Assert.Equal(3, affectedEntries);
             Assert.NotEqual(default, person.Id);
             Assert.NotEqual(default, vehicle.Id);
             Assert.NotEqual(default, manufacturer.Id);

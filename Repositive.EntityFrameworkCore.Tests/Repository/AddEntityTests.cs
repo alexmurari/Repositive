@@ -39,10 +39,10 @@
 
             // Act
             person = _personRepository.Add(person);
-            var affectedRows = _personRepository.Commit();
+            var affectedEntries = _personRepository.Commit();
 
             // Assert
-            Assert.Equal(person.CountRelatedEntities() + 1, affectedRows);
+            Assert.Equal(person.CountRelatedEntities() + 1, affectedEntries);
             Assert.False(person.Id == default);
             Assert.DoesNotContain(person.Vehicles, t => t.Id == default);
             Assert.DoesNotContain(person.Vehicles, t => t.ManufacturerId == default);
@@ -60,10 +60,10 @@
 
             // Act
             _personRepository.AddRange(personList);
-            var affectedRows = _personRepository.Commit();
+            var affectedEntries = _personRepository.Commit();
 
             // Assert
-            Assert.Equal(personList.Sum(t => t.CountRelatedEntities() + 1), affectedRows);
+            Assert.Equal(personList.Sum(t => t.CountRelatedEntities() + 1), affectedEntries);
             Assert.DoesNotContain(personList, t => t.Id == default);
             Assert.DoesNotContain(personList.SelectMany(t => t.Vehicles), t => t.Id == default);
             Assert.DoesNotContain(personList.SelectMany(t => t.Vehicles), t => t.ManufacturerId == default);

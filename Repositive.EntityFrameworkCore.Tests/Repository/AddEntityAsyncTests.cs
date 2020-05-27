@@ -41,10 +41,10 @@
 
             // Act
             await _personRepository.AddAsync(person).ConfigureAwait(false);
-            var affectedRows = await _personRepository.CommitAsync().ConfigureAwait(false);
+            var affectedEntries = await _personRepository.CommitAsync().ConfigureAwait(false);
 
             // Assert
-            Assert.Equal(person.CountRelatedEntities() + 1, affectedRows);
+            Assert.Equal(person.CountRelatedEntities() + 1, affectedEntries);
             Assert.False(person.Id == default);
             Assert.DoesNotContain(person.Vehicles, t => t.Id == default);
             Assert.DoesNotContain(person.Vehicles, t => t.ManufacturerId == default);
@@ -63,10 +63,10 @@
 
             // Act
             await _personRepository.AddRangeAsync(personList).ConfigureAwait(false);
-            var affectedRows = await _personRepository.CommitAsync().ConfigureAwait(false);
+            var affectedEntries = await _personRepository.CommitAsync().ConfigureAwait(false);
 
             // Assert
-            Assert.Equal(personList.Sum(t => t.CountRelatedEntities() + 1), affectedRows);
+            Assert.Equal(personList.Sum(t => t.CountRelatedEntities() + 1), affectedEntries);
             Assert.DoesNotContain(personList, t => t.Id == default);
             Assert.DoesNotContain(personList.SelectMany(t => t.Vehicles), t => t.Id == default);
             Assert.DoesNotContain(personList.SelectMany(t => t.Vehicles), t => t.ManufacturerId == default);

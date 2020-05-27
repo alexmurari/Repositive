@@ -62,7 +62,7 @@
         /// </summary>
         /// <returns>The task representing the asynchronous operation.</returns>
         [Fact]
-        public async Task Assert_Commit_Changes_Async_Is_Successful()
+        public async Task Assert_Commit_Async_Is_Successful()
         {
             // Arrange
             var person = await _personUoWRepository.AddAsync(new Person { Name = "Foo" }).ConfigureAwait(false);
@@ -70,10 +70,10 @@
             var manufacturer = await _manufacturerUoWRepository.AddAsync(new Manufacturer { Name = "Bar" }).ConfigureAwait(false);
 
             // Act
-            var affectedRows = await _unitOfWork.CommitAsync().ConfigureAwait(false);
+            var affectedEntries = await _unitOfWork.CommitAsync().ConfigureAwait(false);
 
             // Assert
-            Assert.Equal(3, affectedRows);
+            Assert.Equal(3, affectedEntries);
             Assert.NotEqual(default, person.Id);
             Assert.NotEqual(default, vehicle.Id);
             Assert.NotEqual(default, manufacturer.Id);

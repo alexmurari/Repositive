@@ -48,10 +48,10 @@
 
             // Act
             _personRepository.Delete(person);
-            var affectedRows = _personRepository.Commit();
+            var affectedEntries = _personRepository.Commit();
 
             // Assert
-            Assert.Equal(1, affectedRows);
+            Assert.Equal(1, affectedEntries);
         }
 
         /// <summary>
@@ -65,10 +65,10 @@
 
             // Act
             _personRepository.DeleteRange(persons);
-            var affectedRows = _personRepository.Commit();
+            var affectedEntries = _personRepository.Commit();
 
             // Assert
-            Assert.Equal(persons.Count, affectedRows);
+            Assert.Equal(persons.Count, affectedEntries);
         }
 
         /// <summary>
@@ -82,10 +82,10 @@
 
             // Act
             _personRepository.Delete(person, true);
-            var affectedRows = _personRepository.Commit();
+            var affectedEntries = _personRepository.Commit();
 
             // Assert
-            Assert.Equal(person.Vehicles.Count + 1, affectedRows);
+            Assert.Equal(person.Vehicles.Count + 1, affectedEntries);
         }
 
         /// <summary>
@@ -99,10 +99,10 @@
 
             // Act
             _personRepository.DeleteRange(persons, true);
-            var affectedRows = _personRepository.Commit();
+            var affectedEntries = _personRepository.Commit();
 
             // Assert
-            Assert.Equal(persons.Sum(t => t.Vehicles.Count + 1), affectedRows);
+            Assert.Equal(persons.Sum(t => t.Vehicles.Count + 1), affectedEntries);
         }
     }
 }
