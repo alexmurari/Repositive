@@ -24,4 +24,8 @@
     <ProjectReference Include="..\Repositive.EntityFrameworkCore\Repositive.EntityFrameworkCore.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Repository\Query\" />
+  </ItemGroup>
+
 </Project>
