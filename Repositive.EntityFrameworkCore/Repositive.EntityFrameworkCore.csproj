@@ -2,12 +2,16 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Description>Provides advanced repository pattern implementations for Entity Framework Core based on Repositive.Contracts interfaces.</Description>
     <GeneratePackageOnBuild Condition=" '$(Configuration)' == 'Release' ">true</GeneratePackageOnBuild>
     <GenerateDocumentationFile Condition=" '$(Configuration)' == 'Release' ">true</GenerateDocumentationFile>
+    <Description>
+      Advanced repository and unit of work pattern implementations for Microsoft.EntityFrameworkCore.
+      Implements 'Repositive.Abstractions' contracts.
+    </Description>
     <PackageIcon>icon.png</PackageIcon>
     <PackageIconUrl />
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageTags>c# .netstandard repository unitofwork pattern entityframeworkcore</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,16 +20,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Repositive.Contracts\Repositive.Contracts.csproj" />
+    <ProjectReference Include="..\Repositive.Abstractions\Repositive.Abstractions.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <None Include="..\icon.png" Pack="true" Visible="false" PackagePath="" />
     <None Include="..\LICENSE" Pack="true" Visible="false" PackagePath="" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Properties\" />
   </ItemGroup>
 
 </Project>

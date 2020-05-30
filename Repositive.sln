@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.29230.47
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repositive.EntityFrameworkCore", "Repositive.EntityFrameworkCore\Repositive.EntityFrameworkCore.csproj", "{1DE5FD42-383A-4C91-87BD-CFB86539EF67}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repositive.Contracts", "Repositive.Contracts\Repositive.Contracts.csproj", "{53A5AA8F-8527-4768-B3EC-F1E0F9359BAE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repositive.Abstractions", "Repositive.Abstractions\Repositive.Abstractions.csproj", "{53A5AA8F-8527-4768-B3EC-F1E0F9359BAE}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{57A865E5-2CC3-4939-9786-31EE1FCCCF03}"
 	ProjectSection(SolutionItems) = preProject

@@ -3,7 +3,7 @@
     using System;
     using System.Linq;
     using System.Linq.Expressions;
-    using Repositive.Contracts;
+    using Repositive.Abstractions;
     using Repositive.EntityFrameworkCore.Tests.Utilities;
     using Repositive.EntityFrameworkCore.Tests.Utilities.Entities;
     using Repositive.EntityFrameworkCore.Tests.Utilities.Entities.Enums;

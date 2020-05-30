@@ -4,10 +4,11 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <GeneratePackageOnBuild Condition=" '$(Configuration)' == 'Release' ">true</GeneratePackageOnBuild>
     <GenerateDocumentationFile Condition=" '$(Configuration)' == 'Release' ">true</GenerateDocumentationFile>
-    <Description>Provides advanced repository pattern interfaces.</Description>
+    <Description>Abstractions for advanced repository and unit of work patterns.</Description>
     <PackageIcon>icon.png</PackageIcon>
     <PackageIconUrl />
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageTags>c# .netstandard repository unitofwork pattern</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,10 +18,6 @@
   <ItemGroup>
     <None Include="..\icon.png" Pack="true" Visible="false" PackagePath="" />
     <None Include="..\LICENSE" Pack="true" Visible="false" PackagePath="" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Properties\" />
   </ItemGroup>
 
 </Project>

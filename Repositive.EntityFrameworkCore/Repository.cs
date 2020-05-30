@@ -8,7 +8,7 @@
     using System.Threading.Tasks;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.ChangeTracking;
-    using Repositive.Contracts;
+    using Repositive.Abstractions;
     using Repositive.EntityFrameworkCore.Extensions;
 
     /// <summary>

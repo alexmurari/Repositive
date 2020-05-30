@@ -1,6 +1,6 @@
 ﻿namespace Repositive.EntityFrameworkCore.Tests.Utilities.Repositories.Contracts
 {
-    using Repositive.Contracts;
+    using Repositive.Abstractions;
     using Repositive.EntityFrameworkCore.Tests.Utilities.Entities;
 
     /// <summary>

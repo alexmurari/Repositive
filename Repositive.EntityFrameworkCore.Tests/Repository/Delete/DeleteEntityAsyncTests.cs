@@ -2,7 +2,7 @@
 {
     using System.Linq;
     using System.Threading.Tasks;
-    using Repositive.Contracts;
+    using Repositive.Abstractions;
     using Repositive.EntityFrameworkCore.Tests.Utilities;
     using Repositive.EntityFrameworkCore.Tests.Utilities.Repositories.Contracts;
     using Xunit;

@@ -1,4 +1,4 @@
-﻿namespace Repositive.Contracts
+﻿namespace Repositive.Abstractions
 {
     using System.Threading;
     using System.Threading.Tasks;

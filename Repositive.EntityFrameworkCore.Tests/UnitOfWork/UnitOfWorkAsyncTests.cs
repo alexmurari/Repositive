@@ -3,7 +3,7 @@
     using System;
     using System.Threading;
     using System.Threading.Tasks;
-    using Repositive.Contracts;
+    using Repositive.Abstractions;
     using Repositive.EntityFrameworkCore.Tests.Utilities.Entities;
     using Repositive.EntityFrameworkCore.Tests.Utilities.Entities.Enums;
     using Repositive.EntityFrameworkCore.Tests.Utilities.Repositories.Contracts;

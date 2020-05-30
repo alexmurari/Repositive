@@ -6,7 +6,7 @@
     using System.Linq.Expressions;
     using Exprelsior.ExpressionBuilder;
     using Microsoft.EntityFrameworkCore;
-    using Repositive.Contracts;
+    using Repositive.Abstractions;
 
     /// <summary>
     ///     Extension methods for <see cref="IQueryable" /> interface.

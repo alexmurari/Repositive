@@ -83,8 +83,9 @@ public class CarService : ICarService
 
 ## 2. Contracts
 
-###### All interfaces are in the ```Repositive.Contracts``` namespace.
-###### All methods' asynchronous counterparts names have the ```Async``` suffix. Ex.: ```GetSingleAsync```.
+- All interfaces are in the ```Repositive.Abstractions``` namespace.
+
+- All methods' asynchronous counterparts names have the ```Async``` suffix. Ex.: ```GetSingleAsync```.
 
 #### ```IRepository<T>```
 

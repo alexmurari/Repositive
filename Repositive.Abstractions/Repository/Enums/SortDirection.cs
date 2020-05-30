@@ -1,4 +1,4 @@
-﻿namespace Repositive.Contracts
+﻿namespace Repositive.Abstractions
 {
     /// <summary>
     ///     Directions which elements of a sequence can be sorted.

@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Repositive.Contracts\Repositive.Contracts.csproj" />
+    <ProjectReference Include="..\Repositive.Abstractions\Repositive.Abstractions.csproj" />
     <ProjectReference Include="..\Repositive.EntityFrameworkCore\Repositive.EntityFrameworkCore.csproj" />
   </ItemGroup>
 

@@ -1,4 +1,4 @@
-﻿namespace Repositive.Contracts
+﻿namespace Repositive.Abstractions
 {
     /// <summary>
     ///     Defines a repository contract for creating, reading, updating and deleting instances of <typeparamref name="TEntity" />.

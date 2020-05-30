@@ -6,7 +6,7 @@
     using System.Threading.Tasks;
     using Exprelsior.Shared.Extensions;
     using Microsoft.EntityFrameworkCore;
-    using Repositive.Contracts;
+    using Repositive.Abstractions;
 
     /// <summary>
     ///     Implements the unit of work pattern and provides commit coordination between repositories.

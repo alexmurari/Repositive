@@ -10,7 +10,7 @@ namespace Repositive.EntityFrameworkCore.Tests
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
-    using Repositive.Contracts;
+    using Repositive.Abstractions;
     using Repositive.EntityFrameworkCore.Tests.Utilities;
     using Repositive.EntityFrameworkCore.Tests.Utilities.Context;
     using Repositive.EntityFrameworkCore.Tests.Utilities.Repositories;

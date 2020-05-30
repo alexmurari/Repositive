@@ -1,4 +1,4 @@
-﻿namespace Repositive.Contracts
+﻿namespace Repositive.Abstractions
 {
     /// <summary>
     ///     Behaviors for the query change tracker.

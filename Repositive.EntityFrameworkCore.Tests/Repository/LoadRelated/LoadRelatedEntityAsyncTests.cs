@@ -5,7 +5,7 @@
     using System.Linq;
     using System.Linq.Expressions;
     using System.Threading.Tasks;
-    using Repositive.Contracts;
+    using Repositive.Abstractions;
     using Repositive.EntityFrameworkCore.Tests.Utilities;
     using Repositive.EntityFrameworkCore.Tests.Utilities.Entities.Enums;
     using Repositive.EntityFrameworkCore.Tests.Utilities.Repositories.Contracts;
