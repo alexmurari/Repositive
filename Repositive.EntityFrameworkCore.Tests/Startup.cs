@@ -45,17 +45,19 @@ namespace Repositive.EntityFrameworkCore.Tests
         protected void ConfigureServices(IServiceCollection services)
         {
             // Standard
-            services.AddDbContext<RepositiveContext>(t => t.UseInMemoryDatabase(DatabaseName));
-            services.AddScoped<IPersonRepository, PersonRepository>();
-            services.AddScoped<IVehicleRepository, VehicleRepository>();
-            services.AddScoped<IManufacturerRepository, ManufacturerRepository>();
+            services
+                .AddDbContext<RepositiveContext>(t => t.UseInMemoryDatabase(DatabaseName))
+                .AddScoped<IPersonRepository, PersonRepository>()
+                .AddScoped<IVehicleRepository, VehicleRepository>()
+                .AddScoped<IManufacturerRepository, ManufacturerRepository>();
 
             // Unit of Work
-            services.AddDbContext<RepositiveUoWContext>(t => t.UseInMemoryDatabase(DatabaseName));
-            services.AddScoped<IUnitOfWork, UnitOfWork<RepositiveUoWContext>>();
-            services.AddScoped<IPersonUoWRepository, PersonUoWRepository>();
-            services.AddScoped<IVehicleUoWRepository, VehicleUoWRepository>();
-            services.AddScoped<IManufacturerUoWRepository, ManufacturerUoWRepository>();
+            services
+                .AddDbContext<RepositiveUoWContext>(t => t.UseInMemoryDatabase(DatabaseName))
+                .AddScoped<IUnitOfWork, UnitOfWork<RepositiveUoWContext>>()
+                .AddScoped<IPersonUoWRepository, PersonUoWRepository>()
+                .AddScoped<IVehicleUoWRepository, VehicleUoWRepository>()
+                .AddScoped<IManufacturerUoWRepository, ManufacturerUoWRepository>();
 
             services.AddScoped<DatabaseHelper>();
         }

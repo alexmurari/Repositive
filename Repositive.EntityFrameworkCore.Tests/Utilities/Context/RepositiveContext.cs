@@ -20,7 +20,9 @@
         /// <summary>
         ///     Configures the creation of the database model.
         /// </summary>
-        /// <param name="modelBuilder">The model builder instance for configuring the model.</param>
+        /// <param name="modelBuilder">
+        ///     The model builder instance for configuring the model.
+        /// </param>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(GetType().Assembly);
