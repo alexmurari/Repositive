@@ -4,6 +4,8 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <GenerateDocumentationFile Condition=" '$(Configuration)' == 'Release' ">true</GenerateDocumentationFile>
     <GeneratePackageOnBuild Condition=" '$(Configuration)' == 'Release' ">true</GeneratePackageOnBuild>
+    <OutputPath>bin\$(Configuration)\Binaries</OutputPath>
+    <PackageOutputPath>bin\$(Configuration)\Package</PackageOutputPath>
     <Description>
       Advanced repository and unit of work pattern implementations for Microsoft.EntityFrameworkCore.
       Implements 'Repositive.Abstractions' contracts.

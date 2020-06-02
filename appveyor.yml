@@ -64,16 +64,16 @@ nuget:
 #---------------------------------#
 
 artifacts:
-  - path: Repositive.Abstractions/bin/$(configuration)
+  - path: Repositive.Abstractions/bin/$(configuration)/Binaries
     name: Repositive.Abstractions
     type: zip
 
-  - path: Repositive.EntityFrameworkCore/bin/$(configuration)
+  - path: Repositive.EntityFrameworkCore/bin/$(configuration)/Binaries
     name: Repositive.EntityFrameworkCore
     type: zip
 
-  - path: Repositive.Abstractions/bin/$(configuration)/*.nupkg
-  - path: Repositive.EntityFrameworkCore/bin/$(configuration)/*.nupkg
+  - path: Repositive.Abstractions/bin/$(configuration)/Package/*.nupkg
+  - path: Repositive.EntityFrameworkCore/bin/$(configuration)/Package/*.nupkg
 
  #---------------------------------#
  #      deploy configuration       #
