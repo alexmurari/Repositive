@@ -72,7 +72,8 @@ artifacts:
     name: Repositive.EntityFrameworkCore
     type: zip
 
-  - path: '**\*.nupkg'
+  - path: Repositive.Abstractions/bin/$(configuration)/*.nupkg
+  - path: Repositive.EntityFrameworkCore/bin/$(configuration)/*.nupkg
 
  #---------------------------------#
  #      deploy configuration       #
