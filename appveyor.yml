@@ -1,0 +1,93 @@
+#---------------------------------------------#
+#       build/environment configuration       #
+#---------------------------------------------#
+
+build:
+  project: Repositive.sln
+  verbosity: minimal
+
+image: Visual Studio 2019
+configuration: Release
+platform: Any CPU
+
+cache:
+  - '%LocalAppData%\NuGet\Cache'    # NuGet < v3
+  - '%LocalAppData%\NuGet\v3-cache' # NuGet v3
+
+#-------------------------------------#
+#       pre-build configuration       #
+#-------------------------------------#
+
+before_build:
+  - ps: dotnet restore
+  - ps: |
+        $props = ([xml](Get-Content "Directory.Build.props")).Project.PropertyGroup
+        $vPrefix = $props.VersionPrefix
+        $vSuffix = $props.VersionSuffix
+        
+        $env:fullVersion = @{ $true = "$($vPrefix)-$($vSuffix)"; $false = $($vPrefix) }[-not ([string]::IsNullOrEmpty($vSuffix))]
+        $env:isPreRelease = @{ $true = "true"; $false = "false" }[-not ([string]::IsNullOrEmpty($vSuffix))]
+        $env:releaseNotes = $props.PackageReleaseNotes
+        
+        Update-AppveyorBuild -Version "$env:fullVersion Build-$env:APPVEYOR_BUILD_VERSION"
+
+#-----------------------------------------#
+#       build trigger configuration       #
+#-----------------------------------------#
+
+skip_commits:
+  files:
+    - '**/*.md'
+    - 'license'
+
+skip_tags: false
+
+#-----------------------------------#
+#       publish configuration       #
+#-----------------------------------#
+
+for:
+-
+  branches:
+    except:
+      - master
+
+  build:
+    publish_nuget: false
+
+nuget:
+  disable_publish_on_pr: true
+
+#---------------------------------#
+#      artifacts configuration    #
+#---------------------------------#
+
+artifacts:
+  - path: Repositive.Abstractions/bin/$(configuration)/netstandard2.0
+    name: Repositive.Abstractions.zip
+
+  - path: Repositive.EntityFrameworkCore/bin/$(configuration)/netstandard2.0
+    name: Repositive.EntityFrameworkCore.zip
+
+  - path: '**\*.nupkg'
+
+ #---------------------------------#
+ #      deploy configuration       #
+ #---------------------------------#
+
+deploy:
+  - provider: GitHub
+    tag: $env:fullVersion
+    description: $env:releaseNotes
+    draft: false
+    prerelease: $env:isPreRelease
+    auth_token:
+      secure: 17uIp5Xz3DUfAUcfU6n/DajZ45rm5HVKrhTYVYJ4Z8XocWZvtSzhfZTfak6P6emy
+    on:
+      APPVEYOR_REPO_TAG: true
+
+  - provider: NuGet
+    api_key:
+      secure: pF8W2j/TXfR8dLUpvBIabRDxkz0ye8u+cCQrsWOczf5C6QiyRKWY8M6dvbW1fAcK
+    on:
+      APPVEYOR_REPO_TAG: true
