@@ -50,11 +50,11 @@ skip_tags: false
 for:
 -
   branches:
-    only:
+    except:
       - master
 
   build:
-    publish_nuget: true
+    publish_nuget: false
 
 nuget:
   disable_publish_on_pr: true
@@ -64,11 +64,11 @@ nuget:
 #---------------------------------#
 
 artifacts:
-  - path: Repositive.Abstractions/bin/$(configuration)/netstandard2.0
+  - path: Repositive.Abstractions/bin/$(configuration)
     name: Repositive.Abstractions
     type: zip
 
-  - path: Repositive.EntityFrameworkCore/bin/$(configuration)/netstandard2.0
+  - path: Repositive.EntityFrameworkCore/bin/$(configuration)
     name: Repositive.EntityFrameworkCore
     type: zip
 
