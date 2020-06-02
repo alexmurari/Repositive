@@ -8,6 +8,7 @@
     <PackageIconUrl />
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageTags>c# .netstandard repository unitofwork pattern</PackageTags>
+    <IsPackable>true</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>

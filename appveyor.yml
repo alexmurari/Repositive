@@ -65,10 +65,12 @@ nuget:
 
 artifacts:
   - path: Repositive.Abstractions/bin/$(configuration)/netstandard2.0
-    name: Repositive.Abstractions.zip
+    name: Repositive.Abstractions
+    type: zip
 
   - path: Repositive.EntityFrameworkCore/bin/$(configuration)/netstandard2.0
-    name: Repositive.EntityFrameworkCore.zip
+    name: Repositive.EntityFrameworkCore
+    type: zip
 
   - path: '**\*.nupkg'
 
