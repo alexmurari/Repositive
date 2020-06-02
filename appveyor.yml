@@ -2,6 +2,8 @@
 #       build/environment configuration       #
 #---------------------------------------------#
 
+version: '{build}'
+
 build:
   project: Repositive.sln
   verbosity: minimal
@@ -11,7 +13,6 @@ configuration: Release
 platform: Any CPU
 
 cache:
-  - '%LocalAppData%\NuGet\Cache'    # NuGet < v3
   - '%LocalAppData%\NuGet\v3-cache' # NuGet v3
 
 #-------------------------------------#
@@ -49,11 +50,11 @@ skip_tags: false
 for:
 -
   branches:
-    except:
+    only:
       - master
 
   build:
-    publish_nuget: false
+    publish_nuget: true
 
 nuget:
   disable_publish_on_pr: true
