@@ -12,6 +12,11 @@
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/alexmurari/Repositive/</RepositoryUrl>
     <PackageProjectUrl>https://github.com/alexmurari/Repositive/</PackageProjectUrl>
-    <PackageReleaseNotes>Alpha release.</PackageReleaseNotes>
+    <PackageReleaseNotes>
+      - Alpha release.
+      - Test 1
+      - Test 2
+      - Test 3
+    </PackageReleaseNotes>
   </PropertyGroup>
 </Project>
