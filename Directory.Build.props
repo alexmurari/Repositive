@@ -15,9 +15,7 @@
     <PackageReleaseNotes>
       <!-- Keep the section inside CDATA without indentation -->
       <![CDATA[
-- Alpha release
-  - Test 1
-  - Test 2
+- First alpha release!
   ]]>
     </PackageReleaseNotes>
   </PropertyGroup>
