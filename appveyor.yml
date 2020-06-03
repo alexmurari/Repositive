@@ -34,6 +34,9 @@ before_build:
 
   - ps: dotnet restore
 
+after_build :
+  - ps: Write-Host $env:releaseNotes
+
 #-----------------------------------------#
 #       build trigger configuration       #
 #-----------------------------------------#
@@ -80,9 +83,6 @@ artifacts:
 #---------------------------------#
 #      deploy configuration       #
 #---------------------------------#
-
-before_deploy:
-  - ps: Write-Host $env:releaseNotes
 
 deploy:
   - provider: GitHub
