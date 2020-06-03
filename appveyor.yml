@@ -34,9 +34,6 @@ before_build:
 
   - ps: dotnet restore
 
-after_build :
-  - ps: echo $env:releaseNotes
-
 #-----------------------------------------#
 #       build trigger configuration       #
 #-----------------------------------------#
