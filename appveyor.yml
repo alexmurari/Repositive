@@ -83,9 +83,9 @@ artifacts:
 deploy:
   - provider: GitHub
     tag: $(APPVEYOR_REPO_TAG_NAME)
-    description: $(env:releaseNotes)
+    description: $(releaseNotes)
     draft: false
-    prerelease: $($env:isPreRelease)
+    prerelease: $(isPreRelease)
     auth_token:
       secure: 17uIp5Xz3DUfAUcfU6n/DajZ45rm5HVKrhTYVYJ4Z8XocWZvtSzhfZTfak6P6emy
     on:
