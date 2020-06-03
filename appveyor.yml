@@ -27,7 +27,7 @@ before_build:
         $releaseNotes = $props.PackageReleaseNotes
         
         $env:fullVersion = @{ $true = "$($vPrefix)-$($vSuffix)"; $false = $($vPrefix) }[-not ([string]::IsNullOrEmpty($vSuffix))]
-        $env:isPreRelease = @{ $true = "true"; $false = "false" }[-not ([string]::IsNullOrEmpty($vSuffix))]
+        $env:isPreRelease = @{ $true = "true"; $false = "true" }[-not ([string]::IsNullOrEmpty($vSuffix))]
         $env:releaseNotes = @{ $true = "$releaseNotes"; $false = "$env:fullVersion release!" }[-not ([string]::IsNullOrEmpty($releaseNotes))]
         
         Update-AppveyorBuild -Version "$env:fullVersion Build-$env:APPVEYOR_BUILD_VERSION"
@@ -84,7 +84,7 @@ artifacts:
 deploy:
   - provider: GitHub
     tag: $(APPVEYOR_REPO_TAG_NAME)
-    description: $(releaseNotes)
+    description: "$(releaseNotes)"
     draft: false
     prerelease: $(isPreRelease)
     auth_token:
