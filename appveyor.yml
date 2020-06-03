@@ -24,10 +24,11 @@ before_build:
         $props = ([xml](Get-Content "Directory.Build.props")).Project.PropertyGroup
         $vPrefix = $props.VersionPrefix
         $vSuffix = $props.VersionSuffix
+        $releaseNotes = $props.PackageReleaseNotes
         
         $env:fullVersion = @{ $true = "$($vPrefix)-$($vSuffix)"; $false = $($vPrefix) }[-not ([string]::IsNullOrEmpty($vSuffix))]
         $env:isPreRelease = @{ $true = "true"; $false = "false" }[-not ([string]::IsNullOrEmpty($vSuffix))]
-        $env:releaseNotes = $props.PackageReleaseNotes
+        $env:releaseNotes = @{ $true = "$releaseNotes"; $false = "$env:fullVersion release!" }[-not ([string]::IsNullOrEmpty($releaseNotes))]
         
         Update-AppveyorBuild -Version "$env:fullVersion Build-$env:APPVEYOR_BUILD_VERSION"
 
