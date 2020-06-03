@@ -13,10 +13,11 @@
     <RepositoryUrl>https://github.com/alexmurari/Repositive/</RepositoryUrl>
     <PackageProjectUrl>https://github.com/alexmurari/Repositive/</PackageProjectUrl>
     <PackageReleaseNotes>
+      <!-- Keep the section inside CDATA without indentation -->
       <![CDATA[
-      - Alpha release
-      - Test 1
-      - Test 2
+- Alpha release
+  - Test 1
+  - Test 2
   ]]>
     </PackageReleaseNotes>
   </PropertyGroup>

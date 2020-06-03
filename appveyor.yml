@@ -24,7 +24,7 @@ before_build:
         $props = ([xml](Get-Content "Directory.Build.props")).Project.PropertyGroup
         $vPrefix = $props.VersionPrefix
         $vSuffix = $props.VersionSuffix
-        $releaseNotes = $props.PackageReleaseNotes.Trim().Replace("`n", '\n')
+        $releaseNotes = $props.PackageReleaseNotes.InnerText.Trim().Replace("`n", '\n')
         
         $env:fullVersion = @{ $true = "$($vPrefix)-$($vSuffix)"; $false = $($vPrefix) }[-not ([string]::IsNullOrEmpty($vSuffix))]
         $env:isPreRelease = @{ $true = "true"; $false = "false" }[-not ([string]::IsNullOrEmpty($vSuffix))]
