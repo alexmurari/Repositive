@@ -20,7 +20,6 @@ cache:
 #-------------------------------------#
 
 before_build:
-  - ps: dotnet restore
   - ps: |
         $props = ([xml](Get-Content "Directory.Build.props")).Project.PropertyGroup
         $vPrefix = $props.VersionPrefix
@@ -31,6 +30,8 @@ before_build:
         $env:releaseNotes = $props.PackageReleaseNotes
         
         Update-AppveyorBuild -Version "$env:fullVersion Build-$env:APPVEYOR_BUILD_VERSION"
+
+  - ps: dotnet restore
 
 #-----------------------------------------#
 #       build trigger configuration       #
