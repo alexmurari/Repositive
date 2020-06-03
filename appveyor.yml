@@ -27,7 +27,7 @@ before_build:
         $releaseNotes = $props.PackageReleaseNotes
         
         $env:fullVersion = @{ $true = "$($vPrefix)-$($vSuffix)"; $false = $($vPrefix) }[-not ([string]::IsNullOrEmpty($vSuffix))]
-        $env:isPreRelease = @{ $true = "false"; $false = "false" }[-not ([string]::IsNullOrEmpty($vSuffix))]
+        $env:isPreRelease = @{ $true = "true"; $false = "false" }[-not ([string]::IsNullOrEmpty($vSuffix))]
         $env:releaseNotes = @{ $true = "$releaseNotes"; $false = "$env:fullVersion release!" }[-not ([string]::IsNullOrEmpty($releaseNotes))]
         
         Update-AppveyorBuild -Version "$env:fullVersion Build-$env:APPVEYOR_BUILD_VERSION"
