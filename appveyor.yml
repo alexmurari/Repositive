@@ -24,7 +24,7 @@ before_build:
         $props = ([xml](Get-Content "Directory.Build.props")).Project.PropertyGroup
         $vPrefix = $props.VersionPrefix
         $vSuffix = $props.VersionSuffix
-        $releaseNotes = $props.PackageReleaseNotes.Trim()
+        $releaseNotes = $props.PackageReleaseNotes.Trim().Replace("`n", '\n')
         
         $env:fullVersion = @{ $true = "$($vPrefix)-$($vSuffix)"; $false = $($vPrefix) }[-not ([string]::IsNullOrEmpty($vSuffix))]
         $env:isPreRelease = @{ $true = "true"; $false = "false" }[-not ([string]::IsNullOrEmpty($vSuffix))]
@@ -33,9 +33,6 @@ before_build:
         Update-AppveyorBuild -Version "$env:fullVersion Build-$env:APPVEYOR_BUILD_VERSION"
 
   - ps: dotnet restore
-
-after_build :
-  - ps: echo $env:releaseNotes
 
 #-----------------------------------------#
 #       build trigger configuration       #
