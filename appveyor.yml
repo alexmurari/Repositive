@@ -77,13 +77,12 @@ artifacts:
   - path: Repositive.Abstractions/bin/$(configuration)/Package/*.nupkg
   - path: Repositive.EntityFrameworkCore/bin/$(configuration)/Package/*.nupkg
 
- #---------------------------------#
- #      deploy configuration       #
- #---------------------------------#
+#---------------------------------#
+#      deploy configuration       #
+#---------------------------------#
 
- before_deploy:
-   - ps: |
-         Write-Host $env:releaseNotes
+before_deploy:
+  - ps: Write-Host $env:releaseNotes
 
 deploy:
   - provider: GitHub
