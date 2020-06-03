@@ -82,10 +82,10 @@ artifacts:
 
 deploy:
   - provider: GitHub
-    tag: $env:fullVersion
-    description: $env:releaseNotes
+    tag: "$env:fullVersion"
+    description: "$env:releaseNotes"
     draft: false
-    prerelease: $env:isPreRelease
+    prerelease: "$env:isPreRelease"
     auth_token:
       secure: 17uIp5Xz3DUfAUcfU6n/DajZ45rm5HVKrhTYVYJ4Z8XocWZvtSzhfZTfak6P6emy
     on:
