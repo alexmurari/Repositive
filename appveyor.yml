@@ -49,15 +49,6 @@ skip_tags: false
 #       publish configuration       #
 #-----------------------------------#
 
-for:
--
-  branches:
-    except:
-      - master
-
-  build:
-    publish_nuget: false
-
 nuget:
   disable_publish_on_pr: true
 
