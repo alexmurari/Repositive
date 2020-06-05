@@ -7,7 +7,7 @@
   </p>
 <p>
 
-<fieldset style="margin-bottom: 15px">
+<fieldset style="margin-bottom: 15px; border:1px solid black;">
    <legend><b>Stable Channel</b></legend>
    <p style="margin: 10px;">
       <a href="https://www.nuget.org/packages/Repositive.Abstractions">
@@ -32,7 +32,7 @@
       </a>
    </p>
 </fieldset>
-<fieldset style="margin-bottom: 25px">
+<fieldset style="margin-bottom: 25px; border:1px solid black;">
    <legend><b>Development Channel</b></legend>
    <p style="margin: 10px;">
       <a href="https://www.nuget.org/packages/Repositive.Abstractions">
