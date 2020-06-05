@@ -58,11 +58,11 @@ nuget:
 
 artifacts:
   - path: Repositive.Abstractions/bin/$(configuration)/Binaries
-    name: Repositive.Abstractions
+    name: Repositive.Abstractions.$(fullVersion)
     type: zip
 
   - path: Repositive.EntityFrameworkCore/bin/$(configuration)/Binaries
-    name: Repositive.EntityFrameworkCore
+    name: Repositive.EntityFrameworkCore.$(fullVersion)
     type: zip
 
   - path: Repositive.Abstractions/bin/$(configuration)/Package/*.nupkg
