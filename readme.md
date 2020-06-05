@@ -7,8 +7,8 @@
   </p>
 <p>
 
-<fieldset style="margin-bottom: 15px; border:1px solid black;">
-   <legend><b>Stable Channel</b></legend>
+<div style="margin-bottom: 15px; border:1px solid darkgrey;">
+   <b>Stable Channel</b>
    <p style="margin: 10px;">
       <a href="https://www.nuget.org/packages/Repositive.Abstractions">
       <img alt="Nuget" src="https://img.shields.io/nuget/v/Repositive.Abstractions?label=Repositive.Abstractions&style=flat-square">
@@ -31,9 +31,9 @@
       <img src="https://img.shields.io/github/license/alexmurari/repositive?style=flat-square">
       </a>
    </p>
-</fieldset>
-<fieldset style="margin-bottom: 25px; border:1px solid black;">
-   <legend><b>Development Channel</b></legend>
+</div>
+<div style="margin-bottom: 25px; border:1px solid darkgrey;">
+   <b>Development Channel</b>
    <p style="margin: 10px;">
       <a href="https://www.nuget.org/packages/Repositive.Abstractions">
       <img alt="Nuget" src="https://img.shields.io/nuget/vpre/Repositive.Abstractions?label=Repositive.Abstractions&style=flat-square">
@@ -56,7 +56,7 @@
       <img src="https://img.shields.io/github/license/alexmurari/repositive?style=flat-square">
       </a>
    </p>
-</fieldset>
+</div>
 </div>
 
 ---
