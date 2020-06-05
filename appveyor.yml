@@ -15,6 +15,10 @@ platform: Any CPU
 cache:
   - '%LocalAppData%\NuGet\v3-cache' # NuGet v3
 
+environment:
+  private_key_pass:
+    secure: vOCLLinDZ51qdMw/T43JH1w4v2bWbdMVfEGCnC2il/c=
+
 #-------------------------------------#
 #       pre-build configuration       #
 #-------------------------------------#
@@ -33,6 +37,9 @@ before_build:
         Update-AppveyorBuild -Version "$env:fullVersion Build-$env:APPVEYOR_BUILD_VERSION"
 
   - ps: dotnet restore
+
+  - ps: |
+        Import-PfxCertificate -FilePath ..\RepositiveKey.pfx -Password $env:private_key_pass
 
 #-----------------------------------------#
 #       build trigger configuration       #
