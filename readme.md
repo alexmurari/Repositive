@@ -6,28 +6,57 @@
     <strong>A .NET Standard advanced repository pattern with unit of work support.</strong>
   </p>
 <p>
-<p>
-  <a href="https://www.nuget.org/packages/Repositive.Abstractions">
-    <img alt="Nuget" src="https://img.shields.io/nuget/vpre/Repositive.Abstractions?label=Repositive.Abstractions&style=plastic">
-  </a>
-  <a href="https://www.nuget.org/packages/Repositive.EntityFrameworkCore">
-    <img alt="Nuget" src="https://img.shields.io/nuget/vpre/Repositive.EntityFrameworkCore?label=Repositive.EntityFrameworkCore&style=plastic">
-  </a>
-</p>
-  <a href="https://ci.appveyor.com/project/alexmurari/repositive/branch/dev">
-    <img src="https://img.shields.io/appveyor/ci/alexmurari/repositive/dev?style=plastic">
-  </a>
-  <a href="https://ci.appveyor.com/project/alexmurari/repositive/branch/dev/tests">
-    <img src="https://img.shields.io/appveyor/tests/alexmurari/repositive/dev?compact_message&style=plastic">
-  </a>
-  <a href="https://app.codacy.com/manual/alexmurari/Repositive/dashboard?bid=18477475">
-    <img alt="Codacy branch grade" src="https://img.shields.io/codacy/grade/ea3688d082f34e5ba78ec9a9fe0714a9/dev?style=plastic">
-  </a>
-  <a href="https://github.com/alexmurari/Repositive/blob/master/LICENSE">
-    <img src="https://img.shields.io/github/license/alexmurari/repositive?style=plastic">
-  </a>
-  </p>
-  <p>
+
+<fieldset style="margin-bottom: 15px">
+   <legend><b>Stable Channel</b></legend>
+   <p style="margin: 10px;">
+      <a href="https://www.nuget.org/packages/Repositive.Abstractions">
+      <img alt="Nuget" src="https://img.shields.io/nuget/v/Repositive.Abstractions?label=Repositive.Abstractions&style=flat-square">
+      </a>
+      <a href="https://www.nuget.org/packages/Repositive.EntityFrameworkCore">
+      <img alt="Nuget" src="https://img.shields.io/nuget/v/Repositive.EntityFrameworkCore?label=Repositive.EntityFrameworkCore&style=flat-square">
+      </a>
+   </p>
+   <p style="margin: 10px;">
+      <a href="https://ci.appveyor.com/project/alexmurari/repositive/branch/master">
+      <img src="https://img.shields.io/appveyor/ci/alexmurari/repositive/master?style=flat-square">
+      </a>
+      <a href="https://ci.appveyor.com/project/alexmurari/repositive/branch/master/tests">
+      <img src="https://img.shields.io/appveyor/tests/alexmurari/repositive/master?compact_message&style=flat-square">
+      </a>
+      <a href="https://app.codacy.com/manual/alexmurari/Repositive/dashboard?bid=18477475">
+      <img alt="Codacy branch grade" src="https://img.shields.io/codacy/grade/ea3688d082f34e5ba78ec9a9fe0714a9/master?style=flat-square">
+      </a>
+      <a href="https://github.com/alexmurari/Repositive/blob/master/LICENSE">
+      <img src="https://img.shields.io/github/license/alexmurari/repositive?style=flat-square">
+      </a>
+   </p>
+</fieldset>
+<fieldset style="margin-bottom: 25px">
+   <legend><b>Development Channel</b></legend>
+   <p style="margin: 10px;">
+      <a href="https://www.nuget.org/packages/Repositive.Abstractions">
+      <img alt="Nuget" src="https://img.shields.io/nuget/vpre/Repositive.Abstractions?label=Repositive.Abstractions&style=flat-square">
+      </a>
+      <a href="https://www.nuget.org/packages/Repositive.EntityFrameworkCore">
+      <img alt="Nuget" src="https://img.shields.io/nuget/vpre/Repositive.EntityFrameworkCore?label=Repositive.EntityFrameworkCore&style=flat-square">
+      </a>
+   </p>
+   <p style="margin: 10px;">
+      <a href="https://ci.appveyor.com/project/alexmurari/repositive/branch/dev">
+      <img src="https://img.shields.io/appveyor/ci/alexmurari/repositive/dev?style=flat-square">
+      </a>
+      <a href="https://ci.appveyor.com/project/alexmurari/repositive/branch/dev/tests">
+      <img src="https://img.shields.io/appveyor/tests/alexmurari/repositive/dev?compact_message&style=flat-square">
+      </a>
+      <a href="https://app.codacy.com/manual/alexmurari/Repositive/dashboard?bid=18477475">
+      <img alt="Codacy branch grade" src="https://img.shields.io/codacy/grade/ea3688d082f34e5ba78ec9a9fe0714a9/dev?style=flat-square">
+      </a>
+      <a href="https://github.com/alexmurari/Repositive/blob/dev/LICENSE">
+      <img src="https://img.shields.io/github/license/alexmurari/repositive?style=flat-square">
+      </a>
+   </p>
+</fieldset>
 </div>
 
 ---
@@ -36,7 +65,7 @@
 
 Repositive is a .NET Standard library that provides contracts and implementations for setting up data access repositories following the repository pattern.
 
-It provides many advanced methods for creating, reading, updating, deleting entities with great flexibility.
+It provides many advanced methods for creating, reading, updating and deleting entities with great flexibility.
 
 It also provides methods for controlling query pagination, change tracking, including related entities in queries, explicitly loading related entities and advanced querying.
 
