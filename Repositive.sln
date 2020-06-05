@@ -14,6 +14,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		icon.png = icon.png
 		LICENSE = LICENSE
 		readme.md = readme.md
+		RepositiveKey.pfx = RepositiveKey.pfx
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repositive.EntityFrameworkCore.Tests", "Repositive.EntityFrameworkCore.Tests\Repositive.EntityFrameworkCore.Tests.csproj", "{4EF69F8E-F856-4744-9D63-488B0B25EE56}"

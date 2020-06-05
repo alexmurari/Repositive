@@ -13,6 +13,9 @@
     <PackageIconUrl />
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageTags>c# .netstandard repository unitofwork pattern entityframeworkcore</PackageTags>
+    <SignAssembly>true</SignAssembly>
+    <DelaySign>false</DelaySign>
+    <AssemblyOriginatorKeyFile>..\RepositiveKey.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <ItemGroup>
