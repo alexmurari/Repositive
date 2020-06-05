@@ -1,10 +1,33 @@
 <div align="center">
     <a href="https://github.com/alexmurari/Repositive/">
-    <img alt="Exprelsior" width="400" src="https://user-images.githubusercontent.com/11204378/81116400-aab2c700-8efb-11ea-8f8f-2fc3908ea7d7.png">
+    <img alt="Repositive" width="400" src="https://user-images.githubusercontent.com/11204378/81116400-aab2c700-8efb-11ea-8f8f-2fc3908ea7d7.png">
   </a>
   <p>
     <strong>A .NET Standard advanced repository pattern with unit of work support.</strong>
   </p>
+<p>
+<p>
+  <a href="https://www.nuget.org/packages/Repositive.Abstractions">
+    <img alt="Nuget" src="https://img.shields.io/nuget/vpre/Repositive.Abstractions?label=Repositive.Abstractions&style=plastic">
+  </a>
+  <a href="https://www.nuget.org/packages/Repositive.EntityFrameworkCore">
+    <img alt="Nuget" src="https://img.shields.io/nuget/vpre/Repositive.EntityFrameworkCore?label=Repositive.EntityFrameworkCore&style=plastic">
+  </a>
+</p>
+  <a href="https://ci.appveyor.com/project/alexmurari/repositive/branch/dev">
+    <img src="https://img.shields.io/appveyor/ci/alexmurari/repositive/dev?style=plastic">
+  </a>
+  <a href="https://ci.appveyor.com/project/alexmurari/repositive/branch/dev/tests">
+    <img src="https://img.shields.io/appveyor/tests/alexmurari/repositive/dev?compact_message&style=plastic">
+  </a>
+  <a href="https://app.codacy.com/manual/alexmurari/Repositive/dashboard?bid=18477475">
+    <img alt="Codacy branch grade" src="https://img.shields.io/codacy/grade/ea3688d082f34e5ba78ec9a9fe0714a9/dev?style=plastic">
+  </a>
+  <a href="https://github.com/alexmurari/Repositive/blob/master/LICENSE">
+    <img src="https://img.shields.io/github/license/alexmurari/repositive?style=plastic">
+  </a>
+  </p>
+  <p>
 </div>
 
 ---
