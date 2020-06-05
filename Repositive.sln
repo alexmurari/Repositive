@@ -3,21 +3,20 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29230.47
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repositive.Repository", "Repositive.Repository\Repositive.Repository.csproj", "{1DE5FD42-383A-4C91-87BD-CFB86539EF67}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repositive.EntityFrameworkCore", "Repositive.EntityFrameworkCore\Repositive.EntityFrameworkCore.csproj", "{1DE5FD42-383A-4C91-87BD-CFB86539EF67}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repositive.Domain", "Repositive.Domain\Repositive.Domain.csproj", "{53A5AA8F-8527-4768-B3EC-F1E0F9359BAE}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repositive.Service", "Repositive.Service\Repositive.Service.csproj", "{A0C7E95F-3B09-489B-BC4E-D18607DADF45}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repositive.Shared", "Repositive.Shared\Repositive.Shared.csproj", "{536A8811-963C-46AD-994A-E7B82ABE9BF5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repositive.Abstractions", "Repositive.Abstractions\Repositive.Abstractions.csproj", "{53A5AA8F-8527-4768-B3EC-F1E0F9359BAE}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{57A865E5-2CC3-4939-9786-31EE1FCCCF03}"
 	ProjectSection(SolutionItems) = preProject
+		appveyor.yml = appveyor.yml
 		Directory.Build.props = Directory.Build.props
 		icon.png = icon.png
 		LICENSE = LICENSE
 		readme.md = readme.md
 	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repositive.EntityFrameworkCore.Tests", "Repositive.EntityFrameworkCore.Tests\Repositive.EntityFrameworkCore.Tests.csproj", "{4EF69F8E-F856-4744-9D63-488B0B25EE56}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,14 +32,10 @@ Global
 		{53A5AA8F-8527-4768-B3EC-F1E0F9359BAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{53A5AA8F-8527-4768-B3EC-F1E0F9359BAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{53A5AA8F-8527-4768-B3EC-F1E0F9359BAE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A0C7E95F-3B09-489B-BC4E-D18607DADF45}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A0C7E95F-3B09-489B-BC4E-D18607DADF45}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A0C7E95F-3B09-489B-BC4E-D18607DADF45}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A0C7E95F-3B09-489B-BC4E-D18607DADF45}.Release|Any CPU.Build.0 = Release|Any CPU
-		{536A8811-963C-46AD-994A-E7B82ABE9BF5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{536A8811-963C-46AD-994A-E7B82ABE9BF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{536A8811-963C-46AD-994A-E7B82ABE9BF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{536A8811-963C-46AD-994A-E7B82ABE9BF5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4EF69F8E-F856-4744-9D63-488B0B25EE56}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4EF69F8E-F856-4744-9D63-488B0B25EE56}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4EF69F8E-F856-4744-9D63-488B0B25EE56}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4EF69F8E-F856-4744-9D63-488B0B25EE56}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
