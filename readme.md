@@ -1,13 +1,12 @@
 <div align="center">
-    <a href="https://github.com/alexmurari/Repositive/">
-    <img alt="Repositive" width="400" src="https://user-images.githubusercontent.com/11204378/81116400-aab2c700-8efb-11ea-8f8f-2fc3908ea7d7.png">
-  </a>
-  <p>
-    <strong>A .NET Standard advanced repository pattern with unit of work support.</strong>
-  </p>
-<p>
-
-<div style="margin-bottom: 15px; border:1px solid darkgrey;">
+   <a href="https://github.com/alexmurari/Repositive/">
+   <img alt="Repositive" width="400" src="https://user-images.githubusercontent.com/11204378/81116400-aab2c700-8efb-11ea-8f8f-2fc3908ea7d7.png">
+   </a>
+   <p>
+      <strong>A .NET Standard advanced repository pattern with unit of work support.</strong>
+   </p>
+   <p>
+   <hr/>
    <b>Stable Channel</b>
    <p style="margin: 10px;">
       <a href="https://www.nuget.org/packages/Repositive.Abstractions">
@@ -31,8 +30,6 @@
       <img src="https://img.shields.io/github/license/alexmurari/repositive?style=flat-square">
       </a>
    </p>
-</div>
-<div style="margin-bottom: 25px; border:1px solid darkgrey;">
    <b>Development Channel</b>
    <p style="margin: 10px;">
       <a href="https://www.nuget.org/packages/Repositive.Abstractions">
@@ -56,7 +53,6 @@
       <img src="https://img.shields.io/github/license/alexmurari/repositive?style=flat-square">
       </a>
    </p>
-</div>
 </div>
 
 ---
