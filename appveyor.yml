@@ -39,7 +39,7 @@ before_build:
   - ps: dotnet restore
 
   - ps: |
-        Import-PfxCertificate -FilePath RepositiveKey.pfx -Password (ConvertTo-SecureString -String $env:private_key_pass -Force –AsPlainText)
+        Import-PfxCertificate -FilePath RepositiveKey.pfx -CertStoreLocation cert:\VS_KEY_689BEEB655EEA138 -Password (ConvertTo-SecureString -String $env:private_key_pass -Force –AsPlainText)
 
 #-----------------------------------------#
 #       build trigger configuration       #
