@@ -7,7 +7,7 @@
    </p>
    <p>
    <hr/>
-   <b>Stable Channel</b>
+   <h4>Stable Channel</h4>
    <p style="margin: 10px;">
       <a href="https://www.nuget.org/packages/Repositive.Abstractions">
       <img alt="Nuget" src="https://img.shields.io/nuget/v/Repositive.Abstractions?label=Repositive.Abstractions&style=flat-square">
@@ -23,14 +23,14 @@
       <a href="https://ci.appveyor.com/project/alexmurari/repositive/branch/master/tests">
       <img src="https://img.shields.io/appveyor/tests/alexmurari/repositive/master?compact_message&style=flat-square">
       </a>
-      <a href="https://app.codacy.com/manual/alexmurari/Repositive/dashboard?bid=18477475">
+      <a href="https://app.codacy.com/manual/alexmurari/Repositive/dashboard?bid=18477476">
       <img alt="Codacy branch grade" src="https://img.shields.io/codacy/grade/ea3688d082f34e5ba78ec9a9fe0714a9/master?style=flat-square">
       </a>
       <a href="https://github.com/alexmurari/Repositive/blob/master/LICENSE">
       <img src="https://img.shields.io/github/license/alexmurari/repositive?style=flat-square">
       </a>
    </p>
-   <b>Development Channel</b>
+   <h4>Development Channel</h4>
    <p style="margin: 10px;">
       <a href="https://www.nuget.org/packages/Repositive.Abstractions">
       <img alt="Nuget" src="https://img.shields.io/nuget/vpre/Repositive.Abstractions?label=Repositive.Abstractions&style=flat-square">
