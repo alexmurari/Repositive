@@ -12,10 +12,9 @@
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/alexmurari/Repositive/</RepositoryUrl>
     <PackageProjectUrl>https://github.com/alexmurari/Repositive/</PackageProjectUrl>
+    <!-- Keep the package release notes without indentation -->
     <PackageReleaseNotes>
-      <!-- Keep the section inside CDATA without indentation -->
-      <![CDATA[
-  ]]>
+- Strong-name signed assemblies.
     </PackageReleaseNotes>
   </PropertyGroup>
 </Project>
