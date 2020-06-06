@@ -14,7 +14,7 @@ platform: Any CPU
 
 cache:
   - '%LocalAppData%\NuGet\v3-cache' # NuGet v3
-
+  
 environment:
   certificate_pass:
     secure: vOCLLinDZ51qdMw/T43JH1w4v2bWbdMVfEGCnC2il/c=
@@ -73,6 +73,11 @@ artifacts:
 
   - path: Repositive.EntityFrameworkCore/bin/$(configuration)/Binaries
     name: Repositive.EntityFrameworkCore.$(fullVersion)
+    name: Repositive.Abstractions
+    type: zip
+
+  - path: Repositive.EntityFrameworkCore/bin/$(configuration)/Binaries
+    name: Repositive.EntityFrameworkCore
     type: zip
 
   - path: Repositive.Abstractions/bin/$(configuration)/Package/*.nupkg
