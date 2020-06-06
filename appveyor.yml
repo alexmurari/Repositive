@@ -16,7 +16,7 @@ cache:
   - '%LocalAppData%\NuGet\v3-cache' # NuGet v3
 
 environment:
-  private_key_pass:
+  certificate_pass:
     secure: vOCLLinDZ51qdMw/T43JH1w4v2bWbdMVfEGCnC2il/c=
 
 #-------------------------------------#
@@ -38,7 +38,9 @@ before_build:
 
   - ps: dotnet restore
 
-  - ps: Import-PfxCertificate -FilePath RepositiveKey.pfx -CertStoreLocation "Cert:\CurrentUser\My" -Password (ConvertTo-SecureString -String $env:private_key_pass -Force –AsPlainText)
+  - ps: |
+        Import-Module "Import-PfxCertificate.psm1";
+        Import-PfxCertificate -pfx "RepositiveKey.pfx" -password $env:certificate_pass -containerName "VS_KEY_689BEEB655EEA138";
 
 #-----------------------------------------#
 #       build trigger configuration       #
