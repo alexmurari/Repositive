@@ -73,11 +73,6 @@ artifacts:
 
   - path: Repositive.EntityFrameworkCore/bin/$(configuration)/Binaries
     name: Repositive.EntityFrameworkCore.$(fullVersion)
-    name: Repositive.Abstractions
-    type: zip
-
-  - path: Repositive.EntityFrameworkCore/bin/$(configuration)/Binaries
-    name: Repositive.EntityFrameworkCore
     type: zip
 
   - path: Repositive.Abstractions/bin/$(configuration)/Package/*.nupkg
