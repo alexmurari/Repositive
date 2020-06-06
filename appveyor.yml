@@ -18,6 +18,8 @@ cache:
 environment:
   certificate_pass:
     secure: vOCLLinDZ51qdMw/T43JH1w4v2bWbdMVfEGCnC2il/c=
+  certificate_container_name:
+    secure: errt5JdPUtleU/GDUVJ/bqjHvFlvH3DHUO/Sv7plGIY=
 
 #-------------------------------------#
 #       pre-build configuration       #
@@ -40,7 +42,7 @@ before_build:
 
   - ps: |
         Import-Module "$env:APPVEYOR_BUILD_FOLDER\Import-PfxCertificate.psm1";
-        Import-PfxCertificate -pfx "$env:APPVEYOR_BUILD_FOLDER\RepositiveKey.pfx" -password $env:certificate_pass -containerName "VS_KEY_689BEEB655EEA138";
+        Import-PfxCertificate -pfx "$env:APPVEYOR_BUILD_FOLDER\RepositiveKey.pfx" -password $env:certificate_pass -containerName $env:certificate_container_name;
 
 #-----------------------------------------#
 #       build trigger configuration       #
