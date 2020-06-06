@@ -14,6 +14,12 @@ platform: Any CPU
 
 cache:
   - '%LocalAppData%\NuGet\v3-cache' # NuGet v3
+  
+environment:
+  certificate_pass:
+    secure: vOCLLinDZ51qdMw/T43JH1w4v2bWbdMVfEGCnC2il/c=
+  certificate_container_name:
+    secure: errt5JdPUtleU/GDUVJ/bqjHvFlvH3DHUO/Sv7plGIY=
 
 #-------------------------------------#
 #       pre-build configuration       #
@@ -33,6 +39,10 @@ before_build:
         Update-AppveyorBuild -Version "$env:fullVersion Build-$env:APPVEYOR_BUILD_VERSION"
 
   - ps: dotnet restore
+
+  - ps: |
+        Import-Module "$env:APPVEYOR_BUILD_FOLDER\Import-PfxCertificate.psm1";
+        Import-PfxCertificate -pfx "$env:APPVEYOR_BUILD_FOLDER\RepositiveKey.pfx" -password $env:certificate_pass -containerName $env:certificate_container_name;
 
 #-----------------------------------------#
 #       build trigger configuration       #
@@ -58,11 +68,11 @@ nuget:
 
 artifacts:
   - path: Repositive.Abstractions/bin/$(configuration)/Binaries
-    name: Repositive.Abstractions
+    name: Repositive.Abstractions.$(fullVersion)
     type: zip
 
   - path: Repositive.EntityFrameworkCore/bin/$(configuration)/Binaries
-    name: Repositive.EntityFrameworkCore
+    name: Repositive.EntityFrameworkCore.$(fullVersion)
     type: zip
 
   - path: Repositive.Abstractions/bin/$(configuration)/Package/*.nupkg
