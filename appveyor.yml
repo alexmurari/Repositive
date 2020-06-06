@@ -39,8 +39,8 @@ before_build:
   - ps: dotnet restore
 
   - ps: |
-        Import-Module "Import-PfxCertificate.psm1";
-        Import-PfxCertificate -pfx "RepositiveKey.pfx" -password $env:certificate_pass -containerName "VS_KEY_689BEEB655EEA138";
+        Import-Module "$env:APPVEYOR_BUILD_FOLDER\Import-PfxCertificate.psm1";
+        Import-PfxCertificate -pfx "$env:APPVEYOR_BUILD_FOLDER\RepositiveKey.pfx" -password $env:certificate_pass -containerName "VS_KEY_689BEEB655EEA138";
 
 #-----------------------------------------#
 #       build trigger configuration       #
