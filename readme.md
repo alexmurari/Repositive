@@ -3,7 +3,7 @@
    <img alt="Repositive" width="400" src="https://user-images.githubusercontent.com/11204378/81116400-aab2c700-8efb-11ea-8f8f-2fc3908ea7d7.png">
    </a>
    <p>
-      <strong>A .NET Standard advanced repository pattern with unit of work support.</strong>
+      <strong>Advanced repository pattern interfaces and implementations with unit of work support.</strong>
    </p>
    <p>
    <hr/>
@@ -72,28 +72,38 @@ All methods have it's asynchronous counterparts.
 ---
 
 1. [Overview](#1-overview)
-2. [Contracts](#2-contracts)
-3. [Implementations](#3-implementations)
+2. [Supported ORMs](#2-supported-orms)
+3. [Contracts](#3-contracts)
+4. [Implementations](#4-implementations)
 
 ---
 
 ## 1. Overview
 
-The objective of this library is to provide plug-and-play repository interfaces and implementations:
+The objective of this library is to provide repository-pattern interfaces and implementations:
 
 **Example:**
 
 The contract:
 
 ```csharp
-public class ICarRepository : IRepository<Car>
+using Repositive.Abstractions;
+// ...
+
+public class ICarRepository : IRepository<Car>, IRelatedLoadableRepository<Car>, ISaveableRepository
 {
+    // IRepository<T> provides basic CRUD methods.
+    // IRelatedLoadableRepository<T> provides methods for explicitly loading related entities.
+    // ISaveableRepository provides methods for saving changes directly from the repository (commit).
 }
 ```
 
-The implementation:
+The implementation (Entity Framework Core)
 
 ```csharp
+using Repositive.EntityFrameworkCore;
+// ...
+
 public class CarRepository : Repository<Car, MyDbContext>, ICarRepository
 {
     public CarRepository(MyDbContext context) : base(context)
@@ -120,20 +130,50 @@ public class CarService : ICarService
         _carRepository = carRepository;
     }
 
+    public void AddCar(Car car)
+    {
+        _carRepository.Add(car);
+        _carRepository.Commit(); // Commit also returns the number of affected entries
+    }
+
+    public IEnumerable<Car> GetCarsWithManufacturers()
+    {
+        return _carRepository.Get(includes: t => t.Manufacturer);
+    }
+
     public IEnumerable<Car> GetCarsInRepair()
     {
         return _carRepository.Get(t => t.Status == CarStatus.InRepair, QueryTracking.NoTracking);
+    }
+
+    public Car LoadOwner(Car car)
+    {
+        // Loads the owner of the car (car.Owner) and the owner's address (car.Owner.Address).
+        // Then returns the car object with the specfified navigation properties loaded.
+        return _carRepository.LoadRelated(car, t => t.Owner, t => t.Address);
     }
 }
 ```
 
 ---
 
-## 2. Contracts
+## 2. Supported ORMs
+
+- List of ORMs supported by Repositive.
+
+| ORM | Version | Namespace/Package Name |
+------------------------|-------|--------------------------------|
+| Entity Framework Core | 3.1.x | Repositive.EntityFrameworkCore |
+
+---
+
+## 3. Contracts
 
 - All interfaces are in the ```Repositive.Abstractions``` namespace.
 
 - All methods' asynchronous counterparts names have the ```Async``` suffix. Ex.: ```GetSingleAsync```.
+
+- The ```Repositive.Abstractions``` namespace/package only contains interfaces and abstractions, with no implementation or reference to any ORM or data provider whatsoever.
 
 #### ```IRepository<T>```
 
@@ -189,7 +229,7 @@ using the ```IQueryable<T>``` interface and projecting the results to ```TResult
 
 ---
 
-## 3. Implementations
+## 4. Implementations
 
 #### ```Repositive.EntityFrameworkCore.Repository<TEntity, TContext>```
 - Provides a repository pattern implementation for querying and saving instances of ```TEntity``` with ```Microsoft.EntityFrameworkCore``` as the ORM.
@@ -203,4 +243,4 @@ using the ```IQueryable<T>``` interface and projecting the results to ```TResult
 - Implements the ```IUnitOfWork``` interface.
 - Centralizes the ```Micosoft.EntityFrameworkCore.DbContext``` instance and shares it between repositories, so changes from multiple repositories
   are contained in a single database context instance.
-- Constructor: ```(TContext)```. 
+- Constructor: ```(TContext)```.
