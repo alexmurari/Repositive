@@ -77,6 +77,8 @@ All methods have it's asynchronous counterparts.
 2. [Supported ORMs](#2-supported-orms)
 3. [Contracts](#3-contracts)
 4. [Implementations](#4-implementations)
+5. [Usage](#5-usage)
+   i. [Unit of Work](#i-unit-of-work)
 
 ---
 
@@ -92,7 +94,7 @@ The contract:
 using Repositive.Abstractions;
 // ...
 
-public class ICarRepository : IRepository<Car>, IRelatedLoadableRepository<Car>, ISaveableRepository
+public interface ICarRepository : IRepository<Car>, IRelatedLoadableRepository<Car>, ISaveableRepository
 {
     // IRepository<T> provides basic CRUD methods.
     // IRelatedLoadableRepository<T> provides methods for explicitly loading related entities.
@@ -127,7 +129,7 @@ public class CarService : ICarService
 {
     private readonly ICarRepository _carRepository;
 
-    public CarRepository(ICarRepository carRepository)
+    public CarService(ICarRepository carRepository)
     {
         _carRepository = carRepository;
     }
@@ -250,3 +252,95 @@ using the ```IQueryable<T>``` interface and projecting the results to ```TResult
 - Centralizes the ```Micosoft.EntityFrameworkCore.DbContext``` instance and shares it between repositories, so changes from multiple repositories
   are contained in a single database context instance.
 - Constructor: ```(TContext)```.
+
+## 5. Usage
+
+#### I. Unit Of Work
+
+- Repositive provides unit of work support for coordinating commit operations between multiple repositories in a single operation.
+
+- The advantage of this approach is data integrity: by using unit of work, if changes from one repositorie aren't successful, 
+  no changes from this or other repositories are committed to the database.
+
+The contracts:
+
+```csharp
+using Repositive.Abstractions;
+// ...
+
+// Do not use ISaveableRepository interface!
+
+public interface IFooRepository : IRepository<Foo>
+{
+}
+
+public interface IBarRepository : ICreatableRepository<Bar>
+{
+}
+```
+
+The implementations (using Entity Framework Core):
+
+```csharp
+using Repositive.EntityFrameworkCore;
+// ...
+
+public class FooRepository : Repository<Foo, MyDbContext>, IFooRepository
+{
+    public FooRepository(IUnitOfWork unitOfWork) : base(unitOfWork)
+    {
+    }
+}
+
+public class BarRepository : Repository<Bar, MyDbContext>, IBarRepository
+{
+    public BarRepository(IUnitOfWork unitOfWork) : base(unitOfWork)
+    {
+    }
+}
+```
+
+The binding (using your favorite IoC container):
+
+```csharp
+using Repositive.EntityFrameworkCore;
+// ...
+
+services.AddDbContext<MyDbContext>();
+services.AddScoped<IUnitOfWork, UnitOfWork<MyDbContext>>();
+services.AddScoped<IFooRepository, FooRepository>();
+services.AddScoped<IBarRepository, BarRepository>();
+```
+
+The usage:
+
+```csharp
+public class BazService : IBazService
+{
+    private readonly IFooRepository _fooRepository;
+    private readonly IBarRepository _barRepository;
+    private readonly IUnitOfWork _unitOfWork;
+
+    public BazService(IFooRepository fooRepository, IBarRepository barRepository, IUnitOfWork unitOfWork)
+    {
+        _fooRepository = fooRepository;
+        _barRepository = barRepository
+        _unitOfWork = unitOfWork;
+    }
+
+    public void Process()
+    {
+        _fooRepository.Add(foo);
+        
+        // ...
+
+        _barRepository.AddRange(bars);
+
+        // ...
+
+        // Changes made to foo and bar repositories are committed in a single operation (transaction).
+        // If anything goes wrong, no changes are committed at all.
+        _unitOfWork.Commit();
+    }
+}
+```
