@@ -67,6 +67,8 @@ It also provides methods for controlling query pagination, change tracking, incl
 
 Repositive also supports the unit of work pattern, so you can synchronize the commit operation between multiple repositories in a single operation.
 
+The [contracts](#3-contracts) are splitted in module-like interfaces, allowing to build concise repository classes that expose only the necessary methods.
+
 All methods have it's asynchronous counterparts.
 
 ---
@@ -146,6 +148,8 @@ public class CarService : ICarService
         return _carRepository.Get(t => t.Status == CarStatus.InRepair, QueryTracking.NoTracking);
     }
 
+    public bool IsAnyCarYellow => _carRepository.Any(t => t.Color == CarColor.Yellow);
+
     public Car LoadOwner(Car car)
     {
         // Loads the owner of the car (car.Owner) and the owner's address (car.Owner.Address).
@@ -175,11 +179,13 @@ public class CarService : ICarService
 
 - The ```Repositive.Abstractions``` namespace/package only contains interfaces and abstractions, with no implementation or reference to any ORM or data provider whatsoever.
 
+- The interfaces' modular design allows exposing concise repositories with only needed functionality.
+
 #### ```IRepository<T>```
 
 - Defines a repository contract for creating, reading, updating and deleting instances of entities of type ```T```.
 - It's a combination of the ```ICreatableRepository<T>```, ```IReadableRepository<T>```, ```IUpdateableRepository<T>``` and ```IDeletableRepository<T>``` interfaces.
-- It does not provide methods for committing changes to the database. For that use the ```ISaveable``` or ```IUnitOfWork``` interfaces.
+- It does not provide methods for committing changes to the database. For that use the ```ISaveableRepository``` or ```IUnitOfWork``` interfaces.
 
 #### ```ICreatableRepository<T>```
 - Defines a repository contract for creating entities of type ```T```.
@@ -197,7 +203,7 @@ public class CarService : ICarService
 - Defines a repository contract for deleting entities of type ```T```.
 - Methods: ```Delete```, ```DeleteRange```.
 
-#### ```ISaveable```
+#### ```ISaveableRepository```
 - Defines a repository contract for saving changes made to a repository.
 - Methods: ```Commit```.
 - Remarks:
