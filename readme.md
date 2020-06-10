@@ -259,8 +259,8 @@ using the ```IQueryable<T>``` interface and projecting the results to ```TResult
 
 - Repositive provides unit of work support for coordinating commit operations between multiple repositories in a single operation.
 
-- The advantage of this approach is data integrity: by using unit of work, if changes from one repositorie aren't successful, 
-  no changes from this or other repositories are committed to the database.
+- The advantage of this approach is data integrity: by using unit of work pattern, changes made to multiple repositories are committed
+  in a single transaction, meaning that if something goes wrong in any repository, the whole transaction is aborted, ensuring data integrity.
 
 The contracts:
 
@@ -282,6 +282,7 @@ public interface IBarRepository : ICreatableRepository<Bar>
 The implementations (using Entity Framework Core):
 
 ```csharp
+using Repositive.Abstractions;
 using Repositive.EntityFrameworkCore;
 // ...
 
@@ -303,6 +304,7 @@ public class BarRepository : Repository<Bar, MyDbContext>, IBarRepository
 The binding (using your favorite IoC container):
 
 ```csharp
+using Repositive.Abstractions;
 using Repositive.EntityFrameworkCore;
 // ...
 
@@ -315,6 +317,9 @@ services.AddScoped<IBarRepository, BarRepository>();
 The usage:
 
 ```csharp
+using Repositive.Abstractions;
+// ...
+
 public class BazService : IBazService
 {
     private readonly IFooRepository _fooRepository;
@@ -331,11 +336,9 @@ public class BazService : IBazService
     public void Process()
     {
         _fooRepository.Add(foo);
-        
         // ...
 
         _barRepository.AddRange(bars);
-
         // ...
 
         // Changes made to foo and bar repositories are committed in a single operation (transaction).
