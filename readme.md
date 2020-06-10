@@ -80,6 +80,7 @@ All methods have it's asynchronous counterparts.
 5. [Usage](#5-usage)
    1. [Setup: Basic](#setup-basic)
    2. [Setup: Unit Of Work](#setup-unit-of-work)
+6. [License](#5-license)
 
 ---
 
@@ -258,7 +259,7 @@ using the ```IQueryable<T>``` interface and projecting the results to ```TResult
 
 #### Setup: Basic
 
-##### 1. Define your repositories contracts, inheriting the desired repository interfaces from the ```Repositive.Abstractions``` package.
+##### 1. Define your repository contracts, inheriting the desired repository interfaces from the ```Repositive.Abstractions``` package.
 
 ```csharp
 using Repositive.Abstractions;
@@ -344,10 +345,10 @@ public class BazService : IBazService
 - The advantage of this approach is data integrity: by using unit of work pattern, changes made to multiple repositories are committed
   in a single transaction, meaning that if something goes wrong in any repository during the operation, the whole transaction is aborted, ensuring data integrity.
 
-##### 1. Define your repository contracts following the basic setup.
+##### 1. Define your repository contracts following the [basic setup](#setup-basic).
 ###### IMPORTANT: Do not inherit the ```ISaveableRepository``` interface when using unit of work, repositories using UoW should not expose commit methods.
 
-##### 2. In the repositories implementations, pass a ```IUnitOFWork``` instance to the class constructor and base constructor.
+##### 2. In the repositories implementations, pass a ```IUnitOfWork``` instance to the class constructor and base constructor.
 
 ```csharp
 using Repositive.Abstractions;
@@ -416,3 +417,7 @@ public class BazService : IBazService
     }
 }
 ```
+
+## 6. License
+
+[MIT License (MIT)](./LICENSE)
