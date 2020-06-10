@@ -78,7 +78,8 @@ All methods have it's asynchronous counterparts.
 3. [Contracts](#3-contracts)
 4. [Implementations](#4-implementations)
 5. [Usage](#5-usage)
-   1. [Unit of Work](#unit-of-work)
+   1. [Setup: Basic](#setup-basic)
+   2. [Setup: Unit Of Work](#setup-unit-of-work)
 
 ---
 
@@ -255,31 +256,98 @@ using the ```IQueryable<T>``` interface and projecting the results to ```TResult
 
 ## 5. Usage
 
-#### Unit Of Work
+#### Setup: Basic
 
-- Repositive provides unit of work support for coordinating commit operations between multiple repositories in a single operation.
-
-- The advantage of this approach is data integrity: by using unit of work pattern, changes made to multiple repositories are committed
-  in a single transaction, meaning that if something goes wrong in any repository, the whole transaction is aborted, ensuring data integrity.
-
-The contracts:
+##### 1. Define your repositories contracts, inheriting the desired repository interfaces from the ```Repositive.Abstractions``` package.
 
 ```csharp
 using Repositive.Abstractions;
 // ...
 
-// Do not use ISaveableRepository interface!
-
-public interface IFooRepository : IRepository<Foo>
+public interface IFooRepository : IRepository<Foo>, ISaveableRepository
 {
+    // Optional: any specific user defined method can go in here. Ex.: "GetFoosByDate(DateTime date)"
 }
 
-public interface IBarRepository : ICreatableRepository<Bar>
+public interface IBarRepository : IReadableRepository<Bar>, IRelatedLoadableRepository<Bar>
 {
+    // Optional: any specific user defined method can go in here. Ex.: "GetBarsByDate(DateTime date)"
 }
 ```
 
-The implementations (using Entity Framework Core):
+##### 2. Define the contracts' implementations, inheriting the ```Repository<T, C>``` class from the implementation package.
+
+```csharp
+using Repositive.EntityFrameworkCore;
+// ...
+
+public class FooRepository : Repository<Foo, MyDbContext>, IFooRepository
+{
+    public FooRepository(MyDbContext context) : base(context)
+    {
+    }
+
+    // Implement here any user-defined methods in IFooRepository.
+}
+
+public class BarRepository : Repository<Bar, MyDbContext>, IBarRepository
+{
+    public BarRepository(MyDbContext context) : base(context)
+    {
+    }
+
+    // Implement here any user-defined methods in IBarRepository.
+}
+```
+
+##### 3. Optional: Bind the interfaces and implementations together using an IoC container.
+
+```csharp
+services.AddScoped<IFooRepository, FooRepository>();
+services.AddScoped<IBarRepository, BarRepository>();
+```
+
+##### 4. Ready to use!
+
+```csharp
+public class BazService : IBazService
+{
+    private readonly IFooRepository _fooRepository;
+    private readonly IBarRepository _barRepository;
+
+    public BazService(IFooRepository fooRepository, IBarRepository barRepository)
+    {
+        _fooRepository = fooRepository;
+        _barRepository = barRepository
+    }
+
+    public void Baz()
+    {
+        _fooRepository.Add(foo);
+        _fooRepository.Commit();
+
+        var bar = _barRepository.Get(t => t.Name == "John Doe", QueryTracking.TrackAll, includes: t => t.Foo);
+
+        //...
+
+        _barRepository.LoadRelated(bar, t => t.Qur);
+
+        // ...
+    }
+}
+```
+
+#### Setup: Unit Of Work
+
+- Repositive provides unit of work support for coordinating commit operations between multiple repositories in a single operation.
+
+- The advantage of this approach is data integrity: by using unit of work pattern, changes made to multiple repositories are committed
+  in a single transaction, meaning that if something goes wrong in any repository during the operation, the whole transaction is aborted, ensuring data integrity.
+
+##### 1. Define your repository contracts following the basic setup.
+###### IMPORTANT: Do not inherit the ```ISaveableRepository``` interface when using unit of work, repositories using UoW should not expose commit methods.
+
+##### 2. In the repositories implementations, pass a ```IUnitOFWork``` instance to the class constructor and base constructor.
 
 ```csharp
 using Repositive.Abstractions;
@@ -301,7 +369,7 @@ public class BarRepository : Repository<Bar, MyDbContext>, IBarRepository
 }
 ```
 
-The binding (using your favorite IoC container):
+##### 3. Optional: Bind the interfaces and implementations together using an IoC container.
 
 ```csharp
 using Repositive.Abstractions;
@@ -314,7 +382,8 @@ services.AddScoped<IFooRepository, FooRepository>();
 services.AddScoped<IBarRepository, BarRepository>();
 ```
 
-The usage:
+##### 4. Ready to use! 
+###### Inject the ```IUnitOfWork``` instance along with the repositories and use it to commit changes.
 
 ```csharp
 using Repositive.Abstractions;
@@ -338,7 +407,7 @@ public class BazService : IBazService
         _fooRepository.Add(foo);
         // ...
 
-        _barRepository.AddRange(bars);
+        _barRepository.DeleteRange(bars);
         // ...
 
         // Changes made to foo and bar repositories are committed in a single operation (transaction).
