@@ -78,7 +78,7 @@ All methods have it's asynchronous counterparts.
 3. [Contracts](#3-contracts)
 4. [Implementations](#4-implementations)
 5. [Usage](#5-usage)
-   i. [Unit of Work](#i-unit-of-work)
+   1. [Unit of Work](#unit-of-work)
 
 ---
 
@@ -255,7 +255,7 @@ using the ```IQueryable<T>``` interface and projecting the results to ```TResult
 
 ## 5. Usage
 
-#### I. Unit Of Work
+#### Unit Of Work
 
 - Repositive provides unit of work support for coordinating commit operations between multiple repositories in a single operation.
 
