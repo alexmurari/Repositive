@@ -80,7 +80,7 @@ All methods have it's asynchronous counterparts.
 5. [Usage](#5-usage)
    1. [Setup: Basic](#setup-basic)
    2. [Setup: Unit Of Work](#setup-unit-of-work)
-6. [License](#5-license)
+6. [License](#6-license)
 
 ---
 
