@@ -18,7 +18,7 @@
         /// </summary>
         /// <remarks>
         ///     The path expression must be composed of simple property access expressions together with calls to
-        ///     <code>Select</code> for composing additional includes after including a collection property.
+        ///     <c>Select</c> for composing additional includes after including a collection property.
         /// </remarks>
         /// <example>
         ///     Examples of possible include paths are:
