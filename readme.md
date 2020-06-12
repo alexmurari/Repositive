@@ -142,17 +142,20 @@ public class CarService : ICarService
         _carRepository.Commit(); // Commit also returns the number of affected entries
     }
 
-    public IEnumerable<Car> GetCarsWithManufacturers()
-    {
-        return _carRepository.Get(includes: t => t.Manufacturer);
-    }
-
     public IEnumerable<Car> GetCarsInRepair()
     {
         return _carRepository.Get(t => t.Status == CarStatus.InRepair, QueryTracking.NoTracking);
     }
 
-    public bool IsAnyCarYellow => _carRepository.Any(t => t.Color == CarColor.Yellow);
+    public (IEnumerable<Car> Cars, int TotalItems) GetCarsWithManufacturers(int page, int pageSize)
+    {
+        var pagesToSkip = (page - 1) * pageSize;
+        // Paginated queries are returned as a tuple, consisting of the 
+        // entities fetched and the total numbers of elements in the database.
+        return _carRepository.Get(pagesToSkip, pageSize, QueryTracking.NoTracking, t => t.Manufacturer);
+    }
+
+    public bool IsAnyCarYellow() => _carRepository.Any(t => t.Color == CarColor.Yellow);
 
     public Car LoadOwner(Car car)
     {
