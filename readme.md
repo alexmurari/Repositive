@@ -325,7 +325,7 @@ public class BazService : IBazService
         _fooRepository.Add(foo);
         _fooRepository.Commit();
 
-        var bar = _barRepository.Get(t => t.Name == "John Doe", QueryTracking.TrackAll, includes: t => t.Foo);
+        var bar = _barRepository.GetSingle(t => t.Name == "John Doe", QueryTracking.TrackAll, includes: t => t.Foo);
 
         //...
 
