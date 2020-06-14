@@ -59,7 +59,7 @@
 
 ## What is Repositive?
 
-Repositive is a .NET Standard library that provides contracts and implementations for setting up data access repositories following the repository pattern.
+Repositive is a .NET Standard library that provides interfaces and implementations for setting up data access repositories following the repository pattern.
 
 It provides many advanced methods for creating, reading, updating and deleting entities with great flexibility.
 
@@ -77,20 +77,20 @@ All methods have it's asynchronous counterparts.
 2. [Supported ORMs](#2-supported-orms)
 3. [Contracts](#3-contracts)
 4. [Implementations](#4-implementations)
-5. [Usage](#5-usage)
-   1. [Setup: Basic](#setup-basic)
-   2. [Setup: Unit Of Work](#setup-unit-of-work)
+5. [Getting Started](#5-getting-started)
+   1. [Basic Setup](#basic-setup)
+   2. [Unit Of Work Setup](#unit-of-work-setup)
 6. [License](#6-license)
 
 ---
 
 ## 1. Overview
 
-The objective of this library is to provide repository-pattern interfaces and implementations:
+The objective of this library is to provide ready-to-use repository-pattern interfaces and implementations:
 
 **Example:**
 
-The contract:
+Define an interface representing your repository and let Repositive's interfaces provide all the methods:
 
 ```csharp
 using Repositive.Abstractions;
@@ -104,7 +104,7 @@ public interface ICarRepository : IRepository<Car>, IRelatedLoadableRepository<C
 }
 ```
 
-The implementation (Entity Framework Core)
+Then define an implementation for that interface and let Repositive do the heavy lifiting:
 
 ```csharp
 using Repositive.EntityFrameworkCore;
@@ -112,19 +112,14 @@ using Repositive.EntityFrameworkCore;
 
 public class CarRepository : Repository<Car, MyDbContext>, ICarRepository
 {
+    // Repository<TEntity, TContext> implements all repository interfaces.
     public CarRepository(MyDbContext context) : base(context)
     {
     }
 }
 ```
 
-The binding (using your favorite IoC container):
-
-```csharp
-services.AddScoped<ICarRepository, CarRepository>();
-```
-
-The usage:
+Now it's ready to use:
 
 ```csharp
 public class CarService : ICarService
@@ -142,26 +137,24 @@ public class CarService : ICarService
         _carRepository.Commit(); // Commit also returns the number of affected entries
     }
 
-    public IEnumerable<Car> GetCarsInRepair()
+    public (IEnumerable<Car> Cars, int TotalCount) GetCars(int page, int pageSize)
     {
-        return _carRepository.Get(t => t.Status == CarStatus.InRepair, QueryTracking.NoTracking);
+        // Returns a tuple with the paginated collection of cars and the total count of entities in the database.
+        // Includes the Manufacturer navigation property in the query.
+        var entitiesToSkip = (page - 1) * pageSize;
+        return _carRepository.Get(entitiesToSkip, pageSize, QueryTracking.NoTracking, t => t.Manufacturer);
     }
 
-    public (IEnumerable<Car> Cars, int TotalItems) GetCarsWithManufacturers(int page, int pageSize)
+    public void ProcessServiceOrder(Car car)
     {
-        var pagesToSkip = (page - 1) * pageSize;
-        // Paginated queries are returned as a tuple, consisting of the 
-        // entities fetched and the total numbers of elements in the database.
-        return _carRepository.Get(pagesToSkip, pageSize, QueryTracking.NoTracking, t => t.Manufacturer);
-    }
+        // Explicitly loads 'car.Owner', 'car.Owner.Address' and 
+        // 'car.Owner.PaymentInfo.BankCards' navigation properties.
+        _carRepository.LoadRelated(car, t => t.Owner, t => t.Address, t => t.PaymentInfo.BankCards);
+        
+        // Explicitly loads all closed service orders into 'car.ServiceOrders' navigation property.
+        _carRepository.LoadRelatedCollection(car, t => t.ServiceOrders, t => t.Status == ServiceOrderStatus.Closed);
 
-    public bool IsAnyCarYellow() => _carRepository.Any(t => t.Color == CarColor.Yellow);
-
-    public Car LoadOwner(Car car)
-    {
-        // Loads the owner of the car (car.Owner) and the owner's address (car.Owner.Address).
-        // Then returns the car object with the specfified navigation properties loaded.
-        return _carRepository.LoadRelated(car, t => t.Owner, t => t.Address);
+        // ...
     }
 }
 ```
@@ -260,9 +253,9 @@ using the ```IQueryable<T>``` interface and projecting the results to ```TResult
 
 ---
 
-## 5. Usage
+## 5. Getting Started
 
-### Setup: Basic
+### Basic Setup
 
 #### 1. Define your repository contracts, inheriting the desired repository interfaces from the ```Repositive.Abstractions``` package.
 
@@ -332,7 +325,7 @@ public class BazService : IBazService
         _fooRepository.Add(foo);
         _fooRepository.Commit();
 
-        var bar = _barRepository.Get(t => t.Name == "John Doe", QueryTracking.TrackAll, includes: t => t.Foo);
+        var bar = _barRepository.GetSingle(t => t.Name == "John Doe", QueryTracking.TrackAll, includes: t => t.Foo);
 
         //...
 
@@ -343,14 +336,14 @@ public class BazService : IBazService
 }
 ```
 
-### Setup: Unit Of Work
+### Unit Of Work Setup
 
 - Repositive provides unit of work support for coordinating commit operations between multiple repositories in a single operation.
 
 - The advantage of this approach is data integrity: by using unit of work pattern, changes made to multiple repositories are committed
   in a single transaction, meaning that if something goes wrong in any repository during the operation, the whole transaction is aborted, ensuring data integrity.
 
-#### 1. Define your repository contracts following the [basic setup](#setup-basic).
+#### 1. Define your repository contracts following the [basic setup](#basic-setup).
 ###### IMPORTANT: Do not inherit the ```ISaveableRepository``` interface when using unit of work, repositories using UoW should not expose commit methods.
 
 #### 2. In the repositories implementations, pass a ```IUnitOfWork``` instance to the class constructor and base constructor.
