@@ -168,7 +168,7 @@ public class CarService : ICarService
 
 | ORM | Version | Namespace/Package Name |
 ------------------------|-------|--------------------------------|
-| Entity Framework Core | 3.1.x | Repositive.EntityFrameworkCore |
+| Entity Framework Core | 3.1.x | [Repositive.EntityFrameworkCore](#entity-framework-core-repositiveentityframeworkcore) |
 
 ---
 
