@@ -237,10 +237,12 @@ using the ```IQueryable<T>``` interface and projecting the results to ```TResult
 
 ## 4. Implementations
 
+### Repositive.EntityFrameworkCore
+
 #### ```Repositive.EntityFrameworkCore.Repository<TEntity, TContext>```
 - Provides a repository pattern implementation for querying and saving instances of ```TEntity``` with ```Microsoft.EntityFrameworkCore``` as the ORM.
 - The database context type is defined by ```TContext```. It must derive from or be of ```Microsoft.EntityFramework.DbContext``` type.
-- Implements ```IRepository<TTEntity>```, ```IQueryableRepository<TTEntity>```, ```IRelatedLoadableRepository<TTEntity>```, ```ISaveableRepository``` interfaces.
+- Implements ```IRepository<TEntity>```, ```IQueryableRepository<TEntity>```, ```IRelatedLoadableRepository<TEntity>```, ```ISaveableRepository``` interfaces.
 - Constructor: ```(TContext)``` or ```(IUnitOfWork)```. 
 
 #### ```Repositive.EntityFrameworkCore.UnitOfWork<TContext>```
