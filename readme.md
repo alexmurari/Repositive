@@ -77,6 +77,7 @@ All methods have it's asynchronous counterparts.
 2. [Supported ORMs](#2-supported-orms)
 3. [Contracts](#3-contracts)
 4. [Implementations](#4-implementations)
+   1. [Entity Framework Core](#entity-framework-core-repositiveentityframeworkcore)
 5. [Getting Started](#5-getting-started)
    1. [Basic Setup](#basic-setup)
    2. [Unit Of Work Setup](#unit-of-work-setup)
@@ -237,7 +238,9 @@ using the ```IQueryable<T>``` interface and projecting the results to ```TResult
 
 ## 4. Implementations
 
-### Repositive.EntityFrameworkCore
+### Entity Framework Core (Repositive.EntityFrameworkCore)
+
+This package provides repository implementations for the Microsoft Entity Framework Core ORM.
 
 #### ```Repositive.EntityFrameworkCore.Repository<TEntity, TContext>```
 - Provides a repository pattern implementation for querying and saving instances of ```TEntity``` with ```Microsoft.EntityFrameworkCore``` as the ORM.
