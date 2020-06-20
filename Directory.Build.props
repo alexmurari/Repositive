@@ -14,7 +14,7 @@
     <PackageProjectUrl>https://github.com/alexmurari/Repositive/</PackageProjectUrl>
     <!-- Keep the package release notes without indentation -->
     <PackageReleaseNotes>
-- Strong-name signed assemblies.
+- Added more read operators: Max and Min.
     </PackageReleaseNotes>
   </PropertyGroup>
 </Project>

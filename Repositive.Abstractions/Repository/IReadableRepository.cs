@@ -462,5 +462,133 @@
             (Expression<Func<TEntity, object>> keySelector, SortDirection direction) orderBy,
             QueryTracking tracking = QueryTracking.Default,
             params Expression<Func<TEntity, object>>[] includes);
+
+        /// <summary>
+        ///     Invokes a projection function on each entity of the database and returns the maximum resulting value.
+        /// </summary>
+        /// <param name="selector">
+        ///     The transform function to apply to each entity.
+        /// </param>
+        /// <typeparam name="TResult">
+        ///     The resulting type of the projection.
+        /// </typeparam>
+        /// <returns>
+        ///     The maximum resulting value.
+        /// </returns>
+        TResult Max<TResult>(Expression<Func<TEntity, TResult>> selector);
+
+        /// <summary>
+        ///     Invokes a projection function on each entity of the database that matches the predicate condition and returns the maximum resulting value.
+        /// </summary>
+        /// <param name="selector">
+        ///     The transform function to apply to each entity.
+        /// </param>
+        /// <param name="predicate">
+        ///     The predicate with the query condition.
+        /// </param>
+        /// <typeparam name="TResult">
+        ///     The resulting type of the projection.
+        /// </typeparam>
+        /// <returns>
+        ///     The maximum resulting value.
+        /// </returns>
+        TResult Max<TResult>(Expression<Func<TEntity, TResult>> selector, Expression<Func<TEntity, bool>> predicate);
+
+        /// <summary>
+        ///     Asynchronously invokes a projection function on each entity of the database and returns the maximum resulting value.
+        /// </summary>
+        /// <param name="selector">
+        ///     The transform function to apply to each entity.
+        /// </param>
+        /// <typeparam name="TResult">
+        ///     The resulting type of the projection.
+        /// </typeparam>
+        /// <returns>
+        ///     A task that represents the asynchronous query operation.
+        ///     The query result contains the maximum resulting value.
+        /// </returns>
+        Task<TResult> MaxAsync<TResult>(Expression<Func<TEntity, TResult>> selector);
+
+        /// <summary>
+        ///     Asynchronously invokes a projection function on each entity of the database that matches the predicate condition and returns the maximum resulting value.
+        /// </summary>
+        /// <param name="selector">
+        ///     The transform function to apply to each entity.
+        /// </param>
+        /// <param name="predicate">
+        ///     The predicate with the query condition.
+        /// </param>
+        /// <typeparam name="TResult">
+        ///     The resulting type of the projection.
+        /// </typeparam>
+        /// <returns>
+        ///     A task that represents the asynchronous query operation.
+        ///     The task result contains the maximum resulting value.
+        /// </returns>
+        Task<TResult> MaxAsync<TResult>(Expression<Func<TEntity, TResult>> selector, Expression<Func<TEntity, bool>> predicate);
+
+        /// <summary>
+        ///     Invokes a projection function on each entity of the database and returns the minimum resulting value.
+        /// </summary>
+        /// <param name="selector">
+        ///     The transform function to apply to each entity.
+        /// </param>
+        /// <typeparam name="TResult">
+        ///     The resulting type of the projection.
+        /// </typeparam>
+        /// <returns>
+        ///     The minimum resulting value.
+        /// </returns>
+        TResult Min<TResult>(Expression<Func<TEntity, TResult>> selector);
+
+        /// <summary>
+        ///     Invokes a projection function on each entity of the database that matches the predicate condition and returns the minimum resulting value.
+        /// </summary>
+        /// <param name="selector">
+        ///     The transform function to apply to each entity.
+        /// </param>
+        /// <param name="predicate">
+        ///     The predicate with the query condition.
+        /// </param>
+        /// <typeparam name="TResult">
+        ///     The resulting type of the projection.
+        /// </typeparam>
+        /// <returns>
+        ///     The minimum resulting value.
+        /// </returns>
+        TResult Min<TResult>(Expression<Func<TEntity, TResult>> selector, Expression<Func<TEntity, bool>> predicate);
+
+        /// <summary>
+        ///     Asynchronously invokes a projection function on each entity of the database and returns the minimum resulting value.
+        /// </summary>
+        /// <param name="selector">
+        ///     The transform function to apply to each entity.
+        /// </param>
+        /// <typeparam name="TResult">
+        ///     The resulting type of the projection.
+        /// </typeparam>
+        /// <returns>
+        ///     A task that represents the asynchronous query operation.
+        ///     The task result contains the minimum resulting value.
+        /// </returns>
+        Task<TResult> MinAsync<TResult>(Expression<Func<TEntity, TResult>> selector);
+
+        /// <summary>
+        ///     Asynchronously invokes a projection function on each entity of the database that matches the predicate condition and returns the minimum resulting value.
+        /// </summary>
+        /// <param name="selector">
+        ///     The transform function to apply to each entity.
+        /// </param>
+        /// <param name="predicate">
+        ///     The predicate with the query condition.
+        /// </param>
+        /// <typeparam name="TResult">
+        ///     The resulting type of the projection.
+        /// </typeparam>
+        /// <returns>
+        ///     A task that represents the asynchronous query operation.
+        ///     The task result contains the minimum resulting value.
+        /// </returns>
+        Task<TResult> MinAsync<TResult>(Expression<Func<TEntity, TResult>> selector, Expression<Func<TEntity, bool>> predicate);
     }
 }
