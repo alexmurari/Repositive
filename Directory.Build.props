@@ -14,7 +14,7 @@
     <PackageProjectUrl>https://github.com/alexmurari/Repositive/</PackageProjectUrl>
     <!-- Keep the package release notes without indentation -->
     <PackageReleaseNotes>
-- Added more read operators: Max and Min.
+- Added Max and Min aggregate operators.
     </PackageReleaseNotes>
   </PropertyGroup>
 </Project>
