@@ -829,6 +829,158 @@
         }
 
         /// <summary>
+        ///     Invokes a projection function on each entity of the database and returns the maximum resulting value.
+        /// </summary>
+        /// <param name="selector">
+        ///     The transform function to apply to each entity.
+        /// </param>
+        /// <typeparam name="TResult">
+        ///     The resulting type of the projection.
+        /// </typeparam>
+        /// <returns>
+        ///     The maximum resulting value.
+        /// </returns>
+        public TResult Max<TResult>(Expression<Func<TEntity, TResult>> selector)
+        {
+            return DbSet.Max(selector);
+        }
+
+        /// <summary>
+        ///     Invokes a projection function on each entity of the database that matches the predicate condition and returns the maximum resulting value.
+        /// </summary>
+        /// <param name="selector">
+        ///     The transform function to apply to each entity.
+        /// </param>
+        /// <param name="predicate">
+        ///     The predicate with the query condition.
+        /// </param>
+        /// <typeparam name="TResult">
+        ///     The resulting type of the projection.
+        /// </typeparam>
+        /// <returns>
+        ///     The maximum resulting value.
+        /// </returns>
+        public TResult Max<TResult>(Expression<Func<TEntity, TResult>> selector, Expression<Func<TEntity, bool>> predicate)
+        {
+            return DbSet.Where(predicate).Max(selector);
+        }
+
+        /// <summary>
+        ///     Asynchronously invokes a projection function on each entity of the database and returns the maximum resulting value.
+        /// </summary>
+        /// <param name="selector">
+        ///     The transform function to apply to each entity.
+        /// </param>
+        /// <typeparam name="TResult">
+        ///     The resulting type of the projection.
+        /// </typeparam>
+        /// <returns>
+        ///     A task that represents the asynchronous query operation.
+        ///     The query result contains the maximum resulting value.
+        /// </returns>
+        public Task<TResult> MaxAsync<TResult>(Expression<Func<TEntity, TResult>> selector)
+        {
+            return DbSet.MaxAsync(selector);
+        }
+
+        /// <summary>
+        ///     Asynchronously invokes a projection function on each entity of the database that matches the predicate condition and returns the maximum resulting value.
+        /// </summary>
+        /// <param name="selector">
+        ///     The transform function to apply to each entity.
+        /// </param>
+        /// <param name="predicate">
+        ///     The predicate with the query condition.
+        /// </param>
+        /// <typeparam name="TResult">
+        ///     The resulting type of the projection.
+        /// </typeparam>
+        /// <returns>
+        ///     A task that represents the asynchronous query operation.
+        ///     The task result contains the maximum resulting value.
+        /// </returns>
+        public Task<TResult> MaxAsync<TResult>(Expression<Func<TEntity, TResult>> selector, Expression<Func<TEntity, bool>> predicate)
+        {
+            return DbSet.Where(predicate).MaxAsync(selector);
+        }
+
+        /// <summary>
+        ///     Invokes a projection function on each entity of the database and returns the minimum resulting value.
+        /// </summary>
+        /// <param name="selector">
+        ///     The transform function to apply to each entity.
+        /// </param>
+        /// <typeparam name="TResult">
+        ///     The resulting type of the projection.
+        /// </typeparam>
+        /// <returns>
+        ///     The minimum resulting value.
+        /// </returns>
+        public TResult Min<TResult>(Expression<Func<TEntity, TResult>> selector)
+        {
+            return DbSet.Min(selector);
+        }
+
+        /// <summary>
+        ///     Invokes a projection function on each entity of the database that matches the predicate condition and returns the minimum resulting value.
+        /// </summary>
+        /// <param name="selector">
+        ///     The transform function to apply to each entity.
+        /// </param>
+        /// <param name="predicate">
+        ///     The predicate with the query condition.
+        /// </param>
+        /// <typeparam name="TResult">
+        ///     The resulting type of the projection.
+        /// </typeparam>
+        /// <returns>
+        ///     The minimum resulting value.
+        /// </returns>
+        public TResult Min<TResult>(Expression<Func<TEntity, TResult>> selector, Expression<Func<TEntity, bool>> predicate)
+        {
+            return DbSet.Where(predicate).Min(selector);
+        }
+
+        /// <summary>
+        ///     Asynchronously invokes a projection function on each entity of the database and returns the minimum resulting value.
+        /// </summary>
+        /// <param name="selector">
+        ///     The transform function to apply to each entity.
+        /// </param>
+        /// <typeparam name="TResult">
+        ///     The resulting type of the projection.
+        /// </typeparam>
+        /// <returns>
+        ///     A task that represents the asynchronous query operation.
+        ///     The task result contains the minimum resulting value.
+        /// </returns>
+        public Task<TResult> MinAsync<TResult>(Expression<Func<TEntity, TResult>> selector)
+        {
+            return DbSet.MinAsync(selector);
+        }
+
+        /// <summary>
+        ///     Asynchronously invokes a projection function on each entity of the database that matches the predicate condition and returns the minimum resulting value.
+        /// </summary>
+        /// <param name="selector">
+        ///     The transform function to apply to each entity.
+        /// </param>
+        /// <param name="predicate">
+        ///     The predicate with the query condition.
+        /// </param>
+        /// <typeparam name="TResult">
+        ///     The resulting type of the projection.
+        /// </typeparam>
+        /// <returns>
+        ///     A task that represents the asynchronous query operation.
+        ///     The task result contains the minimum resulting value.
+        /// </returns>
+        public Task<TResult> MinAsync<TResult>(Expression<Func<TEntity, TResult>> selector, Expression<Func<TEntity, bool>> predicate)
+        {
+            return DbSet.Where(predicate).MinAsync(selector);
+        }
+
+        /// <summary>
         ///     Loads the entity referenced by the specified navigation property.
         /// </summary>
         /// <param name="entity">
