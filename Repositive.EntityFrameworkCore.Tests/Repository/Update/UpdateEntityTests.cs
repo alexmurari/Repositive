@@ -3,6 +3,7 @@
     using System.Linq;
     using Repositive.Abstractions;
     using Repositive.EntityFrameworkCore.Tests.Utilities;
+    using Repositive.EntityFrameworkCore.Tests.Utilities.Entities;
     using Repositive.EntityFrameworkCore.Tests.Utilities.Extensions;
     using Repositive.EntityFrameworkCore.Tests.Utilities.Repositories.Contracts;
     using Xunit;
@@ -44,7 +45,7 @@
         public void Assert_Update_Entity_Without_Related_Entities_Is_Successful()
         {
             // Arrange
-            var person = DataGenerator.PickRandomItem(_databaseHelper.GetPersons());
+            var person = DataGenerator.PickRandomItem(_databaseHelper.Query<Person>().ToList());
 
             // Act
             _personRepository.Update(person);
@@ -61,7 +62,7 @@
         public void Assert_Update_Entity_Range_Without_Related_Entities_Is_Successful()
         {
             // Arrange
-            var persons = DataGenerator.PickRandomItemRange(_databaseHelper.GetPersons(), 50);
+            var persons = DataGenerator.PickRandomItemRange(_databaseHelper.Query<Person>().ToList(), 50);
 
             // Act
             _personRepository.UpdateRange(persons);
@@ -78,7 +79,7 @@
         public void Assert_Update_Entity_With_Related_Entities_Is_Successful()
         {
             // Arrange
-            var person = DataGenerator.PickRandomItem(_databaseHelper.GetPersons());
+            var person = DataGenerator.PickRandomItem(_databaseHelper.Query<Person>().ToList());
 
             // Act
             _personRepository.Update(person, true);
@@ -95,7 +96,7 @@
         public void Assert_Update_Entity_Range_With_Related_Entities_Is_Successful()
         {
             // Arrange
-            var persons = DataGenerator.PickRandomItemRange(_databaseHelper.GetPersons(), 50);
+            var persons = DataGenerator.PickRandomItemRange(_databaseHelper.Query<Person>().ToList(), 50);
 
             // Act
             _personRepository.UpdateRange(persons, true);

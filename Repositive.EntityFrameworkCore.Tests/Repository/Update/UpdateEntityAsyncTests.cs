@@ -2,8 +2,10 @@
 {
     using System.Linq;
     using System.Threading.Tasks;
+    using Microsoft.EntityFrameworkCore;
     using Repositive.Abstractions;
     using Repositive.EntityFrameworkCore.Tests.Utilities;
+    using Repositive.EntityFrameworkCore.Tests.Utilities.Entities;
     using Repositive.EntityFrameworkCore.Tests.Utilities.Extensions;
     using Repositive.EntityFrameworkCore.Tests.Utilities.Repositories.Contracts;
     using Xunit;
@@ -46,7 +48,7 @@
         public async Task Assert_Update_Entity_Without_Related_Entities_Async_Is_Successful()
         {
             // Arrange
-            var person = DataGenerator.PickRandomItem(_databaseHelper.GetPersons());
+            var person = DataGenerator.PickRandomItem(await _databaseHelper.Query<Person>().ToListAsync());
 
             // Act
             await _personRepository.UpdateAsync(person).ConfigureAwait(false);
@@ -64,7 +66,7 @@
         public async Task Assert_Update_Entity_Range_Without_Related_Entities_Async_Is_Successful()
         {
             // Arrange
-            var persons = DataGenerator.PickRandomItemRange(_databaseHelper.GetPersons(), 50);
+            var persons = DataGenerator.PickRandomItemRange(await _databaseHelper.Query<Person>().ToListAsync(), 50);
 
             // Act
             await _personRepository.UpdateRangeAsync(persons).ConfigureAwait(false);
@@ -82,7 +84,7 @@
         public async Task Assert_Update_Entity_With_Related_Entities_Async_Is_Successful()
         {
             // Arrange
-            var person = DataGenerator.PickRandomItem(_databaseHelper.GetPersons());
+            var person = DataGenerator.PickRandomItem(await _databaseHelper.Query<Person>().ToListAsync());
 
             // Act
             await _personRepository.UpdateAsync(person, true).ConfigureAwait(false);
@@ -100,7 +102,7 @@
         public async Task Assert_Update_Entity_Range_With_Related_Entities_Async_Is_Successful()
         {
             // Arrange
-            var persons = DataGenerator.PickRandomItemRange(_databaseHelper.GetPersons(), 50);
+            var persons = DataGenerator.PickRandomItemRange(await _databaseHelper.Query<Person>().ToListAsync(), 50);
 
             // Act
             await _personRepository.UpdateRangeAsync(persons, true).ConfigureAwait(false);

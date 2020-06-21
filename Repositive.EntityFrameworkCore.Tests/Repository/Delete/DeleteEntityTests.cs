@@ -2,8 +2,10 @@
 {
     using System.Collections.Generic;
     using System.Linq;
+    using Microsoft.EntityFrameworkCore;
     using Repositive.Abstractions;
     using Repositive.EntityFrameworkCore.Tests.Utilities;
+    using Repositive.EntityFrameworkCore.Tests.Utilities.Entities;
     using Repositive.EntityFrameworkCore.Tests.Utilities.Repositories.Contracts;
     using Xunit;
 
@@ -44,7 +46,7 @@
         public void Assert_Delete_Entity_Without_Related_Entities_Is_Successful()
         {
             // Arrange
-            var person = DataGenerator.PickRandomItem(_databaseHelper.GetPersons());
+            var person = DataGenerator.PickRandomItem(_databaseHelper.Query<Person>().ToList());
 
             // Act
             _personRepository.Delete(person);
@@ -61,7 +63,7 @@
         public void Assert_Delete_Entity_Range_Without_Related_Entities_Is_Successful()
         {
             // Arrange
-            var persons = DataGenerator.PickRandomItemRange(_databaseHelper.GetPersons(), 10);
+            var persons = DataGenerator.PickRandomItemRange(_databaseHelper.Query<Person>().ToList(), 10);
 
             // Act
             _personRepository.DeleteRange(persons);
@@ -78,7 +80,7 @@
         public void Assert_Delete_Entity_With_Related_Entities_Is_Successful()
         {
             // Arrange
-            var person = DataGenerator.PickRandomItem(_databaseHelper.GetPersons());
+            var person = DataGenerator.PickRandomItem(_databaseHelper.Query<Person>().Include(t => t.Vehicles).ToList());
 
             // Act
             _personRepository.Delete(person, true);
@@ -95,7 +97,7 @@
         public void Assert_Delete_Entity_Range_With_Related_Entities_Is_Successful()
         {
             // Arrange
-            var persons = DataGenerator.PickRandomItemRange(_databaseHelper.GetPersons(), 10);
+            var persons = DataGenerator.PickRandomItemRange(_databaseHelper.Query<Person>().Include(t => t.Vehicles).ToList(), 10);
 
             // Act
             _personRepository.DeleteRange(persons, true);

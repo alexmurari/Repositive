@@ -2,8 +2,10 @@
 {
     using System.Linq;
     using System.Threading.Tasks;
+    using Microsoft.EntityFrameworkCore;
     using Repositive.Abstractions;
     using Repositive.EntityFrameworkCore.Tests.Utilities;
+    using Repositive.EntityFrameworkCore.Tests.Utilities.Entities;
     using Repositive.EntityFrameworkCore.Tests.Utilities.Repositories.Contracts;
     using Xunit;
 
@@ -45,7 +47,7 @@
         public async Task Assert_Delete_Entity_Without_Related_Entities_Async_Is_Successful()
         {
             // Arrange
-            var person = DataGenerator.PickRandomItem(_databaseHelper.GetPersons());
+            var person = DataGenerator.PickRandomItem(await _databaseHelper.Query<Person>().ToListAsync());
 
             // Act
             await _personRepository.DeleteAsync(person).ConfigureAwait(false);
@@ -63,7 +65,7 @@
         public async Task Assert_Delete_Entity_Range_Without_Related_Entities_Async_Is_Successful()
         {
             // Arrange
-            var persons = DataGenerator.PickRandomItemRange(_databaseHelper.GetPersons(), 10);
+            var persons = DataGenerator.PickRandomItemRange(await _databaseHelper.Query<Person>().ToListAsync(), 10);
 
             // Act
             await _personRepository.DeleteRangeAsync(persons).ConfigureAwait(false);
@@ -81,7 +83,7 @@
         public async Task Assert_Delete_Entity_With_Related_Entities_Async_Is_Successful()
         {
             // Arrange
-            var person = DataGenerator.PickRandomItem(_databaseHelper.GetPersons());
+            var person = DataGenerator.PickRandomItem(await _databaseHelper.Query<Person>().Include(t => t.Vehicles).ToListAsync());
 
             // Act
             await _personRepository.DeleteAsync(person, true).ConfigureAwait(false);
@@ -99,7 +101,7 @@
         public async Task Assert_Delete_Entity_Range_With_Related_Entities_Async_Is_Successful()
         {
             // Arrange
-            var persons = DataGenerator.PickRandomItemRange(_databaseHelper.GetPersons(), 10);
+            var persons = DataGenerator.PickRandomItemRange(await _databaseHelper.Query<Person>().Include(t => t.Vehicles).ToListAsync(), 10);
 
             // Act
             await _personRepository.DeleteRangeAsync(persons, true).ConfigureAwait(false);

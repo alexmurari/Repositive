@@ -6,6 +6,7 @@
     using System.Linq.Expressions;
     using Repositive.Abstractions;
     using Repositive.EntityFrameworkCore.Tests.Utilities;
+    using Repositive.EntityFrameworkCore.Tests.Utilities.Entities;
     using Repositive.EntityFrameworkCore.Tests.Utilities.Entities.Enums;
     using Repositive.EntityFrameworkCore.Tests.Utilities.Repositories.Contracts;
     using Xunit;
@@ -56,7 +57,7 @@
         public void Assert_Load_Related_Entity_Is_Successful()
         {
             // Arrange
-            var vehicle = DataGenerator.PickRandomItem(_databaseHelper.GetVehiclesWithoutRelated());
+            var vehicle = DataGenerator.PickRandomItem(_databaseHelper.Query<Vehicle>().ToList());
 
             // Act
             vehicle = _vehicleRepository.LoadRelated(vehicle, t => t.Manufacturer);
@@ -74,7 +75,7 @@
         public void Assert_Load_Related_Entity_With_Include_Is_Successful()
         {
             // Arrange
-            var vehicle = DataGenerator.PickRandomItem(_databaseHelper.GetVehiclesWithoutRelated());
+            var vehicle = DataGenerator.PickRandomItem(_databaseHelper.Query<Vehicle>().ToList());
 
             // Act
             vehicle = _vehicleRepository.LoadRelated(vehicle, t => t.Manufacturer, t => t.Subsidiaries);
@@ -92,7 +93,7 @@
         public void Assert_Load_Related_Entity_With_Predicate_Is_Successful()
         {
             // Arrange
-            var vehicle = DataGenerator.PickRandomItem(_databaseHelper.GetVehiclesWithoutRelated(t => t.Manufacturer != null));
+            var vehicle = DataGenerator.PickRandomItem(_databaseHelper.Query<Vehicle>().Where(t => t.Manufacturer != null).ToList());
             var manufacturerId = vehicle.ManufacturerId;
 
             // Act
@@ -110,7 +111,7 @@
         public void Assert_Load_Collection_Of_Related_Entities_Is_Successful()
         {
             // Arrange
-            var person = DataGenerator.PickRandomItem(_databaseHelper.GetPersonsWithoutRelated());
+            var person = DataGenerator.PickRandomItem(_databaseHelper.Query<Person>().ToList());
 
             // Act
             person = _personRepository.LoadRelatedCollection(person, t => t.Vehicles);
@@ -128,7 +129,7 @@
         public void Assert_Load_Collection_Of_Related_Entities_With_Include_Is_Successful()
         {
             // Arrange
-            var person = DataGenerator.PickRandomItem(_databaseHelper.GetPersonsWithoutRelated());
+            var person = DataGenerator.PickRandomItem(_databaseHelper.Query<Person>().ToList());
 
             // Act
             person = _personRepository.LoadRelatedCollection(person, t => t.Vehicles, t => t.Manufacturer.Subsidiaries);
@@ -147,7 +148,7 @@
         public void Assert_Load_Collection_Of_Related_Entities_With_Predicate_Is_Successful()
         {
             // Arrange
-            var person = DataGenerator.PickRandomItem(_databaseHelper.GetPersonsWithoutRelated(t => t.Vehicles.Any(x => x.Type == VehicleType.Motorcycle)));
+            var person = DataGenerator.PickRandomItem(_databaseHelper.Query<Person>().Where(t => t.Vehicles.Any(x => x.Type == VehicleType.Motorcycle)).ToList());
 
             // Act
             person = _personRepository.LoadRelatedCollection(person, t => t.Vehicles, t => t.Type == VehicleType.Car);
