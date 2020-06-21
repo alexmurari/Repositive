@@ -162,7 +162,7 @@
 
             var persons = _databaseHelper.Query<Person>().Include(t => t.Vehicles).ThenInclude(t => t.Manufacturer);
             var totalPersons = await persons.CountAsync();
-            var paginatedPersons = await persons.Skip(Skip).Take(Take).OrderBy(t => t.Id).ToListAsync();
+            var paginatedPersons = await persons.OrderBy(t => t.Id).Skip(Skip).Take(Take).ToListAsync();
 
             // Act
             var (result, count) = await _personRepository.GetAsync(Skip, Take, QueryTracking.NoTracking, t => t.Vehicles.Select(x => x.Manufacturer));
@@ -209,7 +209,7 @@
 
             var persons = _databaseHelper.Query<Person>().Where(predicate).Include(t => t.Vehicles).ThenInclude(t => t.Manufacturer);
             var totalPersons = await persons.CountAsync();
-            var paginatedPersons = await persons.Skip(Skip).Take(Take).OrderBy(t => t.Id).ToListAsync();
+            var paginatedPersons = await persons.OrderBy(t => t.Id).Skip(Skip).Take(Take).ToListAsync();
 
             // Act
             var (result, count) = await _personRepository.GetAsync(Skip, Take, predicate, QueryTracking.NoTracking, t => t.Vehicles.Select(x => x.Manufacturer));
