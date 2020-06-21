@@ -32,10 +32,10 @@
    </p>
    <h4>Development Channel</h4>
    <p style="margin: 10px;">
-      <a href="https://www.nuget.org/packages/Repositive.Abstractions">
+      <a href="https://www.nuget.org/packages/Repositive.Abstractions/absoluteLatest">
       <img alt="Nuget" src="https://img.shields.io/nuget/vpre/Repositive.Abstractions?label=Repositive.Abstractions&style=flat-square">
       </a>
-      <a href="https://www.nuget.org/packages/Repositive.EntityFrameworkCore">
+      <a href="https://www.nuget.org/packages/Repositive.EntityFrameworkCore/absoluteLatest">
       <img alt="Nuget" src="https://img.shields.io/nuget/vpre/Repositive.EntityFrameworkCore?label=Repositive.EntityFrameworkCore&style=flat-square">
       </a>
    </p>
@@ -194,7 +194,7 @@ public class CarService : ICarService
 
 #### ```IReadableRepository<T>```
 - Defines a repository contract for reading entities of type ```T```.
-- Methods: ```Any```, ```Count```, ```Find```, ```Get```, ```GetSingle```.
+- Methods: ```Any```, ```Count```, ```Find```, ```Get```, ```GetSingle```, ```Max```, ```Min```.
 
 #### ```IUpdateableRepository<T>```
 - Defines a repository contract for updating entities of type ```T```.
