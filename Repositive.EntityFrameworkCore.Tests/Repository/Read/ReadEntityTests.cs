@@ -154,7 +154,7 @@
 
             var persons = _databaseHelper.Query<Person>().Include(t => t.Vehicles).ThenInclude(t => t.Manufacturer);
             var totalPersons = persons.Count();
-            var paginatedPersons = persons.Skip(Skip).Take(Take).OrderBy(t => t.Id).ToList();
+            var paginatedPersons = persons.OrderBy(t => t.Id).Skip(Skip).Take(Take).ToList();
 
             // Act
             var (result, count) = _personRepository.Get(Skip, Take, QueryTracking.NoTracking, t => t.Vehicles.Select(x => x.Manufacturer));
@@ -199,7 +199,7 @@
 
             var persons = _databaseHelper.Query<Person>().Where(predicate).Include(t => t.Vehicles).ThenInclude(t => t.Manufacturer);
             var totalPersons = persons.Count();
-            var paginatedPersons = persons.Skip(Skip).Take(Take).OrderBy(t => t.Id).ToList();
+            var paginatedPersons = persons.OrderBy(t => t.Id).Skip(Skip).Take(Take).ToList();
 
             // Act
             var (result, count) = _personRepository.Get(Skip, Take, predicate, QueryTracking.NoTracking, t => t.Vehicles.Select(x => x.Manufacturer));
