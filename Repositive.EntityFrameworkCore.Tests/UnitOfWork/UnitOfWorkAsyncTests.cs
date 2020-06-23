@@ -91,11 +91,19 @@
             await _vehicleUoWRepository.AddAsync(new Vehicle { Type = VehicleType.Car }).ConfigureAwait(false);
             await _manufacturerUoWRepository.AddAsync(new Manufacturer { Name = "Bar" }).ConfigureAwait(false);
 
+            var registeredRepoCount = default(int);
+
+            _unitOfWork.Committing += (sender, args) =>
+            {
+                registeredRepoCount = args.RegisteredRepositories.Count;
+            };
+
             // Act
             var commitAction = new Func<CancellationToken, Task<int>>(_unitOfWork.CommitAsync);
 
             // Assert
             await Assert.RaisesAsync<UnitOfWorkCommittingEventArgs>(e => _unitOfWork.Committing += e, e => _unitOfWork.Committing -= e, () => commitAction(default)).ConfigureAwait(false);
+            Assert.Equal(3, registeredRepoCount);
         }
 
         /// <summary>
@@ -110,11 +118,22 @@
             await _vehicleUoWRepository.AddAsync(new Vehicle { Type = VehicleType.Car }).ConfigureAwait(false);
             await _manufacturerUoWRepository.AddAsync(new Manufacturer { Name = "Bar" }).ConfigureAwait(false);
 
+            var affectedEntriesCount = default(int);
+            var registeredRepoCount = default(int);
+
+            _unitOfWork.Committed += (sender, args) =>
+            {
+                affectedEntriesCount = args.AffectedEntries;
+                registeredRepoCount = args.RegisteredRepositories.Count;
+            };
+
             // Act
             var commitAction = new Func<CancellationToken, Task<int>>(_unitOfWork.CommitAsync);
 
             // Assert
             await Assert.RaisesAsync<UnitOfWorkCommittedEventArgs>(e => _unitOfWork.Committed += e, e => _unitOfWork.Committed -= e, () => commitAction(default)).ConfigureAwait(false);
+            Assert.Equal(3, registeredRepoCount);
+            Assert.Equal(3, affectedEntriesCount);
         }
 
         /// <summary>

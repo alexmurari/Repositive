@@ -43,7 +43,7 @@
         }
 
         /// <summary>
-        ///     Asserts that the <see cref="IReadableRepository{TEntity}.Any()"/> is operating correctly.
+        ///     Asserts that the <see cref="IReadableRepository{TEntity}.AnyAsync()"/> is operating correctly.
         /// </summary>
         /// <returns>The task representing the asynchronous operation.</returns>
         [Fact]
@@ -60,7 +60,7 @@
         }
 
         /// <summary>
-        ///     Asserts that the <see cref="IReadableRepository{TEntity}.Any(Expression{Func{TEntity, bool}})"/> is operating correctly.
+        ///     Asserts that the <see cref="IReadableRepository{TEntity}.AnyAsync(Expression{Func{TEntity, bool}})"/> is operating correctly.
         /// </summary>
         /// <returns>The task representing the asynchronous operation.</returns>
         [Fact]
@@ -77,7 +77,7 @@
         }
 
         /// <summary>
-        ///     Asserts that the <see cref="IReadableRepository{TEntity}.Count()"/> is operating correctly.
+        ///     Asserts that the <see cref="IReadableRepository{TEntity}.CountAsync()"/> is operating correctly.
         /// </summary>
         /// <returns>The task representing the asynchronous operation.</returns>
         [Fact]
@@ -94,7 +94,7 @@
         }
 
         /// <summary>
-        ///     Asserts that the <see cref="IReadableRepository{TEntity}.Count(Expression{Func{TEntity, bool}})"/> is operating correctly.
+        ///     Asserts that the <see cref="IReadableRepository{TEntity}.CountAsync(Expression{Func{TEntity, bool}})"/> is operating correctly.
         /// </summary>
         /// <returns>The task representing the asynchronous operation.</returns>
         [Fact]
@@ -112,7 +112,7 @@
         }
 
         /// <summary>
-        ///     Asserts that the <see cref="IReadableRepository{TEntity}.Find(object[])"/> is operating correctly.
+        ///     Asserts that the <see cref="IReadableRepository{TEntity}.FindAsync(object[])"/> is operating correctly.
         /// </summary>
         /// <returns>The task representing the asynchronous operation.</returns>
         [Fact]
@@ -131,7 +131,7 @@
         }
 
         /// <summary>
-        ///     Asserts that the <see cref="IReadableRepository{TEntity}.Get(QueryTracking, Expression{Func{TEntity, object}}[])"/> is operating correctly.
+        ///     Asserts that the <see cref="IReadableRepository{TEntity}.GetAsync(QueryTracking, Expression{Func{TEntity, object}}[])"/> is operating correctly.
         /// </summary>
         /// <returns>The task representing the asynchronous operation.</returns>
         [Fact]
@@ -150,7 +150,7 @@
         }
 
         /// <summary>
-        ///     Asserts that the <see cref="IReadableRepository{TEntity}.Get(int, int, QueryTracking, Expression{Func{TEntity, object}}[])"/> is operating correctly.
+        ///     Asserts that the <see cref="IReadableRepository{TEntity}.GetAsync(int, int, QueryTracking, Expression{Func{TEntity, object}}[])"/> is operating correctly.
         /// </summary>
         /// <returns>The task representing the asynchronous operation.</returns>
         [Fact]
@@ -176,7 +176,7 @@
         }
 
         /// <summary>
-        ///     Asserts that the <see cref="IReadableRepository{TEntity}.Get(Expression{Func{TEntity, bool}}, QueryTracking, Expression{Func{TEntity, object}}[])"/> is operating correctly.
+        ///     Asserts that the <see cref="IReadableRepository{TEntity}.GetAsync(Expression{Func{TEntity, bool}}, QueryTracking, Expression{Func{TEntity, object}}[])"/> is operating correctly.
         /// </summary>
         /// <returns>The task representing the asynchronous operation.</returns>
         [Fact]
@@ -196,7 +196,7 @@
         }
 
         /// <summary>
-        ///     Asserts that the <see cref="IReadableRepository{TEntity}.Get(int, int, Expression{Func{TEntity, bool}}, QueryTracking, Expression{Func{TEntity, object}}[])"/> is operating correctly.
+        ///     Asserts that the <see cref="IReadableRepository{TEntity}.GetAsync(int, int, Expression{Func{TEntity, bool}}, QueryTracking, Expression{Func{TEntity, object}}[])"/> is operating correctly.
         /// </summary>
         /// <returns>The task representing the asynchronous operation.</returns>
         [Fact]
@@ -223,7 +223,7 @@
         }
 
         /// <summary>
-        ///     Asserts that the <see cref="IReadableRepository{TEntity}.Get(ValueTuple{Expression{Func{TEntity, object}}, SortDirection}, QueryTracking, Expression{Func{TEntity, object}}[])"/> is operating correctly.
+        ///     Asserts that the <see cref="IReadableRepository{TEntity}.GetAsync(ValueTuple{Expression{Func{TEntity, object}}, SortDirection}, QueryTracking, Expression{Func{TEntity, object}}[])"/> is operating correctly.
         /// </summary>
         /// <returns>The task representing the asynchronous operation.</returns>
         [Fact]
@@ -245,7 +245,7 @@
         }
 
         /// <summary>
-        ///     Asserts that the <see cref="IReadableRepository{TEntity}.Get(int, int, ValueTuple{Expression{Func{TEntity, object}}, SortDirection}, QueryTracking, Expression{Func{TEntity, object}}[])"/> is operating correctly.
+        ///     Asserts that the <see cref="IReadableRepository{TEntity}.GetAsync(int, int, ValueTuple{Expression{Func{TEntity, object}}, SortDirection}, QueryTracking, Expression{Func{TEntity, object}}[])"/> is operating correctly.
         /// </summary>
         /// <returns>The task representing the asynchronous operation.</returns>
         [Fact]
@@ -272,7 +272,7 @@
         }
 
         /// <summary>
-        ///     Asserts that the <see cref="IReadableRepository{TEntity}.Get(ValueTuple{Expression{Func{TEntity, object}}, SortDirection}, QueryTracking, Expression{Func{TEntity, object}}[])"/> is operating correctly.
+        ///     Asserts that the <see cref="IReadableRepository{TEntity}.GetAsync(ValueTuple{Expression{Func{TEntity, object}}, SortDirection}, QueryTracking, Expression{Func{TEntity, object}}[])"/> is operating correctly.
         /// </summary>
         /// <returns>The task representing the asynchronous operation.</returns>
         [Fact]
@@ -295,7 +295,7 @@
         }
 
         /// <summary>
-        ///     Asserts that the <see cref="IReadableRepository{TEntity}.Get(int, int, ValueTuple{Expression{Func{TEntity, object}}, SortDirection}, QueryTracking, Expression{Func{TEntity, object}}[])"/> is operating correctly.
+        ///     Asserts that the <see cref="IReadableRepository{TEntity}.GetAsync(int, int, ValueTuple{Expression{Func{TEntity, object}}, SortDirection}, QueryTracking, Expression{Func{TEntity, object}}[])"/> is operating correctly.
         /// </summary>
         /// <returns>The task representing the asynchronous operation.</returns>
         [Fact]
@@ -323,7 +323,49 @@
         }
 
         /// <summary>
-        ///     Asserts that the <see cref="IReadableRepository{TEntity}.Max{TResult}(Expression{Func{TEntity, TResult}})"/> is operating correctly.
+        ///     Asserts that the <see cref="IReadableRepository{TEntity}.GetSingleAsync(ValueTuple{Expression{Func{TEntity, object}}, SortDirection}, QueryTracking, Expression{Func{TEntity, object}}[])"/> is operating correctly.
+        /// </summary>
+        /// <returns>The task representing the asynchronous operation.</returns>
+        [Fact]
+        public async Task Asset_Get_Single_Entity_Is_Successful()
+        {
+            // Arrange
+            var person = await _databaseHelper.Query<Person>().OrderBy(t => t.Name).FirstOrDefaultAsync();
+
+            // Act
+            var result = await _personRepository.GetSingleAsync((t => t.Name, SortDirection.Ascending), QueryTracking.Default, t => t.Vehicles);
+
+            // Assert
+            Assert.NotNull(person);
+            Assert.NotNull(result);
+            Assert.Equal(person.Id, result.Id);
+            Assert.Equal(person.Name, result.Name);
+            Assert.NotEmpty(result.Vehicles);
+        }
+
+        /// <summary>
+        ///     Asserts that the <see cref="IReadableRepository{TEntity}.GetSingleAsync(ValueTuple{Expression{Func{TEntity, object}}, SortDirection}, QueryTracking, Expression{Func{TEntity, object}}[])"/> is operating correctly.
+        /// </summary>
+        /// <returns>The task representing the asynchronous operation.</returns>
+        [Fact]
+        public async Task Asset_Get_Single_Entity_With_Predicate_Is_Successful()
+        {
+            // Arrange
+            var person = DataGenerator.PickRandomItem(await _databaseHelper.Query<Person>().OrderBy(t => t.Name).ToListAsync());
+
+            // Act
+            var result = await _personRepository.GetSingleAsync(t => t.Id == person.Id && t.Name == person.Name, (t => t.Name, SortDirection.Ascending), QueryTracking.TrackAll, t => t.Vehicles);
+
+            // Assert
+            Assert.NotNull(person);
+            Assert.NotNull(result);
+            Assert.Equal(person.Id, result.Id);
+            Assert.Equal(person.Name, result.Name);
+            Assert.NotEmpty(result.Vehicles);
+        }
+
+        /// <summary>
+        ///     Asserts that the <see cref="IReadableRepository{TEntity}.MaxAsync{TResult}(Expression{Func{TEntity, TResult}})"/> is operating correctly.
         /// </summary>
         /// <returns>The task representing the asynchronous operation.</returns>
         [Fact]
@@ -340,7 +382,7 @@
         }
 
         /// <summary>
-        ///     Asserts that the <see cref="IReadableRepository{TEntity}.Max{TResult}(Expression{Func{TEntity, TResult}}, Expression{Func{TEntity, bool}})"/> is operating correctly.
+        ///     Asserts that the <see cref="IReadableRepository{TEntity}.MaxAsync{TResult}(Expression{Func{TEntity, TResult}}, Expression{Func{TEntity, bool}})"/> is operating correctly.
         /// </summary>
         /// <returns>The task representing the asynchronous operation.</returns>
         [Fact]
@@ -358,7 +400,7 @@
         }
 
         /// <summary>
-        ///     Asserts that the <see cref="IReadableRepository{TEntity}.Min{TResult}(Expression{Func{TEntity, TResult}})"/> is operating correctly.
+        ///     Asserts that the <see cref="IReadableRepository{TEntity}.MinAsync{TResult}(Expression{Func{TEntity, TResult}})"/> is operating correctly.
         /// </summary>
         /// <returns>The task representing the asynchronous operation.</returns>
         [Fact]
@@ -375,7 +417,7 @@
         }
 
         /// <summary>
-        ///     Asserts that the <see cref="IReadableRepository{TEntity}.Min{TResult}(Expression{Func{TEntity, TResult}}, Expression{Func{TEntity, bool}})"/> is operating correctly.
+        ///     Asserts that the <see cref="IReadableRepository{TEntity}.MinAsync{TResult}(Expression{Func{TEntity, TResult}}, Expression{Func{TEntity, bool}})"/> is operating correctly.
         /// </summary>
         /// <returns>The task representing the asynchronous operation.</returns>
         [Fact]

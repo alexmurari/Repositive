@@ -87,11 +87,19 @@
             _vehicleUoWRepository.Add(new Vehicle { Type = VehicleType.Car });
             _manufacturerUoWRepository.Add(new Manufacturer { Name = "Bar" });
 
+            var registeredRepoCount = default(int);
+
+            _unitOfWork.Committing += (sender, args) =>
+            {
+                registeredRepoCount = args.RegisteredRepositories.Count;
+            };
+
             // Act
             var commitAction = new Func<int>(_unitOfWork.Commit);
 
             // Assert
             Assert.Raises<UnitOfWorkCommittingEventArgs>(e => _unitOfWork.Committing += e, e => _unitOfWork.Committing -= e, () => commitAction());
+            Assert.Equal(3, registeredRepoCount);
         }
         
         /// <summary>
@@ -105,11 +113,22 @@
             _vehicleUoWRepository.Add(new Vehicle { Type = VehicleType.Car });
             _manufacturerUoWRepository.Add(new Manufacturer { Name = "Bar" });
 
+            var affectedEntriesCount = default(int);
+            var registeredRepoCount = default(int);
+
+            _unitOfWork.Committed += (sender, args) =>
+            {
+                affectedEntriesCount = args.AffectedEntries;
+                registeredRepoCount = args.RegisteredRepositories.Count;
+            };
+
             // Act
             var commitAction = new Func<int>(_unitOfWork.Commit);
 
             // Assert
             Assert.Raises<UnitOfWorkCommittedEventArgs>(e => _unitOfWork.Committed += e, e => _unitOfWork.Committed -= e, () => commitAction());
+            Assert.Equal(3, registeredRepoCount);
+            Assert.Equal(3, affectedEntriesCount);
         }
 
         /// <summary>

@@ -1,6 +1,7 @@
 ﻿namespace Repositive.EntityFrameworkCore.Tests.Utilities
 {
     using System.Linq;
+    using Microsoft.EntityFrameworkCore;
     using Repositive.EntityFrameworkCore.Tests.Utilities.Context;
 
     /// <summary>
@@ -38,12 +39,15 @@
         /// <summary>
         ///     Gets an empty query for selecting entities of the provided type.
         /// </summary>
+        /// <param name="noTracking">
+        ///     The value that indicates whether the entities returned from this query should be tracked by the context.
+        /// </param>
         /// <typeparam name="TEntity">
         ///     The entity type.
         /// </typeparam>
         /// <returns>
         ///     The database query for selecting instances of <typeparamref name="TEntity"/>.
         /// </returns>
-        public IQueryable<TEntity> Query<TEntity>() where TEntity : class => _databaseContext.Set<TEntity>();
+        public IQueryable<TEntity> Query<TEntity>(bool noTracking = true) where TEntity : class => noTracking ? _databaseContext.Set<TEntity>().AsNoTracking() : _databaseContext.Set<TEntity>();
     }
 }

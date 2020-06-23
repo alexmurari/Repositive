@@ -48,8 +48,7 @@ namespace Repositive.EntityFrameworkCore.Tests
             services
                 .AddDbContext<RepositiveContext>(t => t.UseInMemoryDatabase(DatabaseName))
                 .AddScoped<IPersonRepository, PersonRepository>()
-                .AddScoped<IVehicleRepository, VehicleRepository>()
-                .AddScoped<IManufacturerRepository, ManufacturerRepository>();
+                .AddScoped<IVehicleRepository, VehicleRepository>();
 
             // Unit of Work
             services

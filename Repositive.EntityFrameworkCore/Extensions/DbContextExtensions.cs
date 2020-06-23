@@ -1,12 +1,14 @@
 ﻿namespace Repositive.EntityFrameworkCore.Extensions
 {
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata;
 
     /// <summary>
     ///     Provides extension methods to the <see cref="DbContext" /> class.
     /// </summary>
+    [ExcludeFromCodeCoverage]
     internal static class DbContextExtensions
     {
         /// <summary>

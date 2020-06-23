@@ -163,7 +163,7 @@
 
             // Assert
             Assert.NotNull(person);
-            Assert.DoesNotContain(person.Vehicles, t => t.Type == VehicleType.Motorcycle);
+            Assert.DoesNotContain(person.Vehicles, t => t.Type.Equals(VehicleType.Motorcycle));
         }
     }
 }
