@@ -51,8 +51,8 @@
             var person = DataGenerator.PickRandomItem(await _databaseHelper.Query<Person>().ToListAsync());
 
             // Act
-            await _personRepository.UpdateAsync(person).ConfigureAwait(false);
-            var affectedEntries = await _personRepository.CommitAsync().ConfigureAwait(false);
+            await _personRepository.UpdateAsync(person);
+            var affectedEntries = await _personRepository.CommitAsync();
 
             // Assert
             Assert.Equal(1, affectedEntries);
@@ -69,8 +69,8 @@
             var persons = DataGenerator.PickRandomItemRange(await _databaseHelper.Query<Person>().ToListAsync(), 50);
 
             // Act
-            await _personRepository.UpdateRangeAsync(persons).ConfigureAwait(false);
-            var affectedEntries = await _personRepository.CommitAsync().ConfigureAwait(false);
+            await _personRepository.UpdateRangeAsync(persons);
+            var affectedEntries = await _personRepository.CommitAsync();
 
             // Assert
             Assert.Equal(persons.Count, affectedEntries);
@@ -87,8 +87,8 @@
             var person = DataGenerator.PickRandomItem(await _databaseHelper.Query<Person>().ToListAsync());
 
             // Act
-            await _personRepository.UpdateAsync(person, true).ConfigureAwait(false);
-            var affectedEntries = await _personRepository.CommitAsync().ConfigureAwait(false);
+            await _personRepository.UpdateAsync(person, true);
+            var affectedEntries = await _personRepository.CommitAsync();
 
             // Assert
             Assert.Equal(person.CountRelatedEntities() + 1, affectedEntries);
@@ -105,8 +105,8 @@
             var persons = DataGenerator.PickRandomItemRange(await _databaseHelper.Query<Person>().ToListAsync(), 50);
 
             // Act
-            await _personRepository.UpdateRangeAsync(persons, true).ConfigureAwait(false);
-            var affectedEntries = await _personRepository.CommitAsync().ConfigureAwait(false);
+            await _personRepository.UpdateRangeAsync(persons, true);
+            var affectedEntries = await _personRepository.CommitAsync();
 
             // Assert
             Assert.Equal(persons.Sum(t => t.CountRelatedEntities() + 1), affectedEntries);

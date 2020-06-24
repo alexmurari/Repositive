@@ -63,7 +63,7 @@
             var vehicle = DataGenerator.PickRandomItem(await _databaseHelper.Query<Vehicle>().ToListAsync());
 
             // Act
-            vehicle = await _vehicleRepository.LoadRelatedAsync(vehicle, t => t.Manufacturer).ConfigureAwait(false);
+            vehicle = await _vehicleRepository.LoadRelatedAsync(vehicle, t => t.Manufacturer);
 
             // Assert
             Assert.NotNull(vehicle);
@@ -82,7 +82,7 @@
             var vehicle = DataGenerator.PickRandomItem(await _databaseHelper.Query<Vehicle>().ToListAsync());
 
             // Act
-            vehicle = await _vehicleRepository.LoadRelatedAsync(vehicle, t => t.Manufacturer, t => t.Subsidiaries).ConfigureAwait(false);
+            vehicle = await _vehicleRepository.LoadRelatedAsync(vehicle, t => t.Manufacturer, t => t.Subsidiaries);
 
             // Assert
             Assert.NotNull(vehicle);
@@ -102,7 +102,7 @@
             var manufacturerId = vehicle.ManufacturerId;
 
             // Act
-            vehicle = await _vehicleRepository.LoadRelatedAsync(vehicle, t => t.Manufacturer, t => t.Id != manufacturerId).ConfigureAwait(false);
+            vehicle = await _vehicleRepository.LoadRelatedAsync(vehicle, t => t.Manufacturer, t => t.Id != manufacturerId);
 
             // Assert
             Assert.NotNull(vehicle);
@@ -120,7 +120,7 @@
             var person = DataGenerator.PickRandomItem(await _databaseHelper.Query<Person>().ToListAsync());
 
             // Act
-            person = await _personRepository.LoadRelatedCollectionAsync(person, t => t.Vehicles).ConfigureAwait(false);
+            person = await _personRepository.LoadRelatedCollectionAsync(person, t => t.Vehicles);
 
             // Assert
             Assert.NotNull(person);
@@ -139,7 +139,7 @@
             var person = DataGenerator.PickRandomItem(await _databaseHelper.Query<Person>().ToListAsync());
 
             // Act
-            person = await _personRepository.LoadRelatedCollectionAsync(person, t => t.Vehicles, t => t.Manufacturer.Subsidiaries).ConfigureAwait(false);
+            person = await _personRepository.LoadRelatedCollectionAsync(person, t => t.Vehicles, t => t.Manufacturer.Subsidiaries);
 
             // Assert
             Assert.NotNull(person);
@@ -159,7 +159,7 @@
             var person = DataGenerator.PickRandomItem(await _databaseHelper.Query<Person>().Where(t => t.Vehicles.Any(x => x.Type == VehicleType.Motorcycle)).ToListAsync());
 
             // Act
-            person = await _personRepository.LoadRelatedCollectionAsync(person, t => t.Vehicles, t => t.Type == VehicleType.Car).ConfigureAwait(false);
+            person = await _personRepository.LoadRelatedCollectionAsync(person, t => t.Vehicles, t => t.Type == VehicleType.Car);
 
             // Assert
             Assert.NotNull(person);

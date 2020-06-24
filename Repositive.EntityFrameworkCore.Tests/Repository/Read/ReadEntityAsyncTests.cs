@@ -50,7 +50,7 @@
         public async Task Assert_Any_Entity_Async_Is_Successful()
         {
             // Arrange
-            var any = _databaseHelper.Query<Person>().Any();
+            var any = await _databaseHelper.Query<Person>().AnyAsync();
 
             // Act
             var result = await _personRepository.AnyAsync();
@@ -283,7 +283,7 @@
             (Expression<Func<Person, object>> keySelector, SortDirection direction) orderBy = (t => t.Name, SortDirection.Descending);
 
             var persons = _databaseHelper.Query<Person>().Where(predicate).Include(t => t.Vehicles).ThenInclude(t => t.Manufacturer);
-            var orderedPersons = orderBy.direction == SortDirection.Ascending ? await persons.OrderBy(orderBy.keySelector).ToListAsync() : await persons.OrderByDescending(orderBy.keySelector).ToListAsync();
+            var orderedPersons = await(orderBy.direction == SortDirection.Ascending ? persons.OrderBy(orderBy.keySelector) : persons.OrderByDescending(orderBy.keySelector)).ToListAsync();
 
             // Act
             var result = (await _personRepository.GetAsync(predicate, orderBy, QueryTracking.NoTracking, t => t.Vehicles.Select(x => x.Manufacturer))).ToList();
