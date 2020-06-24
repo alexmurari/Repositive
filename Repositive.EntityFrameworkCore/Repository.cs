@@ -1067,7 +1067,7 @@
 
             BeginEntityTracking(entity);
 
-            await entry.Reference(navigationProperty).Query().Include(includes).LoadAsync();
+            await entry.Reference(navigationProperty).Query().Include(includes).LoadAsync().ConfigureAwait(false);
 
             return entry.Entity;
         }
@@ -1102,7 +1102,7 @@
 
             BeginEntityTracking(entity);
 
-            await entry.Reference(navigationProperty).Query().Include(includes).Where(predicate).LoadAsync();
+            await entry.Reference(navigationProperty).Query().Include(includes).Where(predicate).LoadAsync().ConfigureAwait(false);
 
             return entry.Entity;
         }
@@ -1197,7 +1197,7 @@
 
             BeginEntityTracking(entity);
 
-            await entry.Collection(navigationProperty).Query().Include(includes).LoadAsync();
+            await entry.Collection(navigationProperty).Query().Include(includes).LoadAsync().ConfigureAwait(false);
 
             return entry.Entity;
         }
@@ -1232,7 +1232,7 @@
 
             BeginEntityTracking(entity);
 
-            await entry.Collection(navigationProperty).Query().Include(includes).Where(predicate).LoadAsync();
+            await entry.Collection(navigationProperty).Query().Include(includes).Where(predicate).LoadAsync().ConfigureAwait(false);
 
             return entry.Entity;
         }
