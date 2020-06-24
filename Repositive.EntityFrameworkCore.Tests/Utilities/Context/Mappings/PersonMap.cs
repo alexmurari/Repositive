@@ -2,7 +2,6 @@
 {
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
-    using Repositive.EntityFrameworkCore.Tests.Utilities.Entities;
 
     /// <summary>
     ///     Provides database configuration for the <see cref="Person"/> entity.

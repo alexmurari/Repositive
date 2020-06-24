@@ -1,4 +1,4 @@
-﻿namespace Repositive.EntityFrameworkCore.Tests.Utilities.Entities.Enums
+﻿namespace Repositive.EntityFrameworkCore.Tests.Utilities
 {
     /// <summary>
     ///     Types of vehicles.

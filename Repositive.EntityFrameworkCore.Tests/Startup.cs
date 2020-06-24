@@ -14,7 +14,8 @@ namespace Repositive.EntityFrameworkCore.Tests
     using Repositive.EntityFrameworkCore.Tests.Utilities;
     using Repositive.EntityFrameworkCore.Tests.Utilities.Context;
     using Repositive.EntityFrameworkCore.Tests.Utilities.Repositories;
-    using Repositive.EntityFrameworkCore.Tests.Utilities.Repositories.Contracts;
+    using Repositive.EntityFrameworkCore.Tests.Utilities.Repositories.Standard;
+    using Repositive.EntityFrameworkCore.Tests.Utilities.Repositories.UnitOfWork;
     using Xunit.Abstractions;
     using Xunit.DependencyInjection;
 

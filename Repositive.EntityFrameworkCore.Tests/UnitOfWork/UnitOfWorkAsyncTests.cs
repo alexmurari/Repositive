@@ -1,12 +1,12 @@
 ﻿namespace Repositive.EntityFrameworkCore.Tests.UnitOfWork
 {
     using System;
+    using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
     using Repositive.Abstractions;
-    using Repositive.EntityFrameworkCore.Tests.Utilities.Entities;
-    using Repositive.EntityFrameworkCore.Tests.Utilities.Entities.Enums;
-    using Repositive.EntityFrameworkCore.Tests.Utilities.Repositories.Contracts;
+    using Repositive.EntityFrameworkCore.Tests.Utilities;
+    using Repositive.EntityFrameworkCore.Tests.Utilities.Repositories.UnitOfWork;
     using Xunit;
 
     /// <summary>
@@ -91,11 +91,11 @@
             await _vehicleUoWRepository.AddAsync(new Vehicle { Type = VehicleType.Car });
             await _manufacturerUoWRepository.AddAsync(new Manufacturer { Name = "Bar" });
 
-            var registeredRepoCount = default(int);
+            var registeredRepos = default(IReadOnlyCollection<string>);
 
             _unitOfWork.Committing += (sender, args) =>
             {
-                registeredRepoCount = args.RegisteredRepositories.Count;
+                registeredRepos = args.RegisteredRepositories;
             };
 
             // Act
@@ -103,7 +103,10 @@
 
             // Assert
             await Assert.RaisesAsync<UnitOfWorkCommittingEventArgs>(e => _unitOfWork.Committing += e, e => _unitOfWork.Committing -= e, () => commitAction(default));
-            Assert.Equal(3, registeredRepoCount);
+            Assert.Equal(3, registeredRepos.Count);
+            Assert.Contains(_personUoWRepository.GetType().Name, registeredRepos);
+            Assert.Contains(_vehicleUoWRepository.GetType().Name, registeredRepos);
+            Assert.Contains(_manufacturerUoWRepository.GetType().Name, registeredRepos);
         }
 
         /// <summary>
@@ -119,12 +122,12 @@
             await _manufacturerUoWRepository.AddAsync(new Manufacturer { Name = "Bar" });
 
             var affectedEntriesCount = default(int);
-            var registeredRepoCount = default(int);
+            var registeredRepos = default(IReadOnlyCollection<string>);
 
             _unitOfWork.Committed += (sender, args) =>
             {
                 affectedEntriesCount = args.AffectedEntries;
-                registeredRepoCount = args.RegisteredRepositories.Count;
+                registeredRepos = args.RegisteredRepositories;
             };
 
             // Act
@@ -132,8 +135,11 @@
 
             // Assert
             await Assert.RaisesAsync<UnitOfWorkCommittedEventArgs>(e => _unitOfWork.Committed += e, e => _unitOfWork.Committed -= e, () => commitAction(default));
-            Assert.Equal(3, registeredRepoCount);
             Assert.Equal(3, affectedEntriesCount);
+            Assert.Equal(3, registeredRepos.Count);
+            Assert.Contains(_personUoWRepository.GetType().Name, registeredRepos);
+            Assert.Contains(_vehicleUoWRepository.GetType().Name, registeredRepos);
+            Assert.Contains(_manufacturerUoWRepository.GetType().Name, registeredRepos);
         }
 
         /// <summary>

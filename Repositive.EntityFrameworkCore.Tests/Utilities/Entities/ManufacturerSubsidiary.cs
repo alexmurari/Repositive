@@ -1,4 +1,4 @@
-﻿namespace Repositive.EntityFrameworkCore.Tests.Utilities.Entities
+﻿namespace Repositive.EntityFrameworkCore.Tests.Utilities
 {
     /// <summary>
     ///     Represents an subsidiary of a vehicle manufacturer.
