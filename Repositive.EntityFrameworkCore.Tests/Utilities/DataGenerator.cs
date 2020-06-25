@@ -2,7 +2,6 @@
 {
     using System.Collections.Generic;
     using Bogus;
-    using Person = Repositive.EntityFrameworkCore.Tests.Utilities.Person;
 
     /// <summary>
     ///     Provides static methods for generating fake data for testing purposes.
@@ -10,9 +9,9 @@
     internal static class DataGenerator
     {
         /// <summary>
-        ///     The person faker. Generates fake <see cref="Utilities.Person"/> objects.
+        ///     The person faker. Generates fake <see cref="Person"/> objects.
         /// </summary>
-        private static readonly Faker<Utilities.Person> PersonFaker = new Faker<Utilities.Person>()
+        private static readonly Faker<Person> PersonFaker = new Faker<Person>()
             .RuleFor(t => t.Name, t => t.Name.FirstName())
             .RuleFor(t => t.Vehicles, t => VehicleFaker.Generate(t.Random.Int(2, 5)));
 
@@ -42,7 +41,7 @@
         private static readonly Randomizer Random = new Randomizer();
 
         /// <summary>
-        ///     Generates and returns a collection of <see cref="Utilities.Person"/> objects filled with data.
+        ///     Generates and returns a collection of <see cref="Person"/> objects filled with data.
         /// </summary>
         /// <param name="count">
         ///     The number of objects to be generated.
@@ -50,7 +49,7 @@
         /// <returns>
         ///     The collection of objects.
         /// </returns>
-        internal static IList<Utilities.Person> GeneratePersons(int count = 500)
+        internal static IList<Person> GeneratePersons(int count = 500)
         {
             return PersonFaker.Generate(count);
         }

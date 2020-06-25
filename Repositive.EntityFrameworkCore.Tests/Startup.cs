@@ -13,7 +13,6 @@ namespace Repositive.EntityFrameworkCore.Tests
     using Repositive.Abstractions;
     using Repositive.EntityFrameworkCore.Tests.Utilities;
     using Repositive.EntityFrameworkCore.Tests.Utilities.Context;
-    using Repositive.EntityFrameworkCore.Tests.Utilities.Repositories;
     using Repositive.EntityFrameworkCore.Tests.Utilities.Repositories.Standard;
     using Repositive.EntityFrameworkCore.Tests.Utilities.Repositories.UnitOfWork;
     using Xunit.Abstractions;
