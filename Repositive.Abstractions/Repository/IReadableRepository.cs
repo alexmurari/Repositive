@@ -398,6 +398,20 @@
             params Expression<Func<TEntity, object>>[] includes);
 
         /// <summary>
+        ///     Gets the first entity of the provided type from the database that match the predicate condition.
+        /// </summary>
+        /// <param name="predicate">The predicate with the query condition.</param>
+        /// <param name="tracking">
+        ///     The query tracking behavior that defines whether or not the entity returned from the query should be tracked by the database context.
+        /// </param>
+        /// <param name="includes">The related entities to be included in the query.</param>
+        /// <returns>The entity fetched from the database.</returns>
+        TEntity GetSingle(
+            Expression<Func<TEntity, bool>> predicate,
+            QueryTracking tracking = QueryTracking.Default,
+            params Expression<Func<TEntity, object>>[] includes);
+
+        /// <summary>
         ///     Gets the first ordered entity of the provided type from the database.
         /// </summary>
         /// <param name="orderBy">The key and direction to sort the elements.</param>
@@ -424,6 +438,23 @@
         TEntity GetSingle(
             Expression<Func<TEntity, bool>> predicate,
             (Expression<Func<TEntity, object>> keySelector, SortDirection direction) orderBy,
+            QueryTracking tracking = QueryTracking.Default,
+            params Expression<Func<TEntity, object>>[] includes);
+
+        /// <summary>
+        ///     Asynchronously gets the first entity of the provided type from the database that match the predicate condition.
+        /// </summary>
+        /// <param name="predicate">The predicate with the query condition.</param>
+        /// <param name="tracking">
+        ///     The query tracking behavior that defines whether or not the entity returned from the query should be tracked by the database context.
+        /// </param>
+        /// <param name="includes">The related entities to be included in the query.</param>
+        /// <returns>
+        ///     A task that represents the asynchronous query operation.
+        ///     The task result contains the entity fetched from the database.
+        /// </returns>
+        Task<TEntity> GetSingleAsync(
+            Expression<Func<TEntity, bool>> predicate,
             QueryTracking tracking = QueryTracking.Default,
             params Expression<Func<TEntity, object>>[] includes);
 

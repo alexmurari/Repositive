@@ -307,10 +307,30 @@
         }
 
         /// <summary>
+        ///     Asserts that the <see cref="IReadableRepository{TEntity}.GetSingle(Expression{Func{TEntity, bool}}, QueryTracking, Expression{Func{TEntity, object}}[])"/> is operating correctly.
+        /// </summary>
+        [Fact]
+        public void Asset_Get_Single_Entity_With_Predicate_Is_Successful()
+        {
+            // Arrange
+            var person = DataGenerator.PickRandomItem(_databaseHelper.Query<Person>().ToList());
+
+            // Act
+            var result = _personRepository.GetSingle(t => t.Id == person.Id && t.Name == person.Name, QueryTracking.TrackAll, t => t.Vehicles);
+
+            // Assert
+            Assert.NotNull(person);
+            Assert.NotNull(result);
+            Assert.Equal(person.Id, result.Id);
+            Assert.Equal(person.Name, result.Name);
+            Assert.NotEmpty(result.Vehicles);
+        }
+
+        /// <summary>
         ///     Asserts that the <see cref="IReadableRepository{TEntity}.GetSingle(ValueTuple{Expression{Func{TEntity, object}}, SortDirection}, QueryTracking, Expression{Func{TEntity, object}}[])"/> is operating correctly.
         /// </summary>
         [Fact]
-        public void Asset_Get_Single_Entity_Is_Successful()
+        public void Asset_Get_Single_Entity_With_Ordering_Is_Successful()
         {
             // Arrange
             var person = _databaseHelper.Query<Person>().OrderBy(t => t.Name).FirstOrDefault();
@@ -327,10 +347,10 @@
         }
 
         /// <summary>
-        ///     Asserts that the <see cref="IReadableRepository{TEntity}.GetSingle(ValueTuple{Expression{Func{TEntity, object}}, SortDirection}, QueryTracking, Expression{Func{TEntity, object}}[])"/> is operating correctly.
+        ///     Asserts that the <see cref="IReadableRepository{TEntity}.GetSingle(Expression{Func{TEntity, bool}}, ValueTuple{Expression{Func{TEntity, object}}, SortDirection}, QueryTracking, Expression{Func{TEntity, object}}[])"/> is operating correctly.
         /// </summary>
         [Fact]
-        public void Asset_Get_Single_Entity_With_Predicate_Is_Successful()
+        public void Asset_Get_Single_Entity_With_Predicate_And_Ordering_Is_Successful()
         {
             // Arrange
             var person = DataGenerator.PickRandomItem(_databaseHelper.Query<Person>().OrderBy(t => t.Name).ToList());
