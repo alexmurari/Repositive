@@ -133,7 +133,7 @@
         /// </summary>
         /// <returns>The task representing the asynchronous operation.</returns>
         [Fact]
-        public async Task Assert_Get_Entity_Is_Successful()
+        public async Task Assert_Get_Entity_Async_Is_Successful()
         {
             // Arrange
             var persons = await _databaseHelper.Query<Person>().Include(t => t.Vehicles).ThenInclude(t => t.Manufacturer).ToListAsync();
@@ -152,7 +152,7 @@
         /// </summary>
         /// <returns>The task representing the asynchronous operation.</returns>
         [Fact]
-        public async Task Assert_Get_Entity_With_Pagination_Is_Successful()
+        public async Task Assert_Get_Entity_With_Pagination_Async_Is_Successful()
         {
             // Arrange
             const int Skip = 10;
@@ -178,7 +178,7 @@
         /// </summary>
         /// <returns>The task representing the asynchronous operation.</returns>
         [Fact]
-        public async Task Assert_Get_Entity_With_Predicate_Is_Successful()
+        public async Task Assert_Get_Entity_With_Predicate_Async_Is_Successful()
         {
             // Arrange
             Expression<Func<Person, bool>> predicate = t => t.Vehicles.Any(x => x.Type == VehicleType.Car);
@@ -198,7 +198,7 @@
         /// </summary>
         /// <returns>The task representing the asynchronous operation.</returns>
         [Fact]
-        public async Task Assert_Get_Entity_With_Predicate_And_Pagination_Is_Successful()
+        public async Task Assert_Get_Entity_With_Predicate_And_Pagination_Async_Is_Successful()
         {
             // Arrange
             const int Skip = 10;
@@ -221,20 +221,17 @@
         }
 
         /// <summary>
-        ///     Asserts that the <see cref="IReadableRepository{TEntity}.GetAsync(ValueTuple{Expression{Func{TEntity, object}}, SortDirection}, QueryTracking, Expression{Func{TEntity, object}}[])"/> is operating correctly.
+        ///     Asserts that the <see cref="IReadableRepository{TEntity}.Get(Func{ICollectionOrderer{TEntity}, IOrderedCollection{TEntity}}, QueryTracking, Expression{Func{TEntity, object}}[])"/> is operating correctly.
         /// </summary>
         /// <returns>The task representing the asynchronous operation.</returns>
         [Fact]
-        public async Task Assert_Get_Entity_With_Ordering_Is_Successful()
+        public async Task Assert_Get_Entity_With_Ordering_Async_Is_Successful()
         {
             // Arrange
-            (Expression<Func<Person, object>> keySelector, SortDirection direction) orderBy = (t => t.Name, SortDirection.Descending);
-
-            var persons = _databaseHelper.Query<Person>().Include(t => t.Vehicles).ThenInclude(t => t.Manufacturer);
-            var orderedPersons = orderBy.direction == SortDirection.Ascending ? await persons.OrderBy(orderBy.keySelector).ToListAsync() : await persons.OrderByDescending(orderBy.keySelector).ToListAsync();
+            var orderedPersons = await _databaseHelper.Query<Person>().Include(t => t.Vehicles).ThenInclude(t => t.Manufacturer).OrderByDescending(x => x.Id).ThenBy(t => t.Name).ToListAsync();
 
             // Act
-            var result = (await _personRepository.GetAsync(orderBy, QueryTracking.NoTracking, t => t.Vehicles.Select(x => x.Manufacturer))).ToList();
+            var result = (await _personRepository.GetAsync(t => t.OrderByDescending(x => x.Id).ThenBy(x => x.Name), QueryTracking.NoTracking, t => t.Vehicles.Select(x => x.Manufacturer))).ToList();
 
             // Assert
             Assert.Equal(orderedPersons.Select(t => t.Id), result.Select(t => t.Id));
@@ -243,23 +240,22 @@
         }
 
         /// <summary>
-        ///     Asserts that the <see cref="IReadableRepository{TEntity}.GetAsync(int, int, ValueTuple{Expression{Func{TEntity, object}}, SortDirection}, QueryTracking, Expression{Func{TEntity, object}}[])"/> is operating correctly.
+        ///     Asserts that the <see cref="IReadableRepository{TEntity}.Get(int, int, Func{ICollectionOrderer{TEntity}, IOrderedCollection{TEntity}}, QueryTracking, Expression{Func{TEntity, object}}[])"/> is operating correctly.
         /// </summary>
         /// <returns>The task representing the asynchronous operation.</returns>
         [Fact]
-        public async Task Assert_Get_Entity_With_Ordering_And_Pagination_Is_Successful()
+        public async Task Assert_Get_Entity_With_Ordering_And_Pagination_Async_Is_Successful()
         {
             // Arrange
             const int Skip = 10;
             const int Take = 10;
-            (Expression<Func<Person, object>> keySelector, SortDirection direction) orderBy = (t => t.Name, SortDirection.Descending);
 
             var persons = _databaseHelper.Query<Person>().Include(t => t.Vehicles).ThenInclude(t => t.Manufacturer);
             var totalPersons = await persons.CountAsync();
-            var orderedPaginatedPersons = await(orderBy.direction == SortDirection.Ascending ? persons.OrderBy(orderBy.keySelector) : persons.OrderByDescending(orderBy.keySelector)).Skip(Skip).Take(Take).ToListAsync();
+            var orderedPaginatedPersons = await persons.OrderBy(t => t.Vehicles.Count).ThenByDescending(t => t.Id).Skip(Skip).Take(Take).ToListAsync();
 
             // Act
-            var (result, count) = await _personRepository.GetAsync(Skip, Take, orderBy, QueryTracking.NoTracking, t => t.Vehicles.Select(x => x.Manufacturer));
+            var (result, count) = await _personRepository.GetAsync(Skip, Take, t => t.OrderBy(x => x.Vehicles.Count).ThenByDescending(x => x.Id), QueryTracking.NoTracking, t => t.Vehicles.Select(x => x.Manufacturer));
             result = result.ToList();
 
             // Assert
@@ -270,21 +266,20 @@
         }
 
         /// <summary>
-        ///     Asserts that the <see cref="IReadableRepository{TEntity}.GetAsync(ValueTuple{Expression{Func{TEntity, object}}, SortDirection}, QueryTracking, Expression{Func{TEntity, object}}[])"/> is operating correctly.
+        ///     Asserts that the <see cref="IReadableRepository{TEntity}.Get(Func{ICollectionOrderer{TEntity}, IOrderedCollection{TEntity}}, QueryTracking, Expression{Func{TEntity, object}}[])"/> is operating correctly.
         /// </summary>
         /// <returns>The task representing the asynchronous operation.</returns>
         [Fact]
-        public async Task Assert_Get_Entity_With_Predicate_And_Ordering_Is_Successful()
+        public async Task Assert_Get_Entity_With_Predicate_And_Ordering_Async_Is_Successful()
         {
             // Arrange
             Expression<Func<Person, bool>> predicate = t => t.Vehicles.Any(x => x.Type == VehicleType.Car);
-            (Expression<Func<Person, object>> keySelector, SortDirection direction) orderBy = (t => t.Name, SortDirection.Descending);
 
             var persons = _databaseHelper.Query<Person>().Where(predicate).Include(t => t.Vehicles).ThenInclude(t => t.Manufacturer);
-            var orderedPersons = await(orderBy.direction == SortDirection.Ascending ? persons.OrderBy(orderBy.keySelector) : persons.OrderByDescending(orderBy.keySelector)).ToListAsync();
+            var orderedPersons = await persons.OrderByDescending(t => t.Id).ThenBy(t => t.Name).ToListAsync();
 
             // Act
-            var result = (await _personRepository.GetAsync(predicate, orderBy, QueryTracking.NoTracking, t => t.Vehicles.Select(x => x.Manufacturer))).ToList();
+            var result = (await _personRepository.GetAsync(predicate, t => t.OrderByDescending(x => x.Id).ThenBy(x => x.Name), QueryTracking.NoTracking, t => t.Vehicles.Select(x => x.Manufacturer))).ToList();
 
             // Assert
             Assert.Equal(orderedPersons.Select(t => t.Id), result.Select(t => t.Id));
@@ -293,24 +288,23 @@
         }
 
         /// <summary>
-        ///     Asserts that the <see cref="IReadableRepository{TEntity}.GetAsync(int, int, ValueTuple{Expression{Func{TEntity, object}}, SortDirection}, QueryTracking, Expression{Func{TEntity, object}}[])"/> is operating correctly.
+        ///     Asserts that the <see cref="IReadableRepository{TEntity}.Get(int, int, Func{ICollectionOrderer{TEntity}, IOrderedCollection{TEntity}}, QueryTracking, Expression{Func{TEntity, object}}[])"/> is operating correctly.
         /// </summary>
         /// <returns>The task representing the asynchronous operation.</returns>
         [Fact]
-        public async Task Assert_Get_Entity_With_Predicate_Ordering_And_Pagination_Is_Successful()
+        public async Task Assert_Get_Entity_With_Predicate_Ordering_And_Pagination_Async_Is_Successful()
         {
             // Arrange
             const int Skip = 10;
             const int Take = 10;
             Expression<Func<Person, bool>> predicate = t => t.Vehicles.Any(x => x.Type == VehicleType.Car);
-            (Expression<Func<Person, object>> keySelector, SortDirection direction) orderBy = (t => t.Name, SortDirection.Descending);
 
             var persons = _databaseHelper.Query<Person>().Where(predicate).Include(t => t.Vehicles).ThenInclude(t => t.Manufacturer);
             var totalPersons = await persons.CountAsync();
-            var orderedPaginatedPersons = await(orderBy.direction == SortDirection.Ascending ? persons.OrderBy(orderBy.keySelector) : persons.OrderByDescending(orderBy.keySelector)).Skip(Skip).Take(Take).ToListAsync();
+            var orderedPaginatedPersons = await persons.OrderBy(t => t.Vehicles.Count).ThenByDescending(t => t.Id).Skip(Skip).Take(Take).ToListAsync();
 
             // Act
-            var (result, count) = await _personRepository.GetAsync(Skip, Take, predicate, orderBy, QueryTracking.NoTracking, t => t.Vehicles.Select(x => x.Manufacturer));
+            var (result, count) = await _personRepository.GetAsync(Skip, Take, predicate, t => t.OrderBy(x => x.Vehicles.Count).ThenByDescending(x => x.Id), QueryTracking.NoTracking, t => t.Vehicles.Select(x => x.Manufacturer));
             result = result.ToList();
 
             // Assert
@@ -325,7 +319,7 @@
         /// </summary>
         /// <returns>The task representing the asynchronous operation.</returns>
         [Fact]
-        public async Task Asset_Get_Single_Entity_With_Predicate_Is_Successful()
+        public async Task Asset_Get_Single_Entity_With_Predicate_Async_Is_Successful()
         {
             // Arrange
             var person = DataGenerator.PickRandomItem(await _databaseHelper.Query<Person>().ToListAsync());
@@ -342,17 +336,17 @@
         }
 
         /// <summary>
-        ///     Asserts that the <see cref="IReadableRepository{TEntity}.GetSingleAsync(ValueTuple{Expression{Func{TEntity, object}}, SortDirection}, QueryTracking, Expression{Func{TEntity, object}}[])"/> is operating correctly.
+        ///     Asserts that the <see cref="IReadableRepository{TEntity}.GetSingle(Func{ICollectionOrderer{TEntity}, IOrderedCollection{TEntity}}, QueryTracking, Expression{Func{TEntity, object}}[])"/> is operating correctly.
         /// </summary>
         /// <returns>The task representing the asynchronous operation.</returns>
         [Fact]
-        public async Task Asset_Get_Single_Entity_With_Ordering_Is_Successful()
+        public async Task Asset_Get_Single_Entity_With_Ordering_Async_Is_Successful()
         {
             // Arrange
             var person = await _databaseHelper.Query<Person>().OrderBy(t => t.Name).FirstOrDefaultAsync();
 
             // Act
-            var result = await _personRepository.GetSingleAsync((t => t.Name, SortDirection.Ascending), QueryTracking.Default, t => t.Vehicles);
+            var result = await _personRepository.GetSingleAsync(t => t.OrderBy(x => x.Name), QueryTracking.Default, t => t.Vehicles);
 
             // Assert
             Assert.NotNull(person);
@@ -363,17 +357,17 @@
         }
 
         /// <summary>
-        ///     Asserts that the <see cref="IReadableRepository{TEntity}.GetSingleAsync(Expression{Func{TEntity, bool}}, ValueTuple{Expression{Func{TEntity, object}}, SortDirection}, QueryTracking, Expression{Func{TEntity, object}}[])"/> is operating correctly.
+        ///     Asserts that the <see cref="IReadableRepository{TEntity}.GetSingle(Func{ICollectionOrderer{TEntity}, IOrderedCollection{TEntity}}, QueryTracking, Expression{Func{TEntity, object}}[])"/> is operating correctly.
         /// </summary>
         /// <returns>The task representing the asynchronous operation.</returns>
         [Fact]
-        public async Task Asset_Get_Single_Entity_With_Predicate_And_Ordering_Is_Successful()
+        public async Task Asset_Get_Single_Entity_With_Predicate_And_Ordering_Async_Is_Successful()
         {
             // Arrange
-            var person = DataGenerator.PickRandomItem(await _databaseHelper.Query<Person>().OrderBy(t => t.Name).ToListAsync());
+            var person = DataGenerator.PickRandomItem(await _databaseHelper.Query<Person>().OrderByDescending(t => t.Name).ToListAsync());
 
             // Act
-            var result = await _personRepository.GetSingleAsync(t => t.Id == person.Id && t.Name == person.Name, (t => t.Name, SortDirection.Ascending), QueryTracking.TrackAll, t => t.Vehicles);
+            var result = await _personRepository.GetSingleAsync(t => t.Id == person.Id && t.Name == person.Name, t => t.OrderByDescending(x => x.Name), QueryTracking.TrackAll, t => t.Vehicles);
 
             // Assert
             Assert.NotNull(person);
@@ -388,7 +382,7 @@
         /// </summary>
         /// <returns>The task representing the asynchronous operation.</returns>
         [Fact]
-        public async Task Assert_Max_Entity_Is_Successful()
+        public async Task Assert_Max_Entity_Async_Is_Successful()
         {
             // Arrange
             var maxValue = await _databaseHelper.Query<Person>().MaxAsync(t => t.Name.Length);
@@ -405,7 +399,7 @@
         /// </summary>
         /// <returns>The task representing the asynchronous operation.</returns>
         [Fact]
-        public async Task Assert_Max_Entity_With_Predicate_Is_Successful()
+        public async Task Assert_Max_Entity_With_Predicate_Async_Is_Successful()
         {
             // Arrange
             Expression<Func<Person, bool>> predicate = t => t.Vehicles.Any(x => x.Type == VehicleType.Car);
@@ -423,7 +417,7 @@
         /// </summary>
         /// <returns>The task representing the asynchronous operation.</returns>
         [Fact]
-        public async Task Assert_Min_Entity_Is_Successful()
+        public async Task Assert_Min_Entity_Async_Is_Successful()
         {
             // Arrange
             var minValue = await _databaseHelper.Query<Person>().MinAsync(t => t.Name.Length);
@@ -440,7 +434,7 @@
         /// </summary>
         /// <returns>The task representing the asynchronous operation.</returns>
         [Fact]
-        public async Task Assert_Min_Entity_With_Predicate_Is_Successful()
+        public async Task Assert_Min_Entity_With_Predicate_Async_Is_Successful()
         {
             // Arrange
             Expression<Func<Person, bool>> predicate = t => t.Vehicles.Any(x => x.Type == VehicleType.Car);

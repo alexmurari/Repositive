@@ -66,13 +66,13 @@
         }
 
         /// <summary>
-        ///     Sorts the elements of a sequence according to the specified key and order.
+        ///     Sorts the elements of a sequence according to the specified sorting function.
         /// </summary>
         /// <param name="query">
         ///     The source <see cref="IQueryable{T}" /> on which to apply the sorting operation.
         /// </param>
         /// <param name="orderBy">
-        ///     The key and direction to sort the elements.
+        ///     The function with the sorting definition.
         /// </param>
         /// <typeparam name="TEntity">
         ///     The type of entity being queried.
@@ -80,9 +80,11 @@
         /// <returns>
         ///     A new <see cref="IQueryable{T}" /> with the defined sorting operation.
         /// </returns>
-        internal static IQueryable<TEntity> OrderBy<TEntity>(this IQueryable<TEntity> query, (Expression<Func<TEntity, object>> keySelector, SortDirection direction) orderBy)
+        internal static IQueryable<TEntity> OrderBy<TEntity>(this IQueryable<TEntity> query, Func<ICollectionOrderer<TEntity>, IOrderedCollection<TEntity>> orderBy) where TEntity : class
         {
-            return orderBy.direction == SortDirection.Ascending ? query.OrderBy(orderBy.keySelector) : query.OrderByDescending(orderBy.keySelector);
+            orderBy.ThrowIfNull(nameof(orderBy));
+
+            return orderBy(CollectionOrderer<TEntity>.From(query)).GetCollection();
         }
 
         /// <summary>

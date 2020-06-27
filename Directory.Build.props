@@ -12,7 +12,8 @@
     <PackageProjectUrl>https://github.com/alexmurari/Repositive/</PackageProjectUrl>
     <!-- Keep the package release notes without indentation -->
     <PackageReleaseNotes>
-- Added new GetSingle method overload (predicate only).
+- Added new overload for the GetSingle method (with predicate only).
+- Redesigned the 'OrderBy' parameter of the read methods to be more like the LINQ 'OrderBy'.
     </PackageReleaseNotes>
   </PropertyGroup>
 </Project>

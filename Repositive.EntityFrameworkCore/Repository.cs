@@ -420,7 +420,7 @@
         /// <param name="includes">The related entities to be included in the query.</param>
         /// <returns>The collection of entities fetched from the database.</returns>
         public virtual IEnumerable<TEntity> Get(
-            (Expression<Func<TEntity, object>> keySelector, SortDirection direction) orderBy,
+            Func<ICollectionOrderer<TEntity>, IOrderedCollection<TEntity>> orderBy,
             QueryTracking tracking = QueryTracking.Default,
             params Expression<Func<TEntity, object>>[] includes)
         {
@@ -448,7 +448,7 @@
         public virtual (IEnumerable<TEntity> Entities, int Count) Get(
             int skip,
             int take,
-            (Expression<Func<TEntity, object>> keySelector, SortDirection direction) orderBy,
+            Func<ICollectionOrderer<TEntity>, IOrderedCollection<TEntity>> orderBy,
             QueryTracking tracking = QueryTracking.Default,
             params Expression<Func<TEntity, object>>[] includes)
         {
@@ -473,7 +473,7 @@
         /// <returns>The collection of entities fetched from the database.</returns>
         public virtual IEnumerable<TEntity> Get(
             Expression<Func<TEntity, bool>> predicate,
-            (Expression<Func<TEntity, object>> keySelector, SortDirection direction) orderBy,
+            Func<ICollectionOrderer<TEntity>, IOrderedCollection<TEntity>> orderBy,
             QueryTracking tracking = QueryTracking.Default,
             params Expression<Func<TEntity, object>>[] includes)
         {
@@ -503,7 +503,7 @@
             int skip,
             int take,
             Expression<Func<TEntity, bool>> predicate,
-            (Expression<Func<TEntity, object>> keySelector, SortDirection direction) orderBy,
+            Func<ICollectionOrderer<TEntity>, IOrderedCollection<TEntity>> orderBy,
             QueryTracking tracking = QueryTracking.Default,
             params Expression<Func<TEntity, object>>[] includes)
         {
@@ -633,7 +633,7 @@
         ///     The task result contains the collection of entities fetched from the database.
         /// </returns>
         public virtual async Task<IEnumerable<TEntity>> GetAsync(
-            (Expression<Func<TEntity, object>> keySelector, SortDirection direction) orderBy,
+            Func<ICollectionOrderer<TEntity>, IOrderedCollection<TEntity>> orderBy,
             QueryTracking tracking = QueryTracking.Default,
             params Expression<Func<TEntity, object>>[] includes)
         {
@@ -662,7 +662,7 @@
         public virtual async Task<(IEnumerable<TEntity> Entities, int Count)> GetAsync(
             int skip,
             int take,
-            (Expression<Func<TEntity, object>> keySelector, SortDirection direction) orderBy,
+            Func<ICollectionOrderer<TEntity>, IOrderedCollection<TEntity>> orderBy,
             QueryTracking tracking = QueryTracking.Default,
             params Expression<Func<TEntity, object>>[] includes)
         {
@@ -690,7 +690,7 @@
         /// </returns>
         public virtual async Task<IEnumerable<TEntity>> GetAsync(
             Expression<Func<TEntity, bool>> predicate,
-            (Expression<Func<TEntity, object>> keySelector, SortDirection direction) orderBy,
+            Func<ICollectionOrderer<TEntity>, IOrderedCollection<TEntity>> orderBy,
             QueryTracking tracking = QueryTracking.Default,
             params Expression<Func<TEntity, object>>[] includes)
         {
@@ -721,7 +721,7 @@
             int skip,
             int take,
             Expression<Func<TEntity, bool>> predicate,
-            (Expression<Func<TEntity, object>> keySelector, SortDirection direction) orderBy,
+            Func<ICollectionOrderer<TEntity>, IOrderedCollection<TEntity>> orderBy,
             QueryTracking tracking = QueryTracking.Default,
             params Expression<Func<TEntity, object>>[] includes)
         {
@@ -762,7 +762,7 @@
         /// <param name="includes">The related entities to be included in the query.</param>
         /// <returns>The entity fetched from the database.</returns>
         public virtual TEntity GetSingle(
-            (Expression<Func<TEntity, object>> keySelector, SortDirection direction) orderBy,
+            Func<ICollectionOrderer<TEntity>, IOrderedCollection<TEntity>> orderBy,
             QueryTracking tracking = QueryTracking.Default,
             params Expression<Func<TEntity, object>>[] includes)
         {
@@ -785,7 +785,7 @@
         /// <returns>The entity fetched from the database.</returns>
         public virtual TEntity GetSingle(
             Expression<Func<TEntity, bool>> predicate,
-            (Expression<Func<TEntity, object>> keySelector, SortDirection direction) orderBy,
+            Func<ICollectionOrderer<TEntity>, IOrderedCollection<TEntity>> orderBy,
             QueryTracking tracking = QueryTracking.Default,
             params Expression<Func<TEntity, object>>[] includes)
         {
@@ -830,7 +830,7 @@
         ///     The task result contains the entity fetched from the database.
         /// </returns>
         public virtual async Task<TEntity> GetSingleAsync(
-            (Expression<Func<TEntity, object>> keySelector, SortDirection direction) orderBy,
+            Func<ICollectionOrderer<TEntity>, IOrderedCollection<TEntity>> orderBy,
             QueryTracking tracking = QueryTracking.Default,
             params Expression<Func<TEntity, object>>[] includes)
         {
@@ -856,7 +856,7 @@
         /// </returns>
         public virtual async Task<TEntity> GetSingleAsync(
             Expression<Func<TEntity, bool>> predicate,
-            (Expression<Func<TEntity, object>> keySelector, SortDirection direction) orderBy,
+            Func<ICollectionOrderer<TEntity>, IOrderedCollection<TEntity>> orderBy,
             QueryTracking tracking = QueryTracking.Default,
             params Expression<Func<TEntity, object>>[] includes)
         {
