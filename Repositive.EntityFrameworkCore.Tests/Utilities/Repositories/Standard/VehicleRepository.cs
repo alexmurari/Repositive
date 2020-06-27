@@ -1,8 +1,6 @@
-﻿namespace Repositive.EntityFrameworkCore.Tests.Utilities.Repositories
+﻿namespace Repositive.EntityFrameworkCore.Tests.Utilities.Repositories.Standard
 {
     using Repositive.EntityFrameworkCore.Tests.Utilities.Context;
-    using Repositive.EntityFrameworkCore.Tests.Utilities.Entities;
-    using Repositive.EntityFrameworkCore.Tests.Utilities.Repositories.Contracts;
 
     /// <summary>
     ///     Provides a repository pattern implementation for querying and saving <see cref="Vehicle"/> instances.

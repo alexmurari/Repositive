@@ -13,8 +13,8 @@ namespace Repositive.EntityFrameworkCore.Tests
     using Repositive.Abstractions;
     using Repositive.EntityFrameworkCore.Tests.Utilities;
     using Repositive.EntityFrameworkCore.Tests.Utilities.Context;
-    using Repositive.EntityFrameworkCore.Tests.Utilities.Repositories;
-    using Repositive.EntityFrameworkCore.Tests.Utilities.Repositories.Contracts;
+    using Repositive.EntityFrameworkCore.Tests.Utilities.Repositories.Standard;
+    using Repositive.EntityFrameworkCore.Tests.Utilities.Repositories.UnitOfWork;
     using Xunit.Abstractions;
     using Xunit.DependencyInjection;
 
@@ -48,8 +48,7 @@ namespace Repositive.EntityFrameworkCore.Tests
             services
                 .AddDbContext<RepositiveContext>(t => t.UseInMemoryDatabase(DatabaseName))
                 .AddScoped<IPersonRepository, PersonRepository>()
-                .AddScoped<IVehicleRepository, VehicleRepository>()
-                .AddScoped<IManufacturerRepository, ManufacturerRepository>();
+                .AddScoped<IVehicleRepository, VehicleRepository>();
 
             // Unit of Work
             services

@@ -3,9 +3,7 @@
     using System.Linq;
     using Repositive.Abstractions;
     using Repositive.EntityFrameworkCore.Tests.Utilities;
-    using Repositive.EntityFrameworkCore.Tests.Utilities.Entities;
-    using Repositive.EntityFrameworkCore.Tests.Utilities.Extensions;
-    using Repositive.EntityFrameworkCore.Tests.Utilities.Repositories.Contracts;
+    using Repositive.EntityFrameworkCore.Tests.Utilities.Repositories.Standard;
     using Xunit;
 
     /// <summary>

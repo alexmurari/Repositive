@@ -2,9 +2,6 @@
 {
     using System.Collections.Generic;
     using Bogus;
-    using Repositive.EntityFrameworkCore.Tests.Utilities.Entities;
-    using Repositive.EntityFrameworkCore.Tests.Utilities.Entities.Enums;
-    using Person = Entities.Person;
 
     /// <summary>
     ///     Provides static methods for generating fake data for testing purposes.

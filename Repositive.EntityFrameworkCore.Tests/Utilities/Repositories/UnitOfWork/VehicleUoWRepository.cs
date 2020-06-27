@@ -1,9 +1,7 @@
-﻿namespace Repositive.EntityFrameworkCore.Tests.Utilities.Repositories
+﻿namespace Repositive.EntityFrameworkCore.Tests.Utilities.Repositories.UnitOfWork
 {
     using Repositive.Abstractions;
     using Repositive.EntityFrameworkCore.Tests.Utilities.Context;
-    using Repositive.EntityFrameworkCore.Tests.Utilities.Entities;
-    using Repositive.EntityFrameworkCore.Tests.Utilities.Repositories.Contracts;
 
     /// <summary>
     ///     Provides a repository pattern implementation for querying and saving <see cref="Vehicle"/> instances.

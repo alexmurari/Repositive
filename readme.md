@@ -141,9 +141,9 @@ public class CarService : ICarService
     public (IEnumerable<Car> Cars, int TotalCount) GetCars(int page, int pageSize)
     {
         // Returns a tuple with the paginated collection of cars and the total count of entities in the database.
-        // Includes the Manufacturer navigation property in the query.
+        // Sorts by the car's model year and includes the Manufacturer navigation property in the query.
         var entitiesToSkip = (page - 1) * pageSize;
-        return _carRepository.Get(entitiesToSkip, pageSize, QueryTracking.NoTracking, t => t.Manufacturer);
+        return _carRepository.Get(entitiesToSkip, pageSize, t => t.OrderBy(x => x.ModelYear), QueryTracking.NoTracking, t => t.Manufacturer);
     }
 
     public void ProcessServiceOrder(Car car)

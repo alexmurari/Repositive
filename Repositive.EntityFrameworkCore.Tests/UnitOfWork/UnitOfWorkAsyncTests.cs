@@ -1,12 +1,12 @@
 ﻿namespace Repositive.EntityFrameworkCore.Tests.UnitOfWork
 {
     using System;
+    using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
     using Repositive.Abstractions;
-    using Repositive.EntityFrameworkCore.Tests.Utilities.Entities;
-    using Repositive.EntityFrameworkCore.Tests.Utilities.Entities.Enums;
-    using Repositive.EntityFrameworkCore.Tests.Utilities.Repositories.Contracts;
+    using Repositive.EntityFrameworkCore.Tests.Utilities;
+    using Repositive.EntityFrameworkCore.Tests.Utilities.Repositories.UnitOfWork;
     using Xunit;
 
     /// <summary>
@@ -65,12 +65,12 @@
         public async Task Assert_Commit_Async_Is_Successful()
         {
             // Arrange
-            var person = await _personUoWRepository.AddAsync(new Person { Name = "Foo" }).ConfigureAwait(false);
-            var vehicle = await _vehicleUoWRepository.AddAsync(new Vehicle { Type = VehicleType.Car }).ConfigureAwait(false);
-            var manufacturer = await _manufacturerUoWRepository.AddAsync(new Manufacturer { Name = "Bar" }).ConfigureAwait(false);
+            var person = await _personUoWRepository.AddAsync(new Person { Name = "Foo" });
+            var vehicle = await _vehicleUoWRepository.AddAsync(new Vehicle { Type = VehicleType.Car });
+            var manufacturer = await _manufacturerUoWRepository.AddAsync(new Manufacturer { Name = "Bar" });
 
             // Act
-            var affectedEntries = await _unitOfWork.CommitAsync().ConfigureAwait(false);
+            var affectedEntries = await _unitOfWork.CommitAsync();
 
             // Assert
             Assert.Equal(3, affectedEntries);
@@ -87,15 +87,26 @@
         public async Task Assert_Committing_Event_Is_Invoked_On_Commit_Async()
         {
             // Arrange
-            await _personUoWRepository.AddAsync(new Person { Name = "Foo" }).ConfigureAwait(false);
-            await _vehicleUoWRepository.AddAsync(new Vehicle { Type = VehicleType.Car }).ConfigureAwait(false);
-            await _manufacturerUoWRepository.AddAsync(new Manufacturer { Name = "Bar" }).ConfigureAwait(false);
+            await _personUoWRepository.AddAsync(new Person { Name = "Foo" });
+            await _vehicleUoWRepository.AddAsync(new Vehicle { Type = VehicleType.Car });
+            await _manufacturerUoWRepository.AddAsync(new Manufacturer { Name = "Bar" });
+
+            var registeredRepos = default(IReadOnlyCollection<string>);
+
+            _unitOfWork.Committing += (sender, args) =>
+            {
+                registeredRepos = args.RegisteredRepositories;
+            };
 
             // Act
             var commitAction = new Func<CancellationToken, Task<int>>(_unitOfWork.CommitAsync);
 
             // Assert
-            await Assert.RaisesAsync<UnitOfWorkCommittingEventArgs>(e => _unitOfWork.Committing += e, e => _unitOfWork.Committing -= e, () => commitAction(default)).ConfigureAwait(false);
+            await Assert.RaisesAsync<UnitOfWorkCommittingEventArgs>(e => _unitOfWork.Committing += e, e => _unitOfWork.Committing -= e, () => commitAction(default));
+            Assert.Equal(3, registeredRepos.Count);
+            Assert.Contains(_personUoWRepository.GetType().Name, registeredRepos);
+            Assert.Contains(_vehicleUoWRepository.GetType().Name, registeredRepos);
+            Assert.Contains(_manufacturerUoWRepository.GetType().Name, registeredRepos);
         }
 
         /// <summary>
@@ -106,15 +117,29 @@
         public async Task Assert_Committed_Event_Is_Invoked_On_Commit_Async()
         {
             // Arrange
-            await _personUoWRepository.AddAsync(new Person { Name = "Foo" }).ConfigureAwait(false);
-            await _vehicleUoWRepository.AddAsync(new Vehicle { Type = VehicleType.Car }).ConfigureAwait(false);
-            await _manufacturerUoWRepository.AddAsync(new Manufacturer { Name = "Bar" }).ConfigureAwait(false);
+            await _personUoWRepository.AddAsync(new Person { Name = "Foo" });
+            await _vehicleUoWRepository.AddAsync(new Vehicle { Type = VehicleType.Car });
+            await _manufacturerUoWRepository.AddAsync(new Manufacturer { Name = "Bar" });
+
+            var affectedEntriesCount = default(int);
+            var registeredRepos = default(IReadOnlyCollection<string>);
+
+            _unitOfWork.Committed += (sender, args) =>
+            {
+                affectedEntriesCount = args.AffectedEntries;
+                registeredRepos = args.RegisteredRepositories;
+            };
 
             // Act
             var commitAction = new Func<CancellationToken, Task<int>>(_unitOfWork.CommitAsync);
 
             // Assert
-            await Assert.RaisesAsync<UnitOfWorkCommittedEventArgs>(e => _unitOfWork.Committed += e, e => _unitOfWork.Committed -= e, () => commitAction(default)).ConfigureAwait(false);
+            await Assert.RaisesAsync<UnitOfWorkCommittedEventArgs>(e => _unitOfWork.Committed += e, e => _unitOfWork.Committed -= e, () => commitAction(default));
+            Assert.Equal(3, affectedEntriesCount);
+            Assert.Equal(3, registeredRepos.Count);
+            Assert.Contains(_personUoWRepository.GetType().Name, registeredRepos);
+            Assert.Contains(_vehicleUoWRepository.GetType().Name, registeredRepos);
+            Assert.Contains(_manufacturerUoWRepository.GetType().Name, registeredRepos);
         }
 
         /// <summary>
@@ -125,13 +150,13 @@
         public async Task Assert_Repository_Configured_To_Use_Unit_Of_Work_Throws_On_Direct_Commit_Async()
         {
             // Arrange
-            await _personUoWRepository.AddAsync(new Person { Name = "Foo" }).ConfigureAwait(false);
+            await _personUoWRepository.AddAsync(new Person { Name = "Foo" });
 
             // Act
             var commitAction = new Func<CancellationToken, Task<int>>(_personUoWRepository.CommitAsync);
 
             // Assert
-            await Assert.ThrowsAsync<InvalidOperationException>(() => commitAction(default)).ConfigureAwait(false);
+            await Assert.ThrowsAsync<InvalidOperationException>(() => commitAction(default));
         }
     }
 }

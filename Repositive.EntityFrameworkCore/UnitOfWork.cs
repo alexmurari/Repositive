@@ -82,7 +82,7 @@
         {
             Committing?.Invoke(this, new UnitOfWorkCommittingEventArgs(_registeredRepositories));
 
-            var affectedEntries = await Context.SaveChangesAsync(cancellationToken);
+            var affectedEntries = await Context.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 
             Committed?.Invoke(this, new UnitOfWorkCommittedEventArgs(affectedEntries, _registeredRepositories));
 

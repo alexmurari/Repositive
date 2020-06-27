@@ -1,7 +1,5 @@
-﻿namespace Repositive.EntityFrameworkCore.Tests.Utilities.Entities
+﻿namespace Repositive.EntityFrameworkCore.Tests.Utilities
 {
-    using Repositive.EntityFrameworkCore.Tests.Utilities.Entities.Enums;
-
     /// <summary>
     ///     Represents an vehicle.
     /// </summary>

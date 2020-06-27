@@ -179,7 +179,7 @@
         /// <param name="includes">The related entities to be included in the query.</param>
         /// <returns>The collection of entities fetched from the database.</returns>
         IEnumerable<TEntity> Get(
-            (Expression<Func<TEntity, object>> keySelector, SortDirection direction) orderBy,
+            Func<ICollectionOrderer<TEntity>, IOrderedCollection<TEntity>> orderBy,
             QueryTracking tracking = QueryTracking.Default,
             params Expression<Func<TEntity, object>>[] includes);
 
@@ -200,7 +200,7 @@
         (IEnumerable<TEntity> Entities, int Count) Get(
             int skip,
             int take,
-            (Expression<Func<TEntity, object>> keySelector, SortDirection direction) orderBy,
+            Func<ICollectionOrderer<TEntity>, IOrderedCollection<TEntity>> orderBy,
             QueryTracking tracking = QueryTracking.Default,
             params Expression<Func<TEntity, object>>[] includes);
 
@@ -216,7 +216,7 @@
         /// <returns>The collection of entities fetched from the database.</returns>
         IEnumerable<TEntity> Get(
             Expression<Func<TEntity, bool>> predicate,
-            (Expression<Func<TEntity, object>> keySelector, SortDirection direction) orderBy,
+            Func<ICollectionOrderer<TEntity>, IOrderedCollection<TEntity>> orderBy,
             QueryTracking tracking = QueryTracking.Default,
             params Expression<Func<TEntity, object>>[] includes);
 
@@ -239,7 +239,7 @@
             int skip,
             int take,
             Expression<Func<TEntity, bool>> predicate,
-            (Expression<Func<TEntity, object>> keySelector, SortDirection direction) orderBy,
+            Func<ICollectionOrderer<TEntity>, IOrderedCollection<TEntity>> orderBy,
             QueryTracking tracking = QueryTracking.Default,
             params Expression<Func<TEntity, object>>[] includes);
 
@@ -328,7 +328,7 @@
         ///     The task result contains the collection of entities fetched from the database.
         /// </returns>
         Task<IEnumerable<TEntity>> GetAsync(
-            (Expression<Func<TEntity, object>> keySelector, SortDirection direction) orderBy,
+            Func<ICollectionOrderer<TEntity>, IOrderedCollection<TEntity>> orderBy,
             QueryTracking tracking = QueryTracking.Default,
             params Expression<Func<TEntity, object>>[] includes);
 
@@ -350,7 +350,7 @@
         Task<(IEnumerable<TEntity> Entities, int Count)> GetAsync(
             int skip,
             int take,
-            (Expression<Func<TEntity, object>> keySelector, SortDirection direction) orderBy,
+            Func<ICollectionOrderer<TEntity>, IOrderedCollection<TEntity>> orderBy,
             QueryTracking tracking = QueryTracking.Default,
             params Expression<Func<TEntity, object>>[] includes);
 
@@ -369,7 +369,7 @@
         /// </returns>
         Task<IEnumerable<TEntity>> GetAsync(
             Expression<Func<TEntity, bool>> predicate,
-            (Expression<Func<TEntity, object>> keySelector, SortDirection direction) orderBy,
+            Func<ICollectionOrderer<TEntity>, IOrderedCollection<TEntity>> orderBy,
             QueryTracking tracking = QueryTracking.Default,
             params Expression<Func<TEntity, object>>[] includes);
 
@@ -393,7 +393,21 @@
             int skip,
             int take,
             Expression<Func<TEntity, bool>> predicate,
-            (Expression<Func<TEntity, object>> keySelector, SortDirection direction) orderBy,
+            Func<ICollectionOrderer<TEntity>, IOrderedCollection<TEntity>> orderBy,
+            QueryTracking tracking = QueryTracking.Default,
+            params Expression<Func<TEntity, object>>[] includes);
+
+        /// <summary>
+        ///     Gets the first entity of the provided type from the database that match the predicate condition.
+        /// </summary>
+        /// <param name="predicate">The predicate with the query condition.</param>
+        /// <param name="tracking">
+        ///     The query tracking behavior that defines whether or not the entity returned from the query should be tracked by the database context.
+        /// </param>
+        /// <param name="includes">The related entities to be included in the query.</param>
+        /// <returns>The entity fetched from the database.</returns>
+        TEntity GetSingle(
+            Expression<Func<TEntity, bool>> predicate,
             QueryTracking tracking = QueryTracking.Default,
             params Expression<Func<TEntity, object>>[] includes);
 
@@ -407,7 +421,7 @@
         /// <param name="includes">The related entities to be included in the query.</param>
         /// <returns>The entity fetched from the database.</returns>
         TEntity GetSingle(
-            (Expression<Func<TEntity, object>> keySelector, SortDirection direction) orderBy,
+            Func<ICollectionOrderer<TEntity>, IOrderedCollection<TEntity>> orderBy,
             QueryTracking tracking = QueryTracking.Default,
             params Expression<Func<TEntity, object>>[] includes);
 
@@ -423,7 +437,24 @@
         /// <returns>The entity fetched from the database.</returns>
         TEntity GetSingle(
             Expression<Func<TEntity, bool>> predicate,
-            (Expression<Func<TEntity, object>> keySelector, SortDirection direction) orderBy,
+            Func<ICollectionOrderer<TEntity>, IOrderedCollection<TEntity>> orderBy,
+            QueryTracking tracking = QueryTracking.Default,
+            params Expression<Func<TEntity, object>>[] includes);
+
+        /// <summary>
+        ///     Asynchronously gets the first entity of the provided type from the database that match the predicate condition.
+        /// </summary>
+        /// <param name="predicate">The predicate with the query condition.</param>
+        /// <param name="tracking">
+        ///     The query tracking behavior that defines whether or not the entity returned from the query should be tracked by the database context.
+        /// </param>
+        /// <param name="includes">The related entities to be included in the query.</param>
+        /// <returns>
+        ///     A task that represents the asynchronous query operation.
+        ///     The task result contains the entity fetched from the database.
+        /// </returns>
+        Task<TEntity> GetSingleAsync(
+            Expression<Func<TEntity, bool>> predicate,
             QueryTracking tracking = QueryTracking.Default,
             params Expression<Func<TEntity, object>>[] includes);
 
@@ -440,7 +471,7 @@
         ///     The task result contains the entity fetched from the database.
         /// </returns>
         Task<TEntity> GetSingleAsync(
-            (Expression<Func<TEntity, object>> keySelector, SortDirection direction) orderBy,
+            Func<ICollectionOrderer<TEntity>, IOrderedCollection<TEntity>> orderBy,
             QueryTracking tracking = QueryTracking.Default,
             params Expression<Func<TEntity, object>>[] includes);
 
@@ -459,7 +490,7 @@
         /// </returns>
         Task<TEntity> GetSingleAsync(
             Expression<Func<TEntity, bool>> predicate,
-            (Expression<Func<TEntity, object>> keySelector, SortDirection direction) orderBy,
+            Func<ICollectionOrderer<TEntity>, IOrderedCollection<TEntity>> orderBy,
             QueryTracking tracking = QueryTracking.Default,
             params Expression<Func<TEntity, object>>[] includes);
 

@@ -1,7 +1,6 @@
-﻿namespace Repositive.EntityFrameworkCore.Tests.Utilities.Repositories.Contracts
+﻿namespace Repositive.EntityFrameworkCore.Tests.Utilities.Repositories.Standard
 {
     using Repositive.Abstractions;
-    using Repositive.EntityFrameworkCore.Tests.Utilities.Entities;
 
     /// <summary>
     ///     Provides repository methods for instances of <see cref="Person"/>.

@@ -6,9 +6,7 @@
     using Microsoft.EntityFrameworkCore;
     using Repositive.Abstractions;
     using Repositive.EntityFrameworkCore.Tests.Utilities;
-    using Repositive.EntityFrameworkCore.Tests.Utilities.Entities;
-    using Repositive.EntityFrameworkCore.Tests.Utilities.Entities.Enums;
-    using Repositive.EntityFrameworkCore.Tests.Utilities.Repositories.Contracts;
+    using Repositive.EntityFrameworkCore.Tests.Utilities.Repositories.Standard;
     using Xunit;
 
     /// <summary>
@@ -213,19 +211,16 @@
         }
 
         /// <summary>
-        ///     Asserts that the <see cref="IReadableRepository{TEntity}.Get(ValueTuple{Expression{Func{TEntity, object}}, SortDirection}, QueryTracking, Expression{Func{TEntity, object}}[])"/> is operating correctly.
+        ///     Asserts that the <see cref="IReadableRepository{TEntity}.Get(Func{ICollectionOrderer{TEntity}, IOrderedCollection{TEntity}}, QueryTracking, Expression{Func{TEntity, object}}[])"/> is operating correctly.
         /// </summary>
         [Fact]
         public void Assert_Get_Entity_With_Ordering_Is_Successful()
         {
             // Arrange
-            (Expression<Func<Person, object>> keySelector, SortDirection direction) orderBy = (t => t.Name, SortDirection.Descending);
-
-            var persons = _databaseHelper.Query<Person>().Include(t => t.Vehicles).ThenInclude(t => t.Manufacturer);
-            var orderedPersons = orderBy.direction == SortDirection.Ascending ? persons.OrderBy(orderBy.keySelector).ToList() : persons.OrderByDescending(orderBy.keySelector).ToList();
+            var orderedPersons = _databaseHelper.Query<Person>().Include(t => t.Vehicles).ThenInclude(t => t.Manufacturer).OrderByDescending(x => x.Id).ThenBy(t => t.Name).ToList();
 
             // Act
-            var result = _personRepository.Get(orderBy, QueryTracking.NoTracking, t => t.Vehicles.Select(x => x.Manufacturer)).ToList();
+            var result = _personRepository.Get(t => t.OrderByDescending(x => x.Id).ThenBy(x => x.Name), QueryTracking.NoTracking, t => t.Vehicles.Select(x => x.Manufacturer)).ToList();
 
             // Assert
             Assert.Equal(orderedPersons.Select(t => t.Id), result.Select(t => t.Id));
@@ -234,7 +229,7 @@
         }
 
         /// <summary>
-        ///     Asserts that the <see cref="IReadableRepository{TEntity}.Get(int, int, ValueTuple{Expression{Func{TEntity, object}}, SortDirection}, QueryTracking, Expression{Func{TEntity, object}}[])"/> is operating correctly.
+        ///     Asserts that the <see cref="IReadableRepository{TEntity}.Get(int, int, Func{ICollectionOrderer{TEntity}, IOrderedCollection{TEntity}}, QueryTracking, Expression{Func{TEntity, object}}[])"/> is operating correctly.
         /// </summary>
         [Fact]
         public void Assert_Get_Entity_With_Ordering_And_Pagination_Is_Successful()
@@ -242,14 +237,13 @@
             // Arrange
             const int Skip = 10;
             const int Take = 10;
-            (Expression<Func<Person, object>> keySelector, SortDirection direction) orderBy = (t => t.Name, SortDirection.Descending);
 
             var persons = _databaseHelper.Query<Person>().Include(t => t.Vehicles).ThenInclude(t => t.Manufacturer);
             var totalPersons = persons.Count();
-            var orderedPaginatedPersons = (orderBy.direction == SortDirection.Ascending ? persons.OrderBy(orderBy.keySelector) : persons.OrderByDescending(orderBy.keySelector)).Skip(Skip).Take(Take).ToList();
+            var orderedPaginatedPersons = persons.OrderBy(t => t.Vehicles.Count).ThenByDescending(t => t.Id).Skip(Skip).Take(Take).ToList();
 
             // Act
-            var (result, count) = _personRepository.Get(Skip, Take, orderBy, QueryTracking.NoTracking, t => t.Vehicles.Select(x => x.Manufacturer));
+            var (result, count) = _personRepository.Get(Skip, Take, t => t.OrderBy(x => x.Vehicles.Count).ThenByDescending(x => x.Id), QueryTracking.NoTracking, t => t.Vehicles.Select(x => x.Manufacturer));
             result = result.ToList();
 
             // Assert
@@ -260,20 +254,19 @@
         }
 
         /// <summary>
-        ///     Asserts that the <see cref="IReadableRepository{TEntity}.Get(ValueTuple{Expression{Func{TEntity, object}}, SortDirection}, QueryTracking, Expression{Func{TEntity, object}}[])"/> is operating correctly.
+        ///     Asserts that the <see cref="IReadableRepository{TEntity}.Get(Func{ICollectionOrderer{TEntity}, IOrderedCollection{TEntity}}, QueryTracking, Expression{Func{TEntity, object}}[])"/> is operating correctly.
         /// </summary>
         [Fact]
         public void Assert_Get_Entity_With_Predicate_And_Ordering_Is_Successful()
         {
             // Arrange
             Expression<Func<Person, bool>> predicate = t => t.Vehicles.Any(x => x.Type == VehicleType.Car);
-            (Expression<Func<Person, object>> keySelector, SortDirection direction) orderBy = (t => t.Name, SortDirection.Descending);
 
             var persons = _databaseHelper.Query<Person>().Where(predicate).Include(t => t.Vehicles).ThenInclude(t => t.Manufacturer);
-            var orderedPersons = orderBy.direction == SortDirection.Ascending ? persons.OrderBy(orderBy.keySelector).ToList() : persons.OrderByDescending(orderBy.keySelector).ToList();
+            var orderedPersons = persons.OrderByDescending(t => t.Id).ThenBy(t => t.Name).ToList();
 
             // Act
-            var result = _personRepository.Get(predicate, orderBy, QueryTracking.NoTracking, t => t.Vehicles.Select(x => x.Manufacturer)).ToList();
+            var result = _personRepository.Get(predicate, t => t.OrderByDescending(x => x.Id).ThenBy(x => x.Name), QueryTracking.NoTracking, t => t.Vehicles.Select(x => x.Manufacturer)).ToList();
 
             // Assert
             Assert.Equal(orderedPersons.Select(t => t.Id), result.Select(t => t.Id));
@@ -282,7 +275,7 @@
         }
 
         /// <summary>
-        ///     Asserts that the <see cref="IReadableRepository{TEntity}.Get(int, int, ValueTuple{Expression{Func{TEntity, object}}, SortDirection}, QueryTracking, Expression{Func{TEntity, object}}[])"/> is operating correctly.
+        ///     Asserts that the <see cref="IReadableRepository{TEntity}.Get(int, int, Func{ICollectionOrderer{TEntity}, IOrderedCollection{TEntity}}, QueryTracking, Expression{Func{TEntity, object}}[])"/> is operating correctly.
         /// </summary>
         [Fact]
         public void Assert_Get_Entity_With_Predicate_Ordering_And_Pagination_Is_Successful()
@@ -291,14 +284,13 @@
             const int Skip = 10;
             const int Take = 10;
             Expression<Func<Person, bool>> predicate = t => t.Vehicles.Any(x => x.Type == VehicleType.Car);
-            (Expression<Func<Person, object>> keySelector, SortDirection direction) orderBy = (t => t.Name, SortDirection.Descending);
 
             var persons = _databaseHelper.Query<Person>().Where(predicate).Include(t => t.Vehicles).ThenInclude(t => t.Manufacturer);
             var totalPersons = persons.Count();
-            var orderedPaginatedPersons = (orderBy.direction == SortDirection.Ascending ? persons.OrderBy(orderBy.keySelector) : persons.OrderByDescending(orderBy.keySelector)).Skip(Skip).Take(Take).ToList();
+            var orderedPaginatedPersons = persons.OrderBy(t => t.Vehicles.Count).ThenByDescending(t => t.Id).Skip(Skip).Take(Take).ToList();
 
             // Act
-            var (result, count) = _personRepository.Get(Skip, Take, predicate, orderBy, QueryTracking.NoTracking, t => t.Vehicles.Select(x => x.Manufacturer));
+            var (result, count) = _personRepository.Get(Skip, Take, predicate, t => t.OrderBy(x => x.Vehicles.Count).ThenByDescending(x => x.Id), QueryTracking.NoTracking, t => t.Vehicles.Select(x => x.Manufacturer));
             result = result.ToList();
 
             // Assert
@@ -306,6 +298,66 @@
             Assert.Equal(orderedPaginatedPersons.SelectMany(t => t.Vehicles).Select(t => t.Id), result.SelectMany(t => t.Vehicles).Select(t => t.Id));
             Assert.Equal(orderedPaginatedPersons.SelectMany(t => t.Vehicles.Select(x => x.Manufacturer)).Select(t => t.Id), result.SelectMany(t => t.Vehicles.Select(x => x.Manufacturer)).Select(t => t.Id));
             Assert.Equal(totalPersons, count);
+        }
+
+        /// <summary>
+        ///     Asserts that the <see cref="IReadableRepository{TEntity}.GetSingle(Expression{Func{TEntity, bool}}, QueryTracking, Expression{Func{TEntity, object}}[])"/> is operating correctly.
+        /// </summary>
+        [Fact]
+        public void Asset_Get_Single_Entity_With_Predicate_Is_Successful()
+        {
+            // Arrange
+            var person = DataGenerator.PickRandomItem(_databaseHelper.Query<Person>().ToList());
+
+            // Act
+            var result = _personRepository.GetSingle(t => t.Id == person.Id && t.Name == person.Name, QueryTracking.TrackAll, t => t.Vehicles);
+
+            // Assert
+            Assert.NotNull(person);
+            Assert.NotNull(result);
+            Assert.Equal(person.Id, result.Id);
+            Assert.Equal(person.Name, result.Name);
+            Assert.NotEmpty(result.Vehicles);
+        }
+
+        /// <summary>
+        ///     Asserts that the <see cref="IReadableRepository{TEntity}.GetSingle(Func{ICollectionOrderer{TEntity}, IOrderedCollection{TEntity}}, QueryTracking, Expression{Func{TEntity, object}}[])"/> is operating correctly.
+        /// </summary>
+        [Fact]
+        public void Asset_Get_Single_Entity_With_Ordering_Is_Successful()
+        {
+            // Arrange
+            var person = _databaseHelper.Query<Person>().OrderBy(t => t.Name).FirstOrDefault();
+
+            // Act
+            var result = _personRepository.GetSingle(t => t.OrderBy(x => x.Name), QueryTracking.Default, t => t.Vehicles);
+
+            // Assert
+            Assert.NotNull(person);
+            Assert.NotNull(result);
+            Assert.Equal(person.Id, result.Id);
+            Assert.Equal(person.Name, result.Name);
+            Assert.NotEmpty(result.Vehicles);
+        }
+
+        /// <summary>
+        ///     Asserts that the <see cref="IReadableRepository{TEntity}.GetSingle(Func{ICollectionOrderer{TEntity}, IOrderedCollection{TEntity}}, QueryTracking, Expression{Func{TEntity, object}}[])"/> is operating correctly.
+        /// </summary>
+        [Fact]
+        public void Asset_Get_Single_Entity_With_Predicate_And_Ordering_Is_Successful()
+        {
+            // Arrange
+            var person = DataGenerator.PickRandomItem(_databaseHelper.Query<Person>().OrderByDescending(t => t.Name).ToList());
+
+            // Act
+            var result = _personRepository.GetSingle(t => t.Id == person.Id && t.Name == person.Name, t => t.OrderByDescending(x => x.Name), QueryTracking.TrackAll, t => t.Vehicles);
+
+            // Assert
+            Assert.NotNull(person);
+            Assert.NotNull(result);
+            Assert.Equal(person.Id, result.Id);
+            Assert.Equal(person.Name, result.Name);
+            Assert.NotEmpty(result.Vehicles);
         }
 
         /// <summary>

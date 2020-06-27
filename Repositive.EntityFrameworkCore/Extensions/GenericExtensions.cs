@@ -2,10 +2,12 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
     ///     Extensions for generic types.
     /// </summary>
+    [ExcludeFromCodeCoverage]
     internal static class GenericExtensions
     {
         /// <summary>

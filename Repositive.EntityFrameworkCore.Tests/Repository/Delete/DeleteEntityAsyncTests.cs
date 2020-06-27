@@ -5,8 +5,7 @@
     using Microsoft.EntityFrameworkCore;
     using Repositive.Abstractions;
     using Repositive.EntityFrameworkCore.Tests.Utilities;
-    using Repositive.EntityFrameworkCore.Tests.Utilities.Entities;
-    using Repositive.EntityFrameworkCore.Tests.Utilities.Repositories.Contracts;
+    using Repositive.EntityFrameworkCore.Tests.Utilities.Repositories.Standard;
     using Xunit;
 
     /// <summary>
@@ -50,8 +49,8 @@
             var person = DataGenerator.PickRandomItem(await _databaseHelper.Query<Person>().ToListAsync());
 
             // Act
-            await _personRepository.DeleteAsync(person).ConfigureAwait(false);
-            var affectedEntries = await _personRepository.CommitAsync().ConfigureAwait(false);
+            await _personRepository.DeleteAsync(person);
+            var affectedEntries = await _personRepository.CommitAsync();
 
             // Assert
             Assert.Equal(1, affectedEntries);
@@ -68,8 +67,8 @@
             var persons = DataGenerator.PickRandomItemRange(await _databaseHelper.Query<Person>().ToListAsync(), 10);
 
             // Act
-            await _personRepository.DeleteRangeAsync(persons).ConfigureAwait(false);
-            var affectedEntries = await _personRepository.CommitAsync().ConfigureAwait(false);
+            await _personRepository.DeleteRangeAsync(persons);
+            var affectedEntries = await _personRepository.CommitAsync();
 
             // Assert
             Assert.Equal(persons.Count, affectedEntries);
@@ -86,8 +85,8 @@
             var person = DataGenerator.PickRandomItem(await _databaseHelper.Query<Person>().Include(t => t.Vehicles).ToListAsync());
 
             // Act
-            await _personRepository.DeleteAsync(person, true).ConfigureAwait(false);
-            var affectedEntries = await _personRepository.CommitAsync().ConfigureAwait(false);
+            await _personRepository.DeleteAsync(person, true);
+            var affectedEntries = await _personRepository.CommitAsync();
 
             // Assert
             Assert.Equal(person.Vehicles.Count + 1, affectedEntries);
@@ -104,8 +103,8 @@
             var persons = DataGenerator.PickRandomItemRange(await _databaseHelper.Query<Person>().Include(t => t.Vehicles).ToListAsync(), 10);
 
             // Act
-            await _personRepository.DeleteRangeAsync(persons, true).ConfigureAwait(false);
-            var affectedEntries = await _personRepository.CommitAsync().ConfigureAwait(false);
+            await _personRepository.DeleteRangeAsync(persons, true);
+            var affectedEntries = await _personRepository.CommitAsync();
 
             // Assert
             Assert.Equal(persons.Sum(t => t.Vehicles.Count + 1), affectedEntries);

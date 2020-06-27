@@ -1,4 +1,4 @@
-﻿namespace Repositive.EntityFrameworkCore.Tests.Utilities.Entities
+﻿namespace Repositive.EntityFrameworkCore.Tests.Utilities
 {
     using System.Collections.Generic;
 

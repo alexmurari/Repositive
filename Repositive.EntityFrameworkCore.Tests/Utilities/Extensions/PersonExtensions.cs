@@ -1,7 +1,6 @@
-﻿namespace Repositive.EntityFrameworkCore.Tests.Utilities.Extensions
+﻿namespace Repositive.EntityFrameworkCore.Tests.Utilities
 {
     using System.Linq;
-    using Repositive.EntityFrameworkCore.Tests.Utilities.Entities;
 
     /// <summary>
     ///     Provides extension methods to the <see cref="Person"/> class.
