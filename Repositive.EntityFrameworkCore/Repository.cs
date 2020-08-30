@@ -178,6 +178,526 @@
         }
 
         /// <summary>
+        ///     Computes the average of a sequence of <see cref="int"/> values that is obtained by invoking a projection function on each element of the input sequence.
+        /// </summary>
+        /// <param name="selector">The projection function to apply to each element.</param>
+        /// <returns>The average of the sequence of values.</returns>
+        public double Average(Expression<Func<TEntity, int>> selector)
+        {
+            return DbSet.Average(selector);
+        }
+
+        /// <summary>
+        ///     Computes the average of a sequence of <see cref="int"/> values that match the predicate condition and is obtained by invoking a projection function on each element of the input sequence.
+        /// </summary>
+        /// <param name="selector">The projection function to apply to each element.</param>
+        /// <param name="predicate">
+        ///     The predicate with the query condition.
+        /// </param>
+        /// <returns>The average of the sequence of values.</returns>
+        public double Average(Expression<Func<TEntity, int>> selector, Expression<Func<TEntity, bool>> predicate)
+        {
+            return DbSet.Where(predicate).Average(selector);
+        }
+
+        /// <summary>
+        ///     Computes the average of a sequence of nullable <see cref="int"/> values that is obtained by invoking a projection function on each element of the input sequence.
+        /// </summary>
+        /// <param name="selector">The projection function to apply to each element.</param>
+        /// <returns>The average of the sequence of values, or null if the source sequence is empty or contains only null values.</returns>
+        public double? Average(Expression<Func<TEntity, int?>> selector)
+        {
+            return DbSet.Average(selector);
+        }
+
+        /// <summary>
+        ///     Computes the average of a sequence of nullable <see cref="int"/> values that match the predicate condition and is obtained by invoking a projection function on each element of the input sequence.
+        /// </summary>
+        /// <param name="selector">The projection function to apply to each element.</param>
+        /// <param name="predicate">
+        ///     The predicate with the query condition.
+        /// </param>
+        /// <returns>The average of the sequence of values, or null if the source sequence is empty or contains only null values.</returns>
+        public double? Average(Expression<Func<TEntity, int?>> selector, Expression<Func<TEntity, bool>> predicate)
+        {
+            return DbSet.Where(predicate).Average(selector);
+        }
+
+        /// <summary>
+        ///     Computes the average of a sequence of <see cref="float"/> values that is obtained by invoking a projection function on each element of the input sequence.
+        /// </summary>
+        /// <param name="selector">The projection function to apply to each element.</param>
+        /// <returns>The average of the sequence of values.</returns>
+        public float Average(Expression<Func<TEntity, float>> selector)
+        {
+            return DbSet.Average(selector);
+        }
+
+        /// <summary>
+        ///     Computes the average of a sequence of <see cref="float"/> values that match the predicate condition and is obtained by invoking a projection function on each element of the input sequence.
+        /// </summary>
+        /// <param name="selector">The projection function to apply to each element.</param>
+        /// <param name="predicate">
+        ///     The predicate with the query condition.
+        /// </param>
+        /// <returns>The average of the sequence of values.</returns>
+        public float Average(Expression<Func<TEntity, float>> selector, Expression<Func<TEntity, bool>> predicate)
+        {
+            return DbSet.Where(predicate).Average(selector);
+        }
+
+        /// <summary>
+        ///     Computes the average of a sequence of nullable <see cref="float"/> values that is obtained by invoking a projection function on each element of the input sequence.
+        /// </summary>
+        /// <param name="selector">The projection function to apply to each element.</param>
+        /// <returns>The average of the sequence of values, or null if the source sequence is empty or contains only null values.</returns>
+        public float? Average(Expression<Func<TEntity, float?>> selector)
+        {
+            return DbSet.Average(selector);
+        }
+
+        /// <summary>
+        ///     Computes the average of a sequence of nullable <see cref="float"/> values that match the predicate condition and is obtained by invoking a projection function on each element of the input sequence.
+        /// </summary>
+        /// <param name="selector">The projection function to apply to each element.</param>
+        /// <param name="predicate">
+        ///     The predicate with the query condition.
+        /// </param>
+        /// <returns>The average of the sequence of values, or null if the source sequence is empty or contains only null values.</returns>
+        public float? Average(Expression<Func<TEntity, float?>> selector, Expression<Func<TEntity, bool>> predicate)
+        {
+            return DbSet.Where(predicate).Average(selector);
+        }
+
+        /// <summary>
+        ///     Computes the average of a sequence of <see cref="long"/> values that is obtained by invoking a projection function on each element of the input sequence.
+        /// </summary>
+        /// <param name="selector">The projection function to apply to each element.</param>
+        /// <returns>The average of the sequence of values.</returns>
+        public double Average(Expression<Func<TEntity, long>> selector)
+        {
+            return DbSet.Average(selector);
+        }
+
+        /// <summary>
+        ///     Computes the average of a sequence of <see cref="long"/> values that match the predicate condition and is obtained by invoking a projection function on each element of the input sequence.
+        /// </summary>
+        /// <param name="selector">The projection function to apply to each element.</param>
+        /// <param name="predicate">
+        ///     The predicate with the query condition.
+        /// </param>
+        /// <returns>The average of the sequence of values.</returns>
+        public double Average(Expression<Func<TEntity, long>> selector, Expression<Func<TEntity, bool>> predicate)
+        {
+            return DbSet.Where(predicate).Average(selector);
+        }
+
+        /// <summary>
+        ///     Computes the average of a sequence of nullable <see cref="long"/> values that is obtained by invoking a projection function on each element of the input sequence.
+        /// </summary>
+        /// <param name="selector">The projection function to apply to each element.</param>
+        /// <returns>The average of the sequence of values, or null if the source sequence is empty or contains only null values.</returns>
+        public double? Average(Expression<Func<TEntity, long?>> selector)
+        {
+            return DbSet.Average(selector);
+        }
+
+        /// <summary>
+        ///     Computes the average of a sequence of nullable <see cref="long"/> values that match the predicate condition and is obtained by invoking a projection function on each element of the input sequence.
+        /// </summary>
+        /// <param name="selector">The projection function to apply to each element.</param>
+        /// <param name="predicate">
+        ///     The predicate with the query condition.
+        /// </param>
+        /// <returns>The average of the sequence of values, or null if the source sequence is empty or contains only null values.</returns>
+        public double? Average(Expression<Func<TEntity, long?>> selector, Expression<Func<TEntity, bool>> predicate)
+        {
+            return DbSet.Where(predicate).Average(selector);
+        }
+
+        /// <summary>
+        ///     Computes the average of a sequence of <see cref="double"/> values that is obtained by invoking a projection function on each element of the input sequence.
+        /// </summary>
+        /// <param name="selector">The projection function to apply to each element.</param>
+        /// <returns>The average of the sequence of values.</returns>
+        public double Average(Expression<Func<TEntity, double>> selector)
+        {
+            return DbSet.Average(selector);
+        }
+
+        /// <summary>
+        ///     Computes the average of a sequence of <see cref="double"/> values that match the predicate condition and is obtained by invoking a projection function on each element of the input sequence.
+        /// </summary>
+        /// <param name="selector">The projection function to apply to each element.</param>
+        /// <param name="predicate">
+        ///     The predicate with the query condition.
+        /// </param>
+        /// <returns>The average of the sequence of values.</returns>
+        public double Average(Expression<Func<TEntity, double>> selector, Expression<Func<TEntity, bool>> predicate)
+        {
+            return DbSet.Where(predicate).Average(selector);
+        }
+
+        /// <summary>
+        ///     Computes the average of a sequence of nullable <see cref="double"/> values that is obtained by invoking a projection function on each element of the input sequence.
+        /// </summary>
+        /// <param name="selector">The projection function to apply to each element.</param>
+        /// <returns>The average of the sequence of values, or null if the source sequence is empty or contains only null values.</returns>
+        public double? Average(Expression<Func<TEntity, double?>> selector)
+        {
+            return DbSet.Average(selector);
+        }
+
+        /// <summary>
+        ///     Computes the average of a sequence of nullable <see cref="double"/> values that match the predicate condition and is obtained by invoking a projection function on each element of the input sequence.
+        /// </summary>
+        /// <param name="selector">The projection function to apply to each element.</param>
+        /// <param name="predicate">
+        ///     The predicate with the query condition.
+        /// </param>
+        /// <returns>The average of the sequence of values, or null if the source sequence is empty or contains only null values.</returns>
+        public double? Average(Expression<Func<TEntity, double?>> selector, Expression<Func<TEntity, bool>> predicate)
+        {
+            return DbSet.Where(predicate).Average(selector);
+        }
+
+        /// <summary>
+        ///     Computes the average of a sequence of <see cref="decimal"/> values that is obtained by invoking a projection function on each element of the input sequence.
+        /// </summary>
+        /// <param name="selector">The projection function to apply to each element.</param>
+        /// <returns>The average of the sequence of values.</returns>
+        public decimal Average(Expression<Func<TEntity, decimal>> selector)
+        {
+            return DbSet.Average(selector);
+        }
+
+        /// <summary>
+        ///     Computes the average of a sequence of <see cref="decimal"/> values that match the predicate condition and is obtained by invoking a projection function on each element of the input sequence.
+        /// </summary>
+        /// <param name="selector">The projection function to apply to each element.</param>
+        /// <param name="predicate">
+        ///     The predicate with the query condition.
+        /// </param>
+        /// <returns>The average of the sequence of values.</returns>
+        public decimal Average(Expression<Func<TEntity, decimal>> selector, Expression<Func<TEntity, bool>> predicate)
+        {
+            return DbSet.Where(predicate).Average(selector);
+        }
+
+        /// <summary>
+        ///     Computes the average of a sequence of nullable <see cref="decimal"/> values that is obtained by invoking a projection function on each element of the input sequence.
+        /// </summary>
+        /// <param name="selector">The projection function to apply to each element.</param>
+        /// <returns>The average of the sequence of values, or null if the source sequence is empty or contains only null values.</returns>
+        public decimal? Average(Expression<Func<TEntity, decimal?>> selector)
+        {
+            return DbSet.Average(selector);
+        }
+
+        /// <summary>
+        ///     Computes the average of a sequence of nullable <see cref="decimal"/> values that match the predicate condition and is obtained by invoking a projection function on each element of the input sequence.
+        /// </summary>
+        /// <param name="selector">The projection function to apply to each element.</param>
+        /// <param name="predicate">
+        ///     The predicate with the query condition.
+        /// </param>
+        /// <returns>The average of the sequence of values, or null if the source sequence is empty or contains only null values.</returns>
+        public decimal? Average(Expression<Func<TEntity, decimal?>> selector, Expression<Func<TEntity, bool>> predicate)
+        {
+            return DbSet.Where(predicate).Average(selector);
+        }
+
+        /// <summary>
+        ///     Asynchronously computes the average of a sequence of <see cref="int"/> values that is obtained by invoking a projection function on each element of the input sequence.
+        /// </summary>
+        /// <param name="selector">The projection function to apply to each element.</param>
+        /// <returns>
+        ///     A task that represents the asynchronous query operation.
+        ///     The task result contains the average of the sequence of values.
+        /// </returns>
+        public Task<double> AverageAsync(Expression<Func<TEntity, int>> selector)
+        {
+            return DbSet.AverageAsync(selector);
+        }
+
+        /// <summary>
+        ///     Asynchronously computes the average of a sequence of <see cref="int"/> values that match the predicate condition and is obtained by invoking a projection function on each element of the input sequence.
+        /// </summary>
+        /// <param name="selector">The projection function to apply to each element.</param>
+        /// <param name="predicate">
+        ///     The predicate with the query condition.
+        /// </param>
+        /// <returns>
+        ///     A task that represents the asynchronous query operation.
+        ///     The task result contains the average of the sequence of values.
+        /// </returns>
+        public Task<double> AverageAsync(Expression<Func<TEntity, int>> selector, Expression<Func<TEntity, bool>> predicate)
+        {
+            return DbSet.Where(predicate).AverageAsync(selector);
+        }
+
+        /// <summary>
+        ///     Asynchronously computes the average of a sequence of nullable <see cref="int"/> values that is obtained by invoking a projection function on each element of the input sequence.
+        /// </summary>
+        /// <param name="selector">The projection function to apply to each element.</param>
+        /// <returns>
+        ///     A task that represents the asynchronous query operation.
+        ///     The task result contains the average of the sequence of values, or null if the source sequence is empty or contains only null values.
+        /// </returns>
+        public Task<double?> AverageAsync(Expression<Func<TEntity, int?>> selector)
+        {
+            return DbSet.AverageAsync(selector);
+        }
+
+        /// <summary>
+        ///     Asynchronously computes the average of a sequence of nullable <see cref="int"/> values that match the predicate condition and is obtained by invoking a projection function on each element of the input sequence.
+        /// </summary>
+        /// <param name="selector">The projection function to apply to each element.</param>
+        /// <param name="predicate">
+        ///     The predicate with the query condition.
+        /// </param>
+        /// <returns>
+        ///     A task that represents the asynchronous query operation.
+        ///     The task result contains the average of the sequence of values, or null if the source sequence is empty or contains only null values.
+        /// </returns>
+        public Task<double?> AverageAsync(Expression<Func<TEntity, int?>> selector, Expression<Func<TEntity, bool>> predicate)
+        {
+            return DbSet.Where(predicate).AverageAsync(selector);
+        }
+
+        /// <summary>
+        ///     Asynchronously computes the average of a sequence of <see cref="float"/> values that is obtained by invoking a projection function on each element of the input sequence.
+        /// </summary>
+        /// <param name="selector">The projection function to apply to each element.</param>
+        /// <returns>
+        ///     A task that represents the asynchronous query operation.
+        ///     The task result contains the average of the sequence of values.
+        /// </returns>
+        public Task<float> AverageAsync(Expression<Func<TEntity, float>> selector)
+        {
+            return DbSet.AverageAsync(selector);
+        }
+
+        /// <summary>
+        ///     Asynchronously computes the average of a sequence of <see cref="float"/> values that match the predicate condition and is obtained by invoking a projection function on each element of the input sequence.
+        /// </summary>
+        /// <param name="selector">The projection function to apply to each element.</param>
+        /// <param name="predicate">
+        ///     The predicate with the query condition.
+        /// </param>
+        /// <returns>
+        ///     A task that represents the asynchronous query operation.
+        ///     The task result contains the average of the sequence of values.
+        /// </returns>
+        public Task<float> AverageAsync(Expression<Func<TEntity, float>> selector, Expression<Func<TEntity, bool>> predicate)
+        {
+            return DbSet.Where(predicate).AverageAsync(selector);
+        }
+
+        /// <summary>
+        ///     Asynchronously computes the average of a sequence of nullable <see cref="float"/> values that is obtained by invoking a projection function on each element of the input sequence.
+        /// </summary>
+        /// <param name="selector">The projection function to apply to each element.</param>
+        /// <returns>
+        ///     A task that represents the asynchronous query operation.
+        ///     The task result contains the average of the sequence of values, or null if the source sequence is empty or contains only null values.
+        /// </returns>
+        public Task<float?> AverageAsync(Expression<Func<TEntity, float?>> selector)
+        {
+            return DbSet.AverageAsync(selector);
+        }
+
+        /// <summary>
+        ///     Asynchronously computes the average of a sequence of nullable <see cref="float"/> values that match the predicate condition and is obtained by invoking a projection function on each element of the input sequence.
+        /// </summary>
+        /// <param name="selector">The projection function to apply to each element.</param>
+        /// <param name="predicate">
+        ///     The predicate with the query condition.
+        /// </param>
+        /// <returns>
+        ///     A task that represents the asynchronous query operation.
+        ///     The task result contains the average of the sequence of values, or null if the source sequence is empty or contains only null values.
+        /// </returns>
+        public Task<float?> AverageAsync(Expression<Func<TEntity, float?>> selector, Expression<Func<TEntity, bool>> predicate)
+        {
+            return DbSet.Where(predicate).AverageAsync(selector);
+        }
+
+        /// <summary>
+        ///     Asynchronously computes the average of a sequence of <see cref="long"/> values that is obtained by invoking a projection function on each element of the input sequence.
+        /// </summary>
+        /// <param name="selector">The projection function to apply to each element.</param>
+        /// <returns>
+        ///     A task that represents the asynchronous query operation.
+        ///     The task result contains the average of the sequence of values.
+        /// </returns>
+        public Task<double> AverageAsync(Expression<Func<TEntity, long>> selector)
+        {
+            return DbSet.AverageAsync(selector);
+        }
+
+        /// <summary>
+        ///     Asynchronously computes the average of a sequence of <see cref="long"/> values that match the predicate condition and is obtained by invoking a projection function on each element of the input sequence.
+        /// </summary>
+        /// <param name="selector">The projection function to apply to each element.</param>
+        /// <param name="predicate">
+        ///     The predicate with the query condition.
+        /// </param>
+        /// <returns>
+        ///     A task that represents the asynchronous query operation.
+        ///     The task result contains the average of the sequence of values.
+        /// </returns>
+        public Task<double> AverageAsync(Expression<Func<TEntity, long>> selector, Expression<Func<TEntity, bool>> predicate)
+        {
+            return DbSet.Where(predicate).AverageAsync(selector);
+        }
+
+        /// <summary>
+        ///     Asynchronously computes the average of a sequence of nullable <see cref="long"/> values that is obtained by invoking a projection function on each element of the input sequence.
+        /// </summary>
+        /// <param name="selector">The projection function to apply to each element.</param>
+        /// <returns>
+        ///     A task that represents the asynchronous query operation.
+        ///     The task result contains the average of the sequence of values, or null if the source sequence is empty or contains only null values.
+        /// </returns>
+        public Task<double?> AverageAsync(Expression<Func<TEntity, long?>> selector)
+        {
+            return DbSet.AverageAsync(selector);
+        }
+
+        /// <summary>
+        ///     Asynchronously computes the average of a sequence of nullable <see cref="long"/> values that match the predicate condition and is obtained by invoking a projection function on each element of the input sequence.
+        /// </summary>
+        /// <param name="selector">The projection function to apply to each element.</param>
+        /// <param name="predicate">
+        ///     The predicate with the query condition.
+        /// </param>
+        /// <returns>
+        ///     A task that represents the asynchronous query operation.
+        ///     The task result contains the average of the sequence of values, or null if the source sequence is empty or contains only null values.
+        /// </returns>
+        public Task<double?> AverageAsync(Expression<Func<TEntity, long?>> selector, Expression<Func<TEntity, bool>> predicate)
+        {
+            return DbSet.Where(predicate).AverageAsync(selector);
+        }
+
+        /// <summary>
+        ///     Asynchronously computes the average of a sequence of <see cref="double"/> values that is obtained by invoking a projection function on each element of the input sequence.
+        /// </summary>
+        /// <param name="selector">The projection function to apply to each element.</param>
+        /// <returns>
+        ///     A task that represents the asynchronous query operation.
+        ///     The task result contains the average of the sequence of values.
+        /// </returns>
+        public Task<double> AverageAsync(Expression<Func<TEntity, double>> selector)
+        {
+            return DbSet.AverageAsync(selector);
+        }
+
+        /// <summary>
+        ///     Asynchronously computes the average of a sequence of <see cref="double"/> values that match the predicate condition and is obtained by invoking a projection function on each element of the input sequence.
+        /// </summary>
+        /// <param name="selector">The projection function to apply to each element.</param>
+        /// <param name="predicate">
+        ///     The predicate with the query condition.
+        /// </param>
+        /// <returns>
+        ///     A task that represents the asynchronous query operation.
+        ///     The task result contains the average of the sequence of values.
+        /// </returns>
+        public Task<double> AverageAsync(Expression<Func<TEntity, double>> selector, Expression<Func<TEntity, bool>> predicate)
+        {
+            return DbSet.Where(predicate).AverageAsync(selector);
+        }
+
+        /// <summary>
+        ///     Asynchronously computes the average of a sequence of nullable <see cref="double"/> values that is obtained by invoking a projection function on each element of the input sequence.
+        /// </summary>
+        /// <param name="selector">The projection function to apply to each element.</param>
+        /// <returns>
+        ///     A task that represents the asynchronous query operation.
+        ///     The task result contains the average of the sequence of values, or null if the source sequence is empty or contains only null values.
+        /// </returns>
+        public Task<double?> AverageAsync(Expression<Func<TEntity, double?>> selector)
+        {
+            return DbSet.AverageAsync(selector);
+        }
+
+        /// <summary>
+        ///     Asynchronously computes the average of a sequence of nullable <see cref="double"/> values that match the predicate condition and is obtained by invoking a projection function on each element of the input sequence.
+        /// </summary>
+        /// <param name="selector">The projection function to apply to each element.</param>
+        /// <param name="predicate">
+        ///     The predicate with the query condition.
+        /// </param>
+        /// <returns>
+        ///     A task that represents the asynchronous query operation.
+        ///     The task result contains the average of the sequence of values, or null if the source sequence is empty or contains only null values.
+        /// </returns>
+        public Task<double?> AverageAsync(Expression<Func<TEntity, double?>> selector, Expression<Func<TEntity, bool>> predicate)
+        {
+            return DbSet.Where(predicate).AverageAsync(selector);
+        }
+
+        /// <summary>
+        ///     Asynchronously computes the average of a sequence of <see cref="decimal"/> values that is obtained by invoking a projection function on each element of the input sequence.
+        /// </summary>
+        /// <param name="selector">The projection function to apply to each element.</param>
+        /// <returns>
+        ///     A task that represents the asynchronous query operation.
+        ///     The task result contains the average of the sequence of values.
+        /// </returns>
+        public Task<decimal> AverageAsync(Expression<Func<TEntity, decimal>> selector)
+        {
+            return DbSet.AverageAsync(selector);
+        }
+
+        /// <summary>
+        ///     Asynchronously computes the average of a sequence of <see cref="decimal"/> values that match the predicate condition and is obtained by invoking a projection function on each element of the input sequence.
+        /// </summary>
+        /// <param name="selector">The projection function to apply to each element.</param>
+        /// <param name="predicate">
+        ///     The predicate with the query condition.
+        /// </param>
+        /// <returns>
+        ///     A task that represents the asynchronous query operation.
+        ///     The task result contains the average of the sequence of values.
+        /// </returns>
+        public Task<decimal> AverageAsync(Expression<Func<TEntity, decimal>> selector, Expression<Func<TEntity, bool>> predicate)
+        {
+            return DbSet.Where(predicate).AverageAsync(selector);
+        }
+
+        /// <summary>
+        ///     Asynchronously computes the average of a sequence of nullable <see cref="decimal"/> values that is obtained by invoking a projection function on each element of the input sequence.
+        /// </summary>
+        /// <param name="selector">The projection function to apply to each element.</param>
+        /// <returns>
+        ///     A task that represents the asynchronous query operation.
+        ///     The task result contains the average of the sequence of values, or null if the source sequence is empty or contains only null values.
+        /// </returns>
+        public Task<decimal?> AverageAsync(Expression<Func<TEntity, decimal?>> selector)
+        {
+            return DbSet.AverageAsync(selector);
+        }
+
+        /// <summary>
+        ///     Asynchronously computes the average of a sequence of nullable <see cref="decimal"/> values that match the predicate condition and is obtained by invoking a projection function on each element of the input sequence.
+        /// </summary>
+        /// <param name="selector">The projection function to apply to each element.</param>
+        /// <param name="predicate">
+        ///     The predicate with the query condition.
+        /// </param>
+        /// <returns>
+        ///     A task that represents the asynchronous query operation.
+        ///     The task result contains the average of the sequence of values, or null if the source sequence is empty or contains only null values.
+        /// </returns>
+        public Task<decimal?> AverageAsync(Expression<Func<TEntity, decimal?>> selector, Expression<Func<TEntity, bool>> predicate)
+        {
+            return DbSet.Where(predicate).AverageAsync(selector);
+        }
+
+        /// <summary>
         ///     Returns the number of entities of the provided type from the database repository.
         /// </summary>
         /// <returns>

@@ -75,6 +75,41 @@
         }
 
         /// <summary>
+        ///     Asserts that the <see cref="IReadableRepository{TEntity}.AverageAsync(Expression{Func{TEntity, int}})"/> is operating correctly.
+        /// </summary>
+        /// <returns>The task representing the asynchronous operation.</returns>
+        [Fact]
+        public async Task Assert_Average_Entity_Int_Async_Is_Successful()
+        {
+            // Arrange
+            var average = await _databaseHelper.Query<Person>().AverageAsync(t => t.Vehicles.Count);
+
+            // Act
+            var result = await _personRepository.AverageAsync(t => t.Vehicles.Count);
+
+            // Assert
+            Assert.Equal(average, result);
+        }
+
+        /// <summary>
+        ///     Asserts that the <see cref="IReadableRepository{TEntity}.AverageAsync(Expression{Func{TEntity, int}}, Expression{Func{TEntity, bool}})"/> is operating correctly.
+        /// </summary>
+        /// <returns>The task representing the asynchronous operation.</returns>
+        [Fact]
+        public async Task Assert_Average_Entity_Int_With_Predicate_Async_Is_Successful()
+        {
+            // Arrange
+            Expression<Func<Person, bool>> predicate = t => t.Vehicles.All(x => x.Type == VehicleType.Motorcycle);
+            var average = await _databaseHelper.Query<Person>().Where(predicate).AverageAsync(t => t.Vehicles.Count);
+
+            // Act
+            var result = await _personRepository.AverageAsync(t => t.Vehicles.Count, predicate);
+
+            // Assert
+            Assert.Equal(average, result);
+        }
+
+        /// <summary>
         ///     Asserts that the <see cref="IReadableRepository{TEntity}.CountAsync()"/> is operating correctly.
         /// </summary>
         /// <returns>The task representing the asynchronous operation.</returns>

@@ -72,6 +72,39 @@
         }
 
         /// <summary>
+        ///     Asserts that the <see cref="IReadableRepository{TEntity}.Average(Expression{Func{TEntity, int}})"/> is operating correctly.
+        /// </summary>
+        [Fact]
+        public void Assert_Average_Entity_Int_Is_Successful()
+        {
+            // Arrange
+            var average = _databaseHelper.Query<Person>().Average(t => t.Vehicles.Count);
+
+            // Act
+            var result = _personRepository.Average(t => t.Vehicles.Count);
+
+            // Assert
+            Assert.Equal(average, result);
+        }
+
+        /// <summary>
+        ///     Asserts that the <see cref="IReadableRepository{TEntity}.Average(Expression{Func{TEntity, int}}, Expression{Func{TEntity, bool}})"/> is operating correctly.
+        /// </summary>
+        [Fact]
+        public void Assert_Average_Entity_Int_With_Predicate_Is_Successful()
+        {
+            // Arrange
+            Expression<Func<Person, bool>> predicate = t => t.Vehicles.All(x => x.Type == VehicleType.Motorcycle);
+            var average = _databaseHelper.Query<Person>().Where(predicate).Average(t => t.Vehicles.Count);
+
+            // Act
+            var result = _personRepository.Average(t => t.Vehicles.Count, predicate);
+
+            // Assert
+            Assert.Equal(average, result);
+        }
+
+        /// <summary>
         ///     Asserts that the <see cref="IReadableRepository{TEntity}.Count()"/> is operating correctly.
         /// </summary>
         [Fact]
