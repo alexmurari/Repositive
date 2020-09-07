@@ -262,7 +262,17 @@ This package provides repository implementations for the Microsoft Entity Framew
 
 ### Basic Setup
 
-#### 1. Define your repository contracts, inheriting the desired repository interfaces from the ```Repositive.Abstractions``` package.
+#### 1. Install the ```Repositive.Abstractions``` package
+
+###### Via NuGet:
+
+> nuget Install-Package Repositive.Abstractions
+
+###### Via DotNet Cli:
+
+> dotnet add package Repositive.Abstractions
+
+#### 2. Define your repository contracts, inheriting the desired repository interfaces from the ```Repositive.Abstractions``` package
 
 ```csharp
 using Repositive.Abstractions;
@@ -279,7 +289,17 @@ public interface IBarRepository : IReadableRepository<Bar>, IRelatedLoadableRepo
 }
 ```
 
-#### 2. Define the contracts' implementations, inheriting the ```Repository<T, C>``` class from the implementation package.
+#### 3. Install the implementation package (using ```Repositive.EntityFrameworkCore``` package as example)
+
+###### Via NuGet:
+
+> nuget Install-Package Repositive.EntityFrameworkCore
+
+###### Via DotNet Cli:
+
+> dotnet add package Repositive.EntityFrameworkCore
+
+#### 4. Define the contracts' implementations, inheriting the ```Repository<T, C>``` class from the implementation package.
 
 ```csharp
 using Repositive.EntityFrameworkCore;
@@ -304,14 +324,14 @@ public class BarRepository : Repository<Bar, MyDbContext>, IBarRepository
 }
 ```
 
-#### 3. Optional: Bind the interfaces and implementations together using an IoC container.
+#### 5. Optional: Bind the interfaces and implementations together using an IoC container.
 
 ```csharp
 services.AddScoped<IFooRepository, FooRepository>();
 services.AddScoped<IBarRepository, BarRepository>();
 ```
 
-#### 4. Ready to use!
+#### 6. Ready to use!
 
 ```csharp
 public class BazService : IBazService
