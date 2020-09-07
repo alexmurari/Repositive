@@ -90,7 +90,7 @@
         /// <returns>The added object.</returns>
         public virtual TEntity Add(TEntity entity)
         {
-            return DbSet.Add(entity).Entity;
+            return DbSet.Attach(entity).Entity;
         }
 
         /// <summary>
@@ -101,9 +101,11 @@
         ///     A task that represents the asynchronous add operation.
         ///     The task result contains the added object.
         /// </returns>
-        public virtual async Task<TEntity> AddAsync(TEntity entity)
+        public virtual Task<TEntity> AddAsync(TEntity entity)
         {
-            return (await DbSet.AddAsync(entity).ConfigureAwait(false)).Entity;
+            var result = DbSet.Attach(entity).Entity;
+
+            return Task.FromResult(result);
         }
 
         /// <summary>
@@ -112,7 +114,7 @@
         /// <param name="entityCollection">The collection of objects to be added.</param>
         public virtual void AddRange(IEnumerable<TEntity> entityCollection)
         {
-            DbSet.AddRange(entityCollection);
+            DbSet.AttachRange(entityCollection);
         }
 
         /// <summary>
@@ -122,7 +124,9 @@
         /// <returns>A task that represents the asynchronous add range operation.</returns>
         public virtual Task AddRangeAsync(IEnumerable<TEntity> entityCollection)
         {
-            return DbSet.AddRangeAsync(entityCollection);
+            DbSet.AttachRange(entityCollection);
+
+            return Task.CompletedTask;
         }
 
         /// <summary>
