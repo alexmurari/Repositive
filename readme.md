@@ -194,7 +194,7 @@ public class CarService : ICarService
 
 #### ```IReadableRepository<T>```
 - Defines a repository contract for reading entities of type ```T```.
-- Methods: ```Any```, ```Count```, ```Find```, ```Get```, ```GetSingle```, ```Max```, ```Min```.
+- Methods: ```Any```, ```Average```, ```Count```, ```Find```, ```Get```, ```GetSingle```, ```Max```, ```Min```.
 
 #### ```IUpdateableRepository<T>```
 - Defines a repository contract for updating entities of type ```T```.
