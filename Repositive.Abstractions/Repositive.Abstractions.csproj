@@ -14,10 +14,6 @@
     <SignAssembly>true</SignAssembly>
     <DelaySign>false</DelaySign>
     <AssemblyOriginatorKeyFile>..\RepositiveKey.pfx</AssemblyOriginatorKeyFile>
-
-    <PackageReleaseNotes>
-      Added Average aggregate method to the read interface.
-    </PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>

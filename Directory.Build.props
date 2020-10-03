@@ -1,7 +1,7 @@
 <Project>
   <PropertyGroup>
     <VersionPrefix>2.0.0</VersionPrefix>
-    <VersionSuffix>alpha.5</VersionSuffix>
+    <VersionSuffix></VersionSuffix>
     <Product>Repositive</Product>
     <Authors>Alexandre Murari Junior</Authors>
     <Company>Alexandre Murari Junior</Company>
@@ -12,12 +12,7 @@
     <PackageProjectUrl>https://github.com/alexmurari/Repositive/</PackageProjectUrl>
     <!-- Keep the package release notes without indentation -->
     <PackageReleaseNotes>
-      ### Repositive.Abstractions
-      - Added Average aggregate method to the read interface.
-
-      ### Repositive.EntityFrameworkCore
-      - Implemented the Average aggregate method.
-      - Changed the Add method implementation to use EF Core's Attach method for a more consistent behaviour.
+- Stable release.
     </PackageReleaseNotes>
   </PropertyGroup>
 </Project>

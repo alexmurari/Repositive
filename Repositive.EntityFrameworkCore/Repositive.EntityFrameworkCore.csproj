@@ -16,10 +16,6 @@
     <SignAssembly>true</SignAssembly>
     <DelaySign>false</DelaySign>
     <AssemblyOriginatorKeyFile>..\RepositiveKey.pfx</AssemblyOriginatorKeyFile>
-    <PackageReleaseNotes>
-      Implemented the Average aggregate method.
-      Changed the Add method implementation to use EF Core's Attach method for a more consistent behaviour.
-    </PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
